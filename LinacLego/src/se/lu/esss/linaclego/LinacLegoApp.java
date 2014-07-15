@@ -55,7 +55,7 @@ import com.astrofizzbizz.utilities.StatusPanel;
 
 
 @SuppressWarnings("serial")
-public class LinacLegoGui extends JFrame
+public class LinacLegoApp extends JFrame
 {
 	public static final String delim = System.getProperty("file.separator");
 	public static final String newline = System.getProperty("line.separator");
@@ -65,7 +65,7 @@ public class LinacLegoGui extends JFrame
 	
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
 	protected String version = "v2.2";
-	protected String versionDate = "June 9, 2014";
+	protected String versionDate = "June 14, 2014";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
 	private SimpleXmlDoc simpleXmlDoc = null;
@@ -82,7 +82,7 @@ public class LinacLegoGui extends JFrame
 	Thread watchKeyThread = null;
 	File openedXmlFile = null;
 	
-	public LinacLegoGui(String frametitle, String statusBarTitle, int numStatusLines)
+	public LinacLegoApp(String frametitle, String statusBarTitle, int numStatusLines)
 	{
 		super(frametitle);
 		statusBar = new StatusPanel(numStatusLines, statusBarTitle);
@@ -190,9 +190,9 @@ public class LinacLegoGui extends JFrame
 	}
 	private class LinacLegoGuiActionListeners implements ActionListener
 	{
-		LinacLegoGui myJFrameClass;
+		LinacLegoApp myJFrameClass;
 		String actionString = "";
-		LinacLegoGuiActionListeners(String actionString, LinacLegoGui myJFrameClass)
+		LinacLegoGuiActionListeners(String actionString, LinacLegoApp myJFrameClass)
 		{
 			this.actionString = actionString;
 			this.myJFrameClass = myJFrameClass;
@@ -277,7 +277,7 @@ public class LinacLegoGui extends JFrame
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Slot Models").setEnabled(true);
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Cell Models").setEnabled(true);
 			this.setTitle("LinacLego " + openedXmlFile.getPath());
-	        pbsTreeNode = linacLego.getTreeNode();
+	        pbsTreeNode = new LinacLegoDefaultMutableTreeNode(linacLego);
 			pbsTree.setModel(new DefaultTreeModel(pbsTreeNode));
 			mainPane.setSelectedIndex(0);
 		} catch (SimpleXmlException e) 
@@ -370,7 +370,7 @@ public class LinacLegoGui extends JFrame
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Slot Models").setEnabled(true);
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Cell Models").setEnabled(true);
-		        pbsTreeNode = linacLego.getTreeNode();
+				pbsTreeNode = new LinacLegoDefaultMutableTreeNode(linacLego);
 				pbsTree.setModel(new DefaultTreeModel(pbsTreeNode));
 				mainPane.setSelectedIndex(0);
 
@@ -444,29 +444,35 @@ public class LinacLegoGui extends JFrame
         }
         return dmtNode;
     }
-    private void buildPbsTree(LinacLego linacLego) throws LinacLegoException
+    private void buildPbsTreeNew(LinacLego linacLego) throws LinacLegoException
     {
-    	pbsTreeNode.add(linacLego.getLinac().getTreeNode());
+    	LinacLegoDefaultMutableTreeNode linacNode = new LinacLegoDefaultMutableTreeNode(linacLego.getLinac());
+     	pbsTreeNode.add(linacNode);
 		for (int isec = 0; isec < linacLego.getLinac().getSectionList().size(); ++isec)
 		{
 			Section section = linacLego.getLinac().getSectionList().get(isec);
-			linacLego.getLinac().getTreeNode().add(section.getTreeNode());
+			LinacLegoDefaultMutableTreeNode sectionNode = new LinacLegoDefaultMutableTreeNode(section);
+			linacNode.add(sectionNode);
 			for (int icell = 0; icell < section.getCellList().size(); ++icell)
 			{
 				Cell cell = section.getCellList().get(icell);
-				section.getTreeNode().add(cell.getTreeNode());
+				LinacLegoDefaultMutableTreeNode cellNode = new LinacLegoDefaultMutableTreeNode(cell);
+				sectionNode.add(cellNode);
 				for (int islot = 0; islot < cell.getSlotList().size(); ++islot)
 				{
 					Slot slot = cell.getSlotList().get(islot);
-					cell.getTreeNode().add(slot.getTreeNode());
+					LinacLegoDefaultMutableTreeNode slotNode = new LinacLegoDefaultMutableTreeNode(slot);
+					cellNode.add(slotNode);
 					for (int ible = 0; ible < slot.getBeamLineElementList().size(); ++ible)
 					{
 						BeamLineElement ble = slot.getBeamLineElementList().get(ible);
-						slot.getTreeNode().add(ble.getTreeNode());
+						LinacLegoDefaultMutableTreeNode bleNode = new LinacLegoDefaultMutableTreeNode(ble);
+						slotNode.add(bleNode);
 						for (int icnpt = 0; icnpt < ble.getControlPointList().size(); ++icnpt)
 						{
 							ControlPoint cnpt = ble.getControlPointList().get(icnpt);
-							ble.getTreeNode().add(cnpt.getTreeNode());
+							LinacLegoDefaultMutableTreeNode cnptNode = new LinacLegoDefaultMutableTreeNode(cnpt);
+							bleNode.add(cnptNode);
 						}
 					}
 				}
@@ -508,7 +514,8 @@ public class LinacLegoGui extends JFrame
 				linacLego.printReportTable();
 				linacLego.printParameterTable();
 				linacLego.saveXmlDocument();
-				buildPbsTree(linacLego);
+//				buildPbsTree(linacLego);
+				buildPbsTreeNew(linacLego);
 				statusBar.scrollToTop();
 				mainPane.setSelectedIndex(1);
 
@@ -553,12 +560,12 @@ public class LinacLegoGui extends JFrame
 	}
 	public static void main(String[] args) 
 	{
-		new LinacLegoGui("LinacLego", "Info", 10);
+		new LinacLegoApp("LinacLego", "Info", 10);
 	}
 	class WatchKeyRunnable implements Runnable
 	{
-		LinacLegoGui linacLegoGui;
-		WatchKeyRunnable(LinacLegoGui linacLegoGui)
+		LinacLegoApp linacLegoGui;
+		WatchKeyRunnable(LinacLegoApp linacLegoGui)
 		{
 			this.linacLegoGui = linacLegoGui;
 		}

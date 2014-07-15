@@ -3,8 +3,6 @@ package se.lu.esss.linaclego.structures.cell;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.Section;
 import se.lu.esss.linaclego.structures.elements.DataElement;
@@ -24,7 +22,6 @@ public class Cell
 	private double length = 0.0;
 	private int index  = -1;
 	private SimpleXmlReader modelTag = null;
-	private DefaultMutableTreeNode treeNode;
 	
 	public Cell(SimpleXmlReader tag, Section section, int index) throws SimpleXmlException, LinacLegoException 
 	{
@@ -32,7 +29,6 @@ public class Cell
 		this.section = section;
 		this.index = index;
 		expand();
-		treeNode = createTreeNode();
 	}
 	public void expand() throws SimpleXmlException, LinacLegoException
 	{
@@ -143,16 +139,6 @@ public class Cell
 		}
 		return matchingSlot;
 	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "cell" + "</font>";
-		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getId() + "\"</font>";
-		if (getModelId() != null)
-			html =  html + "<font color=\"FF0000\">" + " " + "model" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getModelId() + "\"</font>";
-		html = html + "</html>";
-		return new DefaultMutableTreeNode(html);
-	}
 	public Section getSection() {return section;}
 	public String getModelId() 
 	{
@@ -171,6 +157,5 @@ public class Cell
 	public int getNumOfSlots() {return slotList.size();}
 	public SimpleXmlReader getModelTag() {return modelTag;}
 	public SimpleXmlReader getTag() {return tag;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
 
 }

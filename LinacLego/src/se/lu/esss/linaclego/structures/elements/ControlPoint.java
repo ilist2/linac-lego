@@ -1,9 +1,8 @@
 package se.lu.esss.linaclego.structures.elements;
 
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.elements.beamline.BeamLineElement;
@@ -15,6 +14,7 @@ import com.astrofizzbizz.simpleXml.SimpleXmlWriter;
 public class ControlPoint 
 {
 	public static final String newline = System.getProperty("line.separator");
+	public static final DecimalFormat fourPlaces = new DecimalFormat("###.####");
 	public static final String space = "\t";
 	private ArrayList<DataElement> dataElementList = new ArrayList<DataElement>();
 	private SimpleXmlReader tag;
@@ -25,7 +25,6 @@ public class ControlPoint
 	private String type = null;
 	private String id = null;
 	private String model = "";
-	private DefaultMutableTreeNode treeNode;
 	
 	public ControlPoint(SimpleXmlReader tag, BeamLineElement beamLineElement, int index) throws LinacLegoException
 	{
@@ -38,7 +37,6 @@ public class ControlPoint
 		readDataElements();
 		beamLineElement.getSlot().getCell().getSection().getLinac().getLinacLego().writeStatus(getEssId());
 		calcLocation();	
-		treeNode = createTreeNode();
 	}
 	public void checkAttributes() throws LinacLegoException
 	{
@@ -91,22 +89,22 @@ public class ControlPoint
 		double[] surveyCoords = beamLineElement.getSlot().getCell().getSection().getLinac().getSurveyCoords(endPosVec);
 		pw.print(getName() + ",");
 		pw.print(getEssId().replace("-", ","));
-		pw.print("," + getType());
-		pw.print("," + getModel());
-		pw.print(",");
-		pw.print(",");
-		pw.print(",");
-		pw.print("," + endPosVec[0]);
-		pw.print("," + endPosVec[1]);
-		pw.print("," + endPosVec[2]);
-		pw.print("," + surveyCoords[0]);
-		pw.print("," + surveyCoords[1]);
-		pw.print("," + surveyCoords[2]);
-		pw.print(",");
-		pw.print(",");
-		pw.print(",");
-		pw.print(",");
-		pw.println(", ");
+		pw.print(" ," + getType());
+		pw.print(" ," + getModel());
+		pw.print(" ,");
+		pw.print(" ,");
+		pw.print(" ,");
+		pw.print(" ," + fourPlaces.format(endPosVec[0]));
+		pw.print(" ," + fourPlaces.format(endPosVec[1]));
+		pw.print(" ," + fourPlaces.format(endPosVec[2]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[0]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[1]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[2]));
+		pw.print(" ,");
+		pw.print(" ,");
+		pw.print(" ,");
+		pw.print(" ,");
+		pw.println(" , ");
 	}
 	public String getEssId() 
 	{
@@ -187,22 +185,6 @@ public class ControlPoint
 		}
 		return null;
 	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "cnpt" + "</font>";
-		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getId() + "\"</font>";
-		html =  html + "<font color=\"FF0000\">" + " " + "type" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getType() + "\"</font>";
-		if (getModel().length() > 0)
-			html =  html + "<font color=\"FF0000\">" + " " + "model" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getModel() + "\"</font>";
-		html = html + "</html>";
-		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(html);
-		DefaultMutableTreeNode dataFolder = new DefaultMutableTreeNode("data");
-		treeNode.add(dataFolder);
-		for (int idata = 0; idata < dataElementList.size(); ++idata)
-			dataFolder.add(dataElementList.get(idata).createTreeNode());
-		return treeNode;
-	}
 	public BeamLineElement getBeamLineElement() {return beamLineElement;}
 	public SimpleXmlReader getTag() {return tag;}
 	public int getIndex() {return index;}
@@ -212,7 +194,7 @@ public class ControlPoint
 	public String getModel() {return model;}
 	public String getName() throws SimpleXmlException {return tag.attribute("devName");}
 	public double[] getEndPosVec() {return endPosVec;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
+	public ArrayList<DataElement> getDataElementList() {return dataElementList;}
 
 	public void setTag(SimpleXmlReader tag) {this.tag = tag;}
 

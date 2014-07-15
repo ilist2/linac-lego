@@ -4,8 +4,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.elements.ControlPoint;
 import se.lu.esss.linaclego.structures.elements.DataElement;
@@ -50,7 +48,6 @@ public abstract class BeamLineElement
 	private String type = null;
 	private String id = null;
 	private String model = "";
-	private DefaultMutableTreeNode treeNode;
 
 	public BeamLineElement(SimpleXmlReader elementTag, Slot slot, int index) throws LinacLegoException
 	{
@@ -73,7 +70,6 @@ public abstract class BeamLineElement
 		eVin = eVout;
 		addDataElements();
 		readDataElementsFromXml();
-		treeNode = createTreeNode();
 	}
 	public BeamLineElement(SimpleXmlReader elementTag) throws LinacLegoException 
 	{
@@ -260,23 +256,23 @@ public abstract class BeamLineElement
 		double[] centerPosVec = centerLocation();
 		double[] surveyCoords = getSlot().getCell().getSection().getLinac().getSurveyCoords(centerPosVec);
 		pw.print(getLinacLegoNumber());
-		pw.print("," + getEssId().replace("-", ",") + ",");
-		pw.print("," + getType());
-		pw.print("," + getModel());
-		pw.print("," + (geteVout() / 1.0e6));
-		pw.print("," + beta(geteVout()));
-		pw.print("," + getLength());
-		pw.print("," + centerPosVec[0]);
-		pw.print("," + centerPosVec[1]);
-		pw.print("," + centerPosVec[2]);
-		pw.print("," + surveyCoords[0]);
-		pw.print("," + surveyCoords[1]);
-		pw.print("," + surveyCoords[2]);
-		pw.print("," + getVoltage());
-		pw.print("," + getSynchronousPhaseDegrees());
-		pw.print("," + getQuadGradientTpm());
-		pw.print("," + getDipoleBend());
-		pw.println(", ");
+		pw.print("," + getEssId().replace("-", ",") + ", ");
+		pw.print(" ," + getType());
+		pw.print(" ," + getModel());
+		pw.print(" ," + fourPlaces.format((geteVout() / 1.0e6)));
+		pw.print(" ," + fourPlaces.format(beta(geteVout())));
+		pw.print(" ," + fourPlaces.format(getLength()));
+		pw.print(" ," + fourPlaces.format(centerPosVec[0]));
+		pw.print(" ," + fourPlaces.format(centerPosVec[1]));
+		pw.print(" ," + fourPlaces.format(centerPosVec[2]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[0]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[1]));
+		pw.print(" ," + fourPlaces.format(surveyCoords[2]));
+		pw.print(" ," + fourPlaces.format(getVoltage()));
+		pw.print(" ," + fourPlaces.format(getSynchronousPhaseDegrees()));
+		pw.print(" ," + fourPlaces.format(getQuadGradientTpm()));
+		pw.print(" ," + fourPlaces.format(getDipoleBend()));
+		pw.println(" , ");
 		int numControlPoints = controlPointList.size();
 		if (numControlPoints > 0)
 		{
@@ -285,22 +281,6 @@ public abstract class BeamLineElement
 				controlPointList.get(icpt).printReportTable(pw);
 			}
 		}
-	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "ble" + "</font>";
-		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getId() + "\"</font>";
-		html =  html + "<font color=\"FF0000\">" + " " + "type" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getType() + "\"</font>";
-		if (getModel().length() > 0)
-			html =  html + "<font color=\"FF0000\">" + " " + "model" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getModel() + "\"</font>";
-		html = html + "</html>";
-		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(html);
-		DefaultMutableTreeNode dataFolder = new DefaultMutableTreeNode("data");
-		treeNode.add(dataFolder);
-		for (int idata = 0; idata < dataElementList.size(); ++idata)
-			dataFolder.add(dataElementList.get(idata).createTreeNode());
-		return treeNode;
 	}
 
 	public abstract String makeTraceWinCommand();
@@ -330,7 +310,7 @@ public abstract class BeamLineElement
 	public ArrayList<ControlPoint> getControlPointList() {return controlPointList;}
 	public int getNumOfControlPoints() {return controlPointList.size();}
 	public String getModel() {return model;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
+	public ArrayList<DataElement> getDataElementList() {return dataElementList;}
 
 	public void setSynchronousPhaseDegrees(double synchronousPhaseDegrees) {this.synchronousPhaseDegrees = synchronousPhaseDegrees;}
 	public void setQuadGradientTpm(double quadGradientTpm) {this.quadGradientTpm = quadGradientTpm;}

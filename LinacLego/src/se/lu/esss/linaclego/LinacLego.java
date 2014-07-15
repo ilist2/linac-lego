@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import se.lu.esss.linaclego.structures.Linac;
 import se.lu.esss.linaclego.structures.cell.CellModel;
 import se.lu.esss.linaclego.structures.slot.SlotModel;
@@ -34,7 +32,7 @@ public class LinacLego
 	private boolean printIdInTraceWin = true;
 	private StatusPanel statusPanel = null;
 	private int linacLegoRevNo = -1;
-	private DefaultMutableTreeNode treeNode;
+	private boolean createReportDirectory = true;
 	
 	private Linac linac = null;
 	
@@ -81,7 +79,6 @@ public class LinacLego
 			}
 			linacTag =  linacLegoTag.tagsByName("linac").tag(0);
 			linacLegoTitle = linacLegoTag.attribute("title");
-			treeNode = createTreeNode();
 		} catch (Exception e) 
 		{
 			LinacLegoException lle = new LinacLegoException(e);
@@ -94,19 +91,21 @@ public class LinacLego
 	{
 		try 
 		{
-			if (getReportDir().exists()) 
+			if (createReportDirectory)
 			{
-				File[] fileList = getReportDir().listFiles();
-				if (fileList.length > 0) for (int ifile = 0; ifile < fileList.length; ++ifile) fileList[ifile].delete();
-			}
-			else
-			{
-				getReportDir().mkdir();
+				if (getReportDir().exists()) 
+				{
+					File[] fileList = getReportDir().listFiles();
+					if (fileList.length > 0) for (int ifile = 0; ifile < fileList.length; ++ifile) fileList[ifile].delete();
+				}
+				else
+				{
+					getReportDir().mkdir();
+				}
 			}
 //			linacLegoTitle = linacLegoTag.attribute("title");
 			linac = new Linac(this);
 			eVout = linac.geteVout();
-			writeStatus("Finished writing TraceWin File.");
 			writeStatus("Final Energy = " + twoPlaces.format(geteVout() * 1.0e-6) + " MeV");
 			writeStatus("Length       = " + twoPlaces.format(linac.getLength() ) + " meters");
 			writeStatus("X = " + twoPlaces.format(linac.getBeamLineElements().get(linac.getBeamLineElements().size() - 1).getEndPosVec()[0]) + " meters");
@@ -121,6 +120,7 @@ public class LinacLego
 	}
 	public void createTraceWinFile() throws LinacLegoException  
 	{
+		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (linac == null) throw new LinacLegoException("no linac data");
 		try 
 		{
@@ -140,6 +140,7 @@ public class LinacLego
 	}
 	public void createDynacFile() throws LinacLegoException  
 	{
+		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (linac == null) throw new LinacLegoException("no linac data");
 		try 
 		{
@@ -159,8 +160,9 @@ public class LinacLego
 	}
 	public void printReportTable() throws LinacLegoException  
 	{
+		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (linac == null) throw new LinacLegoException("no linac data");
-		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + ".csv";
+		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + "Data.csv";
 		try {
 			linac.printReportTable(getReportDir().getPath() + delim +  fileName);
 		} catch (Exception e) {
@@ -171,8 +173,9 @@ public class LinacLego
 	}
 	public void printParameterTable() throws LinacLegoException  
 	{
+		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (linac == null) throw new LinacLegoException("no linac data");
-		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + "Parameters.csv";
+		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + "PartCount.csv";
 		try {
 			linac.printParameterTable(getReportDir().getPath() + delim +  fileName);
 		} catch (Exception e) {
@@ -183,6 +186,7 @@ public class LinacLego
 	}
 	public void saveXmlDocument() throws LinacLegoException
 	{
+		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (simpleXmlDoc == null) throw new LinacLegoException("no xml Docxument");
 		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + ".xml";
 		try {
@@ -192,15 +196,6 @@ public class LinacLego
 			writeStatus(lle.getRootCause());
 			throw lle;
 		} 
-	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "linacLego" + "</font>";
-		html =  html + "<font color=\"FF0000\"> title</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getLinacLegoTitle() + "\"</font>";
-		html =  html + "<font color=\"FF0000\">" + " " + "revNo" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getLinacLegoRevNo() + "\"</font>";
-		html = html + "</html>";
-		return new DefaultMutableTreeNode(html);
 	}
 	public String getXmlFileDirPath() {return simpleXmlDoc.getXmlSourceFile().getParent();}
 	public File   getReportDir() {return new File(getXmlFileDirPath() + delim + "linacLegoOutput");}
@@ -216,7 +211,8 @@ public class LinacLego
 	public boolean isPrintIdInTraceWin() {return printIdInTraceWin;}
 	public int getLinacLegoRevNo() {return linacLegoRevNo;}
 	public Linac getLinac() {return linac;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
+	public boolean isCreateReportDirectory() {return createReportDirectory;}
+	public void setCreateReportDirectory(boolean createReportDirectory) {this.createReportDirectory = createReportDirectory;}
 	
 	public void setPrintControlPoints(boolean printControlPoints) {this.printControlPoints = printControlPoints;}
 	public void setPrintIdInTraceWin(boolean printIdInTraceWin) {this.printIdInTraceWin = printIdInTraceWin;}
@@ -244,16 +240,17 @@ public class LinacLego
 	}
 	public static void main(String[] args) throws LinacLegoException, SimpleXmlException  
 	{
-		SimpleXmlDoc sxd = new SimpleXmlDoc("C:\\Users\\davidmcginnis\\Desktop\\EssLinacXmlFilesV2\\AT2_2.xml");
+		SimpleXmlDoc sxd = new SimpleXmlDoc("test\\AT2.xml");
 		LinacLego linacLego = new LinacLego(sxd, null);
 		linacLego.setPrintControlPoints(true);
 		linacLego.setPrintIdInTraceWin(true);
+		linacLego.setCreateReportDirectory(false);
 		linacLego.updateLinac();
-		linacLego.createTraceWinFile();
-		linacLego.createDynacFile();
-		linacLego.printReportTable();
-		linacLego.printParameterTable();
-		linacLego.saveXmlDocument();
+//		linacLego.createTraceWinFile();
+//		linacLego.createDynacFile();
+//		linacLego.printReportTable();
+//		linacLego.printParameterTable();
+//		linacLego.saveXmlDocument();
 	}
 
 }

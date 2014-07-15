@@ -5,8 +5,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import se.lu.esss.linaclego.FieldProfileBuilder;
 import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
@@ -42,8 +40,8 @@ public class Linac
 	private double[][] eulerMatrix   = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
 	private double[] transVec   = {0.0, 0.0, 0.0}; 
 	private FieldProfileBuilder fieldProfileBuilder = null;
-	private DefaultMutableTreeNode treeNode;
 	private ArrayList<DataElement> dataElementList = new ArrayList<DataElement>();
+
 
 	private DataElement[][] twissData = new DataElement[3][3];
 	private DataElement[] surveyTranslationData = new DataElement[3];
@@ -73,7 +71,6 @@ public class Linac
 		}
 		eVout = beamLineElementList.get(beamLineElementList.size() - 1).geteVout();
 		addControlPointsToLattice();
-		treeNode = createTreeNode();
 	}
 	public void addControlPointsToLattice() throws SimpleXmlException, LinacLegoException
 	{
@@ -303,18 +300,6 @@ public class Linac
 				for (int ik = 0; ik < 3; ++ik)
 					eulerMatrix[ir][ic] = eulerMatrix[ir][ic] + rollMatrix[ir][ik] * pyMatrix[ik][ic];
 	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "linac" + "</font>";
-		html = html + "</html>";
-		DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(html);
-		DefaultMutableTreeNode dataFolder = new DefaultMutableTreeNode("data");
-		treeNode.add(dataFolder);
-		for (int idata = 0; idata < dataElementList.size(); ++idata)
-			dataFolder.add(dataElementList.get(idata).createTreeNode());
-		return treeNode;
-	}
 	public ArrayList<Section> getSectionList() {return sectionList;}
 	public double geteVin() {return eVin;}
 	public double geteVout() {return eVout;}
@@ -327,7 +312,7 @@ public class Linac
 	public FieldProfileBuilder getFieldProfileBuilder() {return fieldProfileBuilder;}
 	public DataElement[][] getTwissData() {return twissData;}
 	public DataElement getBeamCurrent() {return beamCurrent;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
+	public ArrayList<DataElement> getDataElementList() {return dataElementList;}
 
 	public void setFieldProfileBuilder(FieldProfileBuilder fieldProfileBuilder) {this.fieldProfileBuilder = fieldProfileBuilder;}
 

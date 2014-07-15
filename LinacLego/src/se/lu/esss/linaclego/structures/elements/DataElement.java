@@ -1,7 +1,5 @@
 package se.lu.esss.linaclego.structures.elements;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import com.astrofizzbizz.simpleXml.SimpleXmlException;
 import com.astrofizzbizz.simpleXml.SimpleXmlReader;
 import com.astrofizzbizz.simpleXml.SimpleXmlWriter;
@@ -139,19 +137,5 @@ public class DataElement
 			if (!dataElementTemplate.getValue().equals(getValue())) return false;
 		}
 		return matches;
-	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "data" + "</font>";
-		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getId() + "\"</font>";
-		if (getType() != null)
-			html =  html + "<font color=\"FF0000\">" + " " + "type" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getType() + "\"</font>";
-		if (getUnit() != null)
-			html =  html + "<font color=\"FF0000\">" + " " + "unit" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getUnit() + "\"</font>";
-		if (value != null)
-			html =  html + "<font color=\"000000\">" + " " + value + "</font>";
-		html = html + "</html>";
-		return new DefaultMutableTreeNode(html);
 	}
 }

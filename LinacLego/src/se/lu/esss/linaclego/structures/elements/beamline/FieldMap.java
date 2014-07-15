@@ -96,8 +96,11 @@ public class FieldMap extends BeamLineElement
 			fieldProfileBuilder.readXmlFile();
 			linacFieldProfileBuilder.readXmlFile();
 			newFieldProfileEncountered = true;
-			try {fieldProfileBuilder.createTraceWinFile(true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": TraceWin file exists");}
-			try {fieldProfileBuilder.createDynacFile(getRfFreqMHz(), true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": Dynac file exists");}
+			if (getSlot().getCell().getSection().getLinac().getLinacLego().isCreateReportDirectory())
+			{
+				try {fieldProfileBuilder.createTraceWinFile(true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": TraceWin file exists");}
+				try {fieldProfileBuilder.createDynacFile(getRfFreqMHz(), true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": Dynac file exists");}
+			}
 		}
 
 		if (!lengthOk()) 

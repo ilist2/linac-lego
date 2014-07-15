@@ -3,8 +3,6 @@ package se.lu.esss.linaclego.structures;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.cell.Cell;
 
@@ -27,7 +25,6 @@ public class Section
 	private double length = 0.0;
 	private int index = -1;
 	private boolean periodicLatticeSection = false;
-	private DefaultMutableTreeNode treeNode;
 	
 	public Section(SimpleXmlReader tag, Linac linac, int index) throws SimpleXmlException, LinacLegoException
 	{
@@ -61,7 +58,6 @@ public class Section
 				throw new SimpleXmlException("Only cell tags allowed inside latticeSection tag");
 			}
 		}
-		treeNode = createTreeNode();
 	}
 	public String traceWinCommand() 
 	{
@@ -108,15 +104,6 @@ public class Section
 			cellList.get(icell).printReportTable(pw);
 		}
 	}
-	public DefaultMutableTreeNode createTreeNode() throws LinacLegoException
-	{
-		String html = "<html>";
-		html = html + "<font color=\"0000FF\">" + "section" + "</font>";
-		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getId() + "\"</font>";
-		html =  html + "<font color=\"FF0000\">" + " " + "rfHarmonic" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + getRfHarmonic() + "\"</font>";
-		html = html + "</html>";
-		return new DefaultMutableTreeNode(html);
-	}
 	public String getType() 
 	{
 		try {return tag.attribute("type");} catch (SimpleXmlException e) {return null;}
@@ -134,7 +121,6 @@ public class Section
 	public int getNumOfCells() {return cellList.size();}
 	public int getRfHarmonic() {return rfHarmonic;}
 	public boolean isPeriodicLatticeSection() {return periodicLatticeSection;}
-	public DefaultMutableTreeNode getTreeNode() {return treeNode;}
 	
 	public Cell getCell(String cellId) throws LinacLegoException 
 	{
