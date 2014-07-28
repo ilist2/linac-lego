@@ -1,0 +1,81 @@
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #3099D7;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+.titleLabel {
+  display: block;
+	color: #3099D7;
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+}
+.linacParametersHeader {
+  background-color: #3099D7;
+  color: white;
+}
+.pbsTagLabel {
+	color: #0000FF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsAttLabel {
+	color: #FF0000;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsAttValue {
+	color: #9933FF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsWhiteSpace {
+	color: #FFFFFF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.xmlTagLabel {
+	color: #0000FF;
+	font-size: 1.5em;
+}
+.xmlAttLabel {
+	color: #FF0000;
+	font-size: 1.5em;
+}
+.xmlAttValue {
+	color: #9933FF;
+	font-size: 1.5em;
+}
+.xmlWhiteSpace {
+	color: #FFFFFF;
+	font-size: 1.5em;
+}
+.pbsElementOdd {background-color:#C4E4FF; } 
+.pbsElementEven {background-color:#FCFFBA; } 
+.pbsElementOdd0  {background-color:#FFB2B2; } 
+.pbsElementEven0 {background-color:#FFD8D8; } 
+.pbsElementOdd1  {background-color:#FFFF66; } 
+.pbsElementEven1 {background-color:#FFFFB2; } 
+.pbsElementOdd2  {background-color:#B2FFB2; } 
+.pbsElementEven2 {background-color:#D8FFD8; } 
+.pbsElementOdd3  {background-color:#B2FFFF; } 
+.pbsElementEven3 {background-color:#D8FFFF; } 
+.pbsElementOdd4  {background-color:#B2B2FF; } 
+.pbsElementEven4 {background-color:#D8D8FF; } 
+.pbsElementOdd5  {background-color:#FFB2FF; } 
+.pbsElementEven5 {background-color:#FFD8FF; } 
+
+
+
+
+
+ 
+
+/** Most GWT widgets already have a style name defined */
+/** Set ids using widget.getElement().setId("idOfElement") */
