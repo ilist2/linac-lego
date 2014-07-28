@@ -1,6 +1,5 @@
 package se.lu.esss.linacLego.webapp.client;
 
-import se.lu.esss.linacLego.webapp.shared.CsvFile;
 import se.lu.esss.linacLego.webapp.shared.LinacLegoViewSerializer;
 import se.lu.esss.linacLego.webapp.shared.LinacLegoWebAppException;
 
@@ -14,5 +13,4 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface LinacLegoService extends RemoteService 
 {
 	LinacLegoViewSerializer getLinacLegoViewSerializer() throws LinacLegoWebAppException;
-	CsvFile readCsvFile(String fileLocationPath) throws LinacLegoWebAppException;
 }

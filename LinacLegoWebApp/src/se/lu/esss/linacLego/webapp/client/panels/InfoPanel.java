@@ -15,8 +15,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class InfoPanel extends MyTabLayoutScrollPanel 
 {
-	VerticalPanel waitPanel;
-	public VerticalPanel getWaitPanel() {return waitPanel;}
+	private VerticalPanel messagePanel;
+	private Image messageImage;
+	private Label messageLabel;
+	
+	public VerticalPanel getMessagePanel() {return messagePanel;}
+	public Image getMessageImage() {return messageImage;}
+	public Label getMessageLabel() {return messageLabel;}
+	
 	public InfoPanel(MyTabLayoutPanel myTabLayoutPanel)
 	{
 		super(myTabLayoutPanel);
@@ -54,13 +60,13 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		vp1.add(programmerCaptionPanel);
 		vp1.add(downloadsCaptionPanel);
 		HorizontalPanel hp1 = new HorizontalPanel();
-		waitPanel = new VerticalPanel();
-		Image scareCrowImage = new Image("/images/Scarecrow.jpg");
-		Label waitLabel = new Label("Loading data from the server...");
-		waitPanel.add(scareCrowImage);
-		waitPanel.add(waitLabel);
+		messagePanel = new VerticalPanel();
+		messageImage = new Image("/images/Scarecrow.jpg");
+		messageLabel = new Label("Loading data from the server...");
+		messagePanel.add(messageImage);
+		messagePanel.add(messageLabel);
 		hp1.add(vp1);
-		hp1.add(waitPanel);
+		hp1.add(messagePanel);
 		add(hp1);
 		
 	}
