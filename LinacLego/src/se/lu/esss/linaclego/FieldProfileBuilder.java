@@ -22,20 +22,21 @@ public class FieldProfileBuilder
 	private double[] fieldProfile;
 	private String fieldUnit = null;
 	private String lengthUnit = "mm";
-	private String xmlDirectoryPath;
-	private String flatFileDirectoryPath;
+	private File xmlDirectory;
+	private File xmlFile;
+	private File flatFileDirectory;
 	private String storedEnergyUnit = "Joules";
 	private String title;
 	private double storedEnergy;
 	private double scaleFactor;
 	
-	public FieldProfileBuilder(String xmlDirectoryPath, String flatFileDirectoryPath, String title, double scaleFactor)
+	public FieldProfileBuilder(File xmlDirectory, File flatFileDirectory, String title, double scaleFactor)
 	{
 		this.title = title;
-		this.xmlDirectoryPath = xmlDirectoryPath;
-		this.flatFileDirectoryPath = flatFileDirectoryPath;
+		this.xmlDirectory = xmlDirectory;
+		this.flatFileDirectory = flatFileDirectory;
 		this.scaleFactor = scaleFactor;
-		
+		xmlFile = new File(getXmlDirectory().getPath() + delim + getTitle() + ".xml");
 	}
 	public void createTraceWinFile(boolean checkExistence) throws LinacLegoException
 	{
@@ -83,7 +84,7 @@ public class FieldProfileBuilder
 	public void readTraceWinFieldProfile(double storedEnergy) throws LinacLegoException
 	{
 		this.storedEnergy = storedEnergy;
-		String traceWinFilePath = getXmlDirectoryPath() + delim + getTitle() + "." + "edz";
+		String traceWinFilePath = getXmlDirectory().getPath() + delim + getTitle() + "." + "edz";
 		BufferedReader br;
 		ArrayList<String> outputBuffer = new ArrayList<String>();
 		try {
@@ -114,9 +115,9 @@ public class FieldProfileBuilder
 	}
 	public void createXmlFile(boolean checkExistence) throws LinacLegoException
 	{
-		if (checkExistence && fileExists(getXmlFilePath())) throw new LinacLegoException(getXmlFilePath() + " exists.");
+		if (checkExistence && getXmlFile().exists()) throw new LinacLegoException(getXmlFile().getPath() + " exists.");
 		try {
-			PrintWriter pw = new PrintWriter(getXmlFilePath());
+			PrintWriter pw = new PrintWriter(getXmlFile());
 			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
 			pw.println("<!DOCTYPE fieldProfile SYSTEM \"FieldProfile.dtd\" >");
 			pw.println(
@@ -144,7 +145,7 @@ public class FieldProfileBuilder
 	{
 		try 
 		{
-			SimpleXmlDoc xdoc = new SimpleXmlDoc(getXmlFilePath());
+			SimpleXmlDoc xdoc = new SimpleXmlDoc(getXmlFile());
 			SimpleXmlReader fieldProfileTag = new SimpleXmlReader(xdoc);
 			zmax = Double.parseDouble(fieldProfileTag.attribute("length"));
 			storedEnergy = Double.parseDouble(fieldProfileTag.attribute("storedEnergy"));
@@ -168,11 +169,11 @@ public class FieldProfileBuilder
 	public boolean fieldProfileNameMatches(FieldProfileBuilder fpb)
 	{
 		if (fpb == null) return false;
-		if (!fpb.getXmlDirectoryPath().equals(getXmlDirectoryPath())) return false;
+		if (!fpb.getXmlDirectory().getPath().equals(getXmlDirectory().getPath())) return false;
 		if (!fpb.getTitle().equals(getTitle())) return false;
 		return true;
 	}
-	public String getXmlFilePath() {return getXmlDirectoryPath() + delim + getTitle() + ".xml";}
+	public File getXmlFile() {return xmlFile;}
 	public static boolean fileExists(String path) {return new File(path).exists(); }
 	public static boolean  removeFile(String path) 
 	{
@@ -187,8 +188,8 @@ public class FieldProfileBuilder
 	public double[] getFieldProfile() {return fieldProfile;}
 	public String getFieldUnit() {return fieldUnit;}
 	public String getLengthUnit() {return lengthUnit;}
-	public String getXmlDirectoryPath() {return xmlDirectoryPath;}
-	public String getFlatFileDirectoryPath() {return flatFileDirectoryPath;}
+	public File getXmlDirectory() {return xmlDirectory;}
+	public File getFlatFileDirectoryPath() {return flatFileDirectory;}
 	public String getTitle() {return title;}
 	public double getScaleFactor() {return scaleFactor;}
 	
@@ -198,7 +199,7 @@ public class FieldProfileBuilder
 		String outputDirectoryPath = "C:\\EclipseWorkSpace2014\\LinacLego\\EssLinacXmlFiles";
 		String title = "Test";
 		double scaleFactor = 1.0;
-		FieldProfileBuilder fpb = new FieldProfileBuilder(inputDirectoryPath, outputDirectoryPath, title, scaleFactor);
+		FieldProfileBuilder fpb = new FieldProfileBuilder(new File(inputDirectoryPath), new File(outputDirectoryPath), title, scaleFactor);
 //		fpb.readTraceWinFieldProfile(100.0);
 		boolean checkExistence = true;
 //		fpb.createXmlFile(checkExistence);

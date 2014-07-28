@@ -38,6 +38,9 @@ public abstract class BeamLineElement
 	private double eVout = -0.0;
 	private double eVin = -0.0;
 	private double length = 0.0;
+	private double localEndZ = 0.0;
+	private double localCenterZ = 0.0;
+	private double localBeginZ = 0.0;
 	private double[] endPosVec = {0.0, 0.0, 0.0};
 	private double[][] endRotMat = { {1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
 	private int index;
@@ -47,7 +50,7 @@ public abstract class BeamLineElement
 	private double dipoleBend = 0.0;
 	private String type = null;
 	private String id = null;
-	private String model = "";
+	private String model = "none";
 
 	public BeamLineElement(SimpleXmlReader elementTag, Slot slot, int index) throws LinacLegoException
 	{
@@ -82,6 +85,7 @@ public abstract class BeamLineElement
 		if (previousBeamLineElementIndex < 0 ) return null;
 		return slot.getCell().getSection().getLinac().getBeamLineElements().get(previousBeamLineElementIndex);
 	}
+
 	public void addDataElement(String id, String value, String type, String unit)
 	{
 		dataElementList.add(new DataElement(id, value, type, unit));
@@ -110,7 +114,7 @@ public abstract class BeamLineElement
 		{
 			id = tag.attribute("id");
 			type = tag.attribute("type");
-			try {model = tag.attribute("model");} catch (SimpleXmlException e) { model = "";}
+			try {model = tag.attribute("model");} catch (SimpleXmlException e) { model = "none";}
 			SimpleXmlReader dataElementTags = tag.tagsByName("d");
 			int numDataTags = dataElementTags.numChildTags();
 			if (numDataTags < 1) return;
@@ -217,6 +221,16 @@ public abstract class BeamLineElement
 		slot.getCell().getSection().getLinac().getLinacLego().writeStatus(getEssId());
 		calcParameters();
 		calcLocation();
+		if (getPreviousBeamLineElement() != null)
+		{
+			localBeginZ = getPreviousBeamLineElement().getLocalEndZ();
+		}
+		else
+		{
+			localBeginZ = 0.0;
+		}
+		localCenterZ = localBeginZ + length / 2.0;
+		localEndZ = localBeginZ + length;
 		traceWinCommand = makeTraceWinCommand();
 		dynacCommand = makeDynacCommand();
 	}
@@ -301,6 +315,9 @@ public abstract class BeamLineElement
 	public int getIndex() {return index;}
 	public double[] getEndPosVec() {return endPosVec;}
 	public double[][] getEndRotMat() {return endRotMat;}
+	public double getLocalBeginZ() {return localBeginZ;}
+	public double getLocalCenterZ() {return localCenterZ;}
+	public double getLocalEndZ() {return localEndZ;}
 	public String getId()  {return id;}
 	public String getType() {return type;}
 	public double getVoltage() {return 	(1e-6 * (geteVout() - geteVin()) / Math.cos(getSynchronousPhaseDegrees() * degToRad));}

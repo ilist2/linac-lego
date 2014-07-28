@@ -1,5 +1,7 @@
 package se.lu.esss.linaclego.structures.elements.beamline;
 
+import java.io.File;
+
 import se.lu.esss.linaclego.FieldProfileBuilder;
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.slot.Slot;
@@ -81,7 +83,7 @@ public class FieldMap extends BeamLineElement
 	{
 		String xmlFileDirPath = getSlot().getCell().getSection().getLinac().getLinacLego().getXmlFileDirPath();
 		String reportFileDirPath = getSlot().getCell().getSection().getLinac().getLinacLego().getReportDir().getPath();
-		fieldProfileBuilder = new FieldProfileBuilder(xmlFileDirPath, reportFileDirPath,  fieldMapFileName, scaleFactor);
+		fieldProfileBuilder = new FieldProfileBuilder(new File(xmlFileDirPath), new File(reportFileDirPath),  fieldMapFileName, scaleFactor);
 		FieldProfileBuilder linacFieldProfileBuilder = getSlot().getCell().getSection().getLinac().getFieldProfileBuilder();
 		if (fieldProfileBuilder.fieldProfileNameMatches(linacFieldProfileBuilder))
 		{
@@ -91,12 +93,13 @@ public class FieldMap extends BeamLineElement
 		}
 		else
 		{
-			linacFieldProfileBuilder = new FieldProfileBuilder(xmlFileDirPath, reportFileDirPath,  fieldMapFileName, scaleFactor);
+			linacFieldProfileBuilder = new FieldProfileBuilder(new File(xmlFileDirPath), new File(reportFileDirPath),  fieldMapFileName, scaleFactor);
 			getSlot().getCell().getSection().getLinac().setFieldProfileBuilder(linacFieldProfileBuilder);
 			fieldProfileBuilder.readXmlFile();
 			linacFieldProfileBuilder.readXmlFile();
 			newFieldProfileEncountered = true;
-			if (getSlot().getCell().getSection().getLinac().getLinacLego().isCreateReportDirectory())
+			boolean writeFieldMapFiles = getSlot().getCell().getSection().getLinac().getLinacLego().isCreateReportDirectory();
+			if(writeFieldMapFiles)
 			{
 				try {fieldProfileBuilder.createTraceWinFile(true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": TraceWin file exists");}
 				try {fieldProfileBuilder.createDynacFile(getRfFreqMHz(), true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": Dynac file exists");}

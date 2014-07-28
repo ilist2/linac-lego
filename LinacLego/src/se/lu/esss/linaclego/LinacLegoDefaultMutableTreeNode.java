@@ -3,6 +3,8 @@ package se.lu.esss.linaclego;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.astrofizzbizz.simpleXml.SimpleXmlException;
+
 import se.lu.esss.linaclego.structures.Linac;
 import se.lu.esss.linaclego.structures.Section;
 import se.lu.esss.linaclego.structures.cell.Cell;
@@ -118,6 +120,14 @@ public class LinacLegoDefaultMutableTreeNode extends DefaultMutableTreeNode
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "cnpt" + "</font>";
 		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + cnpt.getId() + "\"</font>";
+		try 
+		{
+			html =  html + "<font color=\"FF0000\"> name</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + cnpt.getName() + "\"</font>";
+		} 
+		catch (SimpleXmlException e) 
+		{
+			throw new LinacLegoException(e);
+		}
 		html =  html + "<font color=\"FF0000\">" + " " + "type" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + cnpt.getType() + "\"</font>";
 		if (cnpt.getModel().length() > 0)
 			html =  html + "<font color=\"FF0000\">" + " " + "model" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + cnpt.getModel() + "\"</font>";

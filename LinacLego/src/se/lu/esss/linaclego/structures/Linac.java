@@ -154,24 +154,39 @@ public class Linac
 		}
 		pw.close();
 	}
-	public void printParameterTable(String fileName) throws FileNotFoundException, LinacLegoException
+	public void printPartCounts(String fileName) throws FileNotFoundException, LinacLegoException
 	{
-		PrintWriter pw = new PrintWriter(fileName);
+		PrintWriter pwCells = new PrintWriter(fileName + "CellParts.csv");
+		PrintWriter pwSlots = new PrintWriter(fileName + "SlotParts.csv");
+		PrintWriter pwBles = new PrintWriter(fileName + "BleParts.csv");
+		PrintWriter pwCnpts = new PrintWriter(fileName + "CnptParts.csv");
 		BeamLineElementModelReporter beamLineElementModelReporter = new BeamLineElementModelReporter(this);
 		ControlPointModelReporter controlPointModelReporter = new ControlPointModelReporter(this);
 		SlotModelReporter slotModelReporter = new SlotModelReporter(this);
 		CellModelReporter cellModelReporter = new CellModelReporter(this);
-		pw.print("type" +"," + "model");
+		pwCells.print("type" +"," + "model");
+		pwSlots.print("type" +"," + "model");
+		pwBles.print("type" +"," + "model");
+		pwCnpts.print("type" +"," + "model");
 		for (int isection = 0; isection < getNumOfSections(); ++isection)
 		{
-			pw.print("," + getSectionList().get(isection).getId());
+			pwCells.print("," + getSectionList().get(isection).getId());
+			pwSlots.print("," + getSectionList().get(isection).getId());
+			pwBles.print("," + getSectionList().get(isection).getId());
+			pwCnpts.print("," + getSectionList().get(isection).getId());
 		}	
-		pw.println(",Total,minValue, avgValue,maxValue,Unit");
-		cellModelReporter.printModels(pw, this);
-		slotModelReporter.printModels(pw, this);
-		beamLineElementModelReporter.printModels(pw, this);
-		controlPointModelReporter.printModels(pw, this);
-		pw.close();
+		pwCells.println(",Total");
+		pwSlots.println(",Total");
+		pwBles.println(",Total,minValue, avgValue,maxValue,Unit");
+		pwCnpts.println(",Total");
+		cellModelReporter.printModels(pwCells, this);
+		slotModelReporter.printModels(pwSlots, this);
+		beamLineElementModelReporter.printModels(pwBles, this);
+		controlPointModelReporter.printModels(pwCnpts, this);
+		pwCells.close();
+		pwSlots.close();
+		pwBles.close();
+		pwCnpts.close();
 	}
 	public Section getLatticeSection(String sectionId) throws LinacLegoException 
 	{

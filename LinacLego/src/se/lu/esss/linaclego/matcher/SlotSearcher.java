@@ -1,5 +1,6 @@
 package se.lu.esss.linaclego.matcher;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.w3c.dom.DocumentFragment;
@@ -281,7 +282,7 @@ public class SlotSearcher
 	{
 		String xmlFileDirPath = "C:\\EclipseWorkSpace2014\\LinacLego\\EssLinacXmlFiles";
 		String xmlFileName = "SpokeOptimus2.xml";
-		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(xmlFileDirPath + "\\" + xmlFileName), null);
+		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName)), null);
 		SlotSearcher slotSearcher = new SlotSearcher(linacLego);
 		slotSearcher.replaceSlotsWithMatches();
 		slotSearcher.saveXmlFile(xmlFileDirPath + "\\SpokeOptimus3.xml");

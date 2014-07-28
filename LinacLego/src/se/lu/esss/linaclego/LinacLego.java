@@ -171,13 +171,13 @@ public class LinacLego
 			throw lle;
 		} 
 	}
-	public void printParameterTable() throws LinacLegoException  
+	public void printPartCounts() throws LinacLegoException  
 	{
 		if (!getReportDir().exists()) throw new LinacLegoException("Report directory does not exist.");
 		if (linac == null) throw new LinacLegoException("no linac data");
-		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) + "PartCount.csv";
+		String fileName = getXmlFileName().substring(0, getXmlFileName().lastIndexOf(".")) ;
 		try {
-			linac.printParameterTable(getReportDir().getPath() + delim +  fileName);
+			linac.printPartCounts(getReportDir().getPath() + delim +  fileName);
 		} catch (Exception e) {
 			LinacLegoException lle = new LinacLegoException(e);
 			writeStatus(lle.getRootCause());
@@ -240,7 +240,8 @@ public class LinacLego
 	}
 	public static void main(String[] args) throws LinacLegoException, SimpleXmlException  
 	{
-		SimpleXmlDoc sxd = new SimpleXmlDoc("test\\AT2.xml");
+		File inputFile = new File("C:\\Dropbox\\Public\\linacLego\\public\\xmlFiles\\linacLego.xml");
+		SimpleXmlDoc sxd = new SimpleXmlDoc(inputFile);
 		LinacLego linacLego = new LinacLego(sxd, null);
 		linacLego.setPrintControlPoints(true);
 		linacLego.setPrintIdInTraceWin(true);

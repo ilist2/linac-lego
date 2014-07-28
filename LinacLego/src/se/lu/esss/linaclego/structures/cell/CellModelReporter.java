@@ -51,13 +51,13 @@ public class CellModelReporter
 	}
 	class ModelList 
 	{
-		String modelId = "";
+		String modelId = "-";
 		String typeId = "cell";
 		ArrayList<Cell> elementList = new ArrayList<Cell>();
 		ModelList(Cell element) throws LinacLegoException
 		{
 			String elementModelId = element.getModelId();
-			if (elementModelId == null) elementModelId = "";
+			if (elementModelId == null) elementModelId = "-";
 			this.modelId = elementModelId;
 			elementList = new ArrayList<Cell>();
 			elementList.add(element);
@@ -65,7 +65,7 @@ public class CellModelReporter
 		private boolean matchesModelAndType(Cell element) throws LinacLegoException
 		{
 			String elementModelId = element.getModelId();
-			if (elementModelId == null) elementModelId = "";
+			if (elementModelId == null) elementModelId = "-";
 			if (!this.modelId.equals(elementModelId)) return false;
 			if (!this.typeId.equals("cell")) return false;
 			return true;

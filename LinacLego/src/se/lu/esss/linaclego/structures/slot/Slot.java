@@ -168,6 +168,22 @@ public class Slot
 			beamLineElementList.get(ielem).printReportTable(pw);
 		}
 	}
+	public double geteVin()
+	{
+		return beamLineElementList.get(0).geteVin();
+	}
+	public double geteVout()
+	{
+		return beamLineElementList.get(beamLineElementList.size() - 1).geteVout();
+	}
+	public double getLocalBeginZ() 
+	{
+		return beamLineElementList.get(0).getLocalBeginZ();
+	}
+	public double getLocalEndZ() 
+	{
+		return beamLineElementList.get(beamLineElementList.size() - 1).getLocalEndZ();
+	}
 	public double getLength() {return length;}
 	public String getModelId() 
 	{

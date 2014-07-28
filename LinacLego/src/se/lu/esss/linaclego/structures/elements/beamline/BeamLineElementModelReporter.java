@@ -1,6 +1,7 @@
 package se.lu.esss.linaclego.structures.elements.beamline;
 
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import se.lu.esss.linaclego.LinacLegoException;
@@ -10,6 +11,7 @@ import se.lu.esss.linaclego.structures.Section;
 public class BeamLineElementModelReporter 
 {
 	ArrayList<ModelList> modelListList = new ArrayList<ModelList>();
+	public static final DecimalFormat fourPlaces = new DecimalFormat("###.####");
 	public BeamLineElementModelReporter(Linac linac) throws LinacLegoException
 	{
 		for (int isec = 0; isec < linac.getSectionList().size(); ++isec)
@@ -118,7 +120,7 @@ public class BeamLineElementModelReporter
 				rowString = rowString + "," + elementListForLinac.get(isection).size();
 			}
 			double[] minAvgMax = minAvgMaxCharacteristicValues();
-			rowString = rowString + "," + Double.toString(minAvgMax[0]) + "," + Double.toString(minAvgMax[1]) + "," + Double.toString(minAvgMax[2]);
+			rowString = rowString + "," + fourPlaces.format(minAvgMax[0]) + "," + fourPlaces.format(minAvgMax[1]) + "," +fourPlaces.format(minAvgMax[2]);
 			rowString = rowString + "," + getElementList().get(0).characteristicValueUnit();
 			return rowString;
 		}

@@ -66,6 +66,7 @@ public class LinacLegoApp extends JFrame
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
 	protected String version = "v2.2";
 	protected String versionDate = "June 14, 2014";
+	private String suggestedFileName = "linacLego.xml";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
 	private SimpleXmlDoc simpleXmlDoc = null;
@@ -269,7 +270,7 @@ public class LinacLegoApp extends JFrame
 	{
 		try 
 		{
-			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile.getPath());
+			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile);
 			linacLego = new LinacLego(simpleXmlDoc, statusBar);
 			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
@@ -297,6 +298,7 @@ public class LinacLegoApp extends JFrame
 		{
 			openedXmlFile = new File(xmlFile.getPath());
 			lastDirectoryPath = xmlFile.getParent();
+			suggestedFileName = xmlFile.getName();
 			
 			try 
 			{
@@ -318,12 +320,13 @@ public class LinacLegoApp extends JFrame
 	private void saveXmlFile()
 	{
 		String[] xmlExtensions = {"xml"};
-		File xmlFile = DpmSwingUtilities.chooseFile(lastDirectoryPath, "Save XML File", simpleXmlDoc.getXmlSourceFile().getName(), true, xmlExtensions, this);
+		File xmlFile = DpmSwingUtilities.chooseFile(lastDirectoryPath, "Save XML File", suggestedFileName, true, xmlExtensions, this);
 		if (xmlFile != null)
 		{
 			try 
 			{
 				lastDirectoryPath = xmlFile.getParent();
+				suggestedFileName = xmlFile.getName();
 				simpleXmlDoc.saveXmlDocument(xmlFile.getPath());
 				openedXmlFile = new File(xmlFile.getPath());
 				Path path = Paths.get(lastDirectoryPath);	// Get the directory to be monitored
@@ -350,6 +353,8 @@ public class LinacLegoApp extends JFrame
 		if (traceWinFile != null)
 		{
 			lastDirectoryPath = traceWinFile.getParent();
+			String xmlFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
+			suggestedFileName = new File(xmlFilePath).getName();
 			
 			this.setTitle("LinacLego " + traceWinFile.getPath());
 			try 
@@ -510,9 +515,9 @@ public class LinacLegoApp extends JFrame
 				linacLego.setPrintControlPoints(printControlPoints);
 				linacLego.updateLinac();
 				linacLego.createTraceWinFile();
-				linacLego.createDynacFile();
+//				linacLego.createDynacFile();
 				linacLego.printReportTable();
-				linacLego.printParameterTable();
+				linacLego.printPartCounts();
 				linacLego.saveXmlDocument();
 //				buildPbsTree(linacLego);
 				buildPbsTreeNew(linacLego);
@@ -540,12 +545,12 @@ public class LinacLegoApp extends JFrame
 			String storeEnergyString = JOptionPane.showInputDialog("Enter Stored Energy in Joules: ");
 			double storedEnergy = -1.0;
 			if (storeEnergyString != null) storedEnergy = Double.parseDouble(storeEnergyString);
-			FieldProfileBuilder fpb = new FieldProfileBuilder(inputDirectoryPath, outputDirectoryPath, title, scaleFactor);
+			FieldProfileBuilder fpb = new FieldProfileBuilder(new File(inputDirectoryPath), new File(outputDirectoryPath), title, scaleFactor);
 			try 
 			{
 				fpb.readTraceWinFieldProfile(storedEnergy);
 				fpb.createXmlFile(false);
-				statusBar.setText("Finished building field profile " + fpb.getXmlFilePath());
+				statusBar.setText("Finished building field profile " + fpb.getXmlFile().getPath());
 			} catch (LinacLegoException e) 
 			{
 				statusBar.scrollToTop();

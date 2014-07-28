@@ -24,7 +24,7 @@ public class ControlPoint
 	private double[] endLocalPosVec = {0.0, 0.0, 0.0};
 	private String type = null;
 	private String id = null;
-	private String model = "";
+	private String model = "none";
 	
 	public ControlPoint(SimpleXmlReader tag, BeamLineElement beamLineElement, int index) throws LinacLegoException
 	{
@@ -144,7 +144,7 @@ public class ControlPoint
 		{
 			type = tag.attribute("type");
 			id = tag.attribute("id");
-			try {model = tag.attribute("model");} catch (SimpleXmlException e) { model = "";}
+			try {model = tag.attribute("model");} catch (SimpleXmlException e) { model = "none";}
 			SimpleXmlReader dataElements = tag.tagsByName("d");
 			int numDataTags = dataElements.numChildTags();
 			if (numDataTags < 1) return;

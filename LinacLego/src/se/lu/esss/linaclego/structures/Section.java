@@ -59,6 +59,22 @@ public class Section
 			}
 		}
 	}
+	public double geteVin()
+	{
+		return cellList.get(0).geteVin();
+	}
+	public double geteVout()
+	{
+		return cellList.get(cellList.size() - 1).geteVout();
+	}
+	public double getLocalBeginZ() 
+	{
+		return cellList.get(0).getLocalBeginZ();
+	}
+	public double getLocalEndZ() 
+	{
+		return cellList.get(cellList.size() - 1).getLocalEndZ();
+	}
 	public String traceWinCommand() 
 	{
 		String command = "";

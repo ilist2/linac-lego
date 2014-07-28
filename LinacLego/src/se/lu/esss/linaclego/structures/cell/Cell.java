@@ -129,6 +129,22 @@ public class Cell
 		}
 		return null;
 	}
+	public double geteVin()
+	{
+		return slotList.get(0).geteVin();
+	}
+	public double geteVout()
+	{
+		return slotList.get(slotList.size() - 1).geteVout();
+	}
+	public double getLocalBeginZ() 
+	{
+		return slotList.get(0).getLocalBeginZ();
+	}
+	public double getLocalEndZ() 
+	{
+		return slotList.get(slotList.size() - 1).getLocalEndZ();
+	}
 	public Slot getSlot(String slotId) throws LinacLegoException
 	{
 		Slot matchingSlot = null;

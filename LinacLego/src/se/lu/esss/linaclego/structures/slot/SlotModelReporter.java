@@ -53,13 +53,13 @@ public class SlotModelReporter
 	}
 	class ModelList 
 	{
-		String modelId = "";
+		String modelId = "-";
 		String typeId = "slot";
 		ArrayList<Slot> elementList = new ArrayList<Slot>();
 		ModelList(Slot element) throws LinacLegoException
 		{
 			String elementModelId = element.getModelId();
-			if (elementModelId == null) elementModelId = "";
+			if (elementModelId == null) elementModelId = "-";
 			this.modelId = elementModelId;
 			elementList = new ArrayList<Slot>();
 			elementList.add(element);
@@ -67,7 +67,7 @@ public class SlotModelReporter
 		private boolean matchesModelAndType(Slot element) throws LinacLegoException
 		{
 			String elementModelId = element.getModelId();
-			if (elementModelId == null) elementModelId = "";
+			if (elementModelId == null) elementModelId = "-";
 			if (!this.modelId.equals(elementModelId)) return false;
 			if (!this.typeId.equals("slot")) return false;
 			return true;
