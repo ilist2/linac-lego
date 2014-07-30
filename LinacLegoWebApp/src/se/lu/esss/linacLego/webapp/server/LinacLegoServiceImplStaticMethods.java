@@ -1,16 +1,9 @@
 package se.lu.esss.linacLego.webapp.server;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -18,7 +11,6 @@ import org.w3c.dom.NodeList;
 
 import se.lu.esss.linacLego.webapp.shared.CsvFile;
 import se.lu.esss.linacLego.webapp.shared.HtmlTextTree;
-import se.lu.esss.linacLego.webapp.shared.LinacLegoViewSerializer;
 import se.lu.esss.linacLego.webapp.shared.LinacLegoWebAppException;
 import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
@@ -120,24 +112,23 @@ public class LinacLegoServiceImplStaticMethods
 		}
 		return new String(slimJimArray);
 	}
-	public static HtmlTextTree createXmlView(File linacLegoXmlFile) throws SimpleXmlException    
+	public static HtmlTextTree createXmlView(URL linacLegoXmlURL) throws SimpleXmlException    
 	{
 		String xmlViewTagStyle = "xmlTagLabel";
 		String xmlViewAttLabelStyle = "xmlAttLabel";
 		String xmlViewAttValueStyle = "xmlAttValue";
 		String xmlViewAttWhiteSpaceStyle = "xmlWhiteSpace";
-		SimpleXmlDoc sxd = new SimpleXmlDoc(linacLegoXmlFile);
+		SimpleXmlDoc sxd = new SimpleXmlDoc(linacLegoXmlURL);
 		return  LinacLegoServiceImplStaticMethods.buildXmlTextTree((Node) sxd.getXmlDoc().getDocumentElement(), xmlViewTagStyle, xmlViewAttLabelStyle, xmlViewAttValueStyle, xmlViewAttWhiteSpaceStyle);
 	}
-	public static HtmlTextTree createPbsViewHtmlTextTree(File linacLegoXmlFile) throws SimpleXmlException, LinacLegoException   
+	public static HtmlTextTree createPbsViewHtmlTextTree(URL linacLegoXmlURL) throws SimpleXmlException, LinacLegoException   
 	{
 		String pbsTagStyle = "pbsTagLabel";
 		String pbsAttLabelStyle = "pbsAttLabel";
 		String pbsAttValueStyle = "pbsAttValue";
 		String pbsAttWhiteSpaceStyle = "pbsWhiteSpace";
-		SimpleXmlDoc sxd = new SimpleXmlDoc(linacLegoXmlFile);
+		SimpleXmlDoc sxd = new SimpleXmlDoc(linacLegoXmlURL);
 		LinacLego linacLego = new LinacLego(sxd, null);
-		linacLego.setCreateReportDirectory(false);
 		linacLego.updateLinac();
 		LinacLegoPbsHtmlTextTree pbsView = new LinacLegoPbsHtmlTextTree(linacLego, pbsTagStyle, pbsAttLabelStyle, pbsAttValueStyle, pbsAttWhiteSpaceStyle);
 		
@@ -175,58 +166,27 @@ public class LinacLegoServiceImplStaticMethods
 		}
 		return pbsView.getHtmlTextTree();
 	}
-	public static CsvFile readCsvFile(String csvFilePath) throws IOException, LinacLegoWebAppException  
+	public static CsvFile readCsvFile(URL csvFileUrl) throws IOException, LinacLegoWebAppException  
 	{
 		CsvFile csvFile = new CsvFile();
         BufferedReader br;
-        br = new BufferedReader(new FileReader(csvFilePath));
+        InputStreamReader inputStreamReader = new InputStreamReader(csvFileUrl.openStream());
+        br = new BufferedReader(inputStreamReader);
         String line;
         while ((line = br.readLine()) != null) 
         {  
         	csvFile.addLine(line);
         }
         br.close();
+        inputStreamReader.close();
         csvFile.close();
 		return csvFile;
 	}
-	public static void writeOutLinacLegoViewSerializer(File linacLegoDir, File outputFile) throws SimpleXmlException, LinacLegoException, IOException, LinacLegoWebAppException 
-	{
-		String delim = File.separator;
-		LinacLegoViewSerializer linacLegoViewSerializer = new LinacLegoViewSerializer();
-		File linacLegoXmlFile = new File(linacLegoDir.getPath() + delim + "linacLego.xml");
-		linacLegoViewSerializer.setPbsViewHtmlTextTree(createPbsViewHtmlTextTree(linacLegoXmlFile));
-		linacLegoViewSerializer.setXmlViewHtmlTextTree(createXmlView(linacLegoXmlFile));
-		String partsParentDir = linacLegoDir.getPath() + delim + "linacLegoOutput" + delim;
-		linacLegoViewSerializer.setLinacLegoData(readCsvFile(partsParentDir + "linacLegoData.csv"));
-		linacLegoViewSerializer.setLinacLegoCellParts(readCsvFile(partsParentDir + "linacLegoCellParts.csv"));
-		linacLegoViewSerializer.setLinacLegoSlotParts(readCsvFile(partsParentDir + "linacLegoSlotParts.csv"));
-		linacLegoViewSerializer.setLinacLegoBleParts(readCsvFile(partsParentDir + "linacLegoBleParts.csv"));
-		linacLegoViewSerializer.setLinacLegoCnptParts(readCsvFile(partsParentDir + "linacLegoCnptParts.csv"));
-
-		FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
-		objectOutputStream.writeObject(linacLegoViewSerializer);
-		objectOutputStream.close();
-		bufferedOutputStream.close();
-		fileOutputStream.close();
-	}
-	public static LinacLegoViewSerializer readLinacLegoViewSerializer(File inputFile) throws IOException, ClassNotFoundException
-	{
-		FileInputStream fileInputStream = new FileInputStream(inputFile);
-		BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-		ObjectInput objectInputStream = new ObjectInputStream (bufferedInputStream);
-		LinacLegoViewSerializer linacLegoViewSerializer = (LinacLegoViewSerializer) objectInputStream.readObject();
-		objectInputStream.close();
-		bufferedInputStream.close();
-		fileInputStream.close();
-		return linacLegoViewSerializer;
-	}
 	public static void main(String[] args) throws LinacLegoWebAppException, IOException, SimpleXmlException, LinacLegoException 
 	{
-		File linacLegoDir = new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\linacLego\\public");
-		File outputFile = new File("C:\\EclipseWorkSpace2014\\LinacLegoWebApp\\war\\linacLegoFiles\\linacLegoView.ser");
-		writeOutLinacLegoViewSerializer(linacLegoDir, outputFile);
+//		String linacLegoWebSite = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
+//		URL inputFileUrl = new URL(linacLegoWebSite + "/public/linacLegoOutput/" + fileName);
+	
 	}	
 
 }

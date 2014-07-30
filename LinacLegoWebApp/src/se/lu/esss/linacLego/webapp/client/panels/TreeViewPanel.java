@@ -19,7 +19,9 @@ public class TreeViewPanel extends VerticalPanel
     private TreeItem rootTreeItem;
 	private MyTabLayoutScrollPanel myTabLayoutScrollPanel;
 	private String treeType = "";
+	private HtmlTextTree textTree;
 	
+	public HtmlTextTree getTextTree() {return textTree;}
 	public String getTreeType() {return treeType;}
 	public MyTabLayoutScrollPanel getMyTabLayoutScrollPanel() {return myTabLayoutScrollPanel;}
 	
@@ -38,13 +40,15 @@ public class TreeViewPanel extends VerticalPanel
 	}
 	public void addTree(HtmlTextTree textTree)
 	{
-	      rootTree = new Tree();
-	      rootTree.addSelectionHandler(new TreeSelectionHandler());
+		if (getWidgetCount() > 0) clear();
+		this.textTree = textTree;
+		rootTree = new Tree();
+		rootTree.addSelectionHandler(new TreeSelectionHandler());
 //	      rootTreeItem = buildTree(pbsViewTextTree);
-	      rootTreeItem = new MyTreeItem(textTree,  32, 32);
-	      rootTree.addItem(rootTreeItem);
-	      myTabLayoutScrollPanel.getMyTabLayoutPanel().getLinacLegoWebApp().getStatusTextArea().addStatus("Finished building " + treeType + " tree view.");
-	      add(rootTree);
+		rootTreeItem = new MyTreeItem(textTree,  32, 32);
+		rootTree.addItem(rootTreeItem);
+		myTabLayoutScrollPanel.getMyTabLayoutPanel().getLinacLegoWebApp().getStatusTextArea().addStatus("Finished building " + treeType + " tree view.");
+		add(rootTree);
 	}
 	class MyTreeItem extends TreeItem
 	{

@@ -1,6 +1,7 @@
 package se.lu.esss.linacLego.webapp.client;
 
-import se.lu.esss.linacLego.webapp.shared.LinacLegoViewSerializer;
+import se.lu.esss.linacLego.webapp.shared.CsvFile;
+import se.lu.esss.linacLego.webapp.shared.HtmlTextTree;
 import se.lu.esss.linacLego.webapp.shared.LinacLegoWebAppException;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -12,5 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("linacLego")
 public interface LinacLegoService extends RemoteService 
 {
-	LinacLegoViewSerializer getLinacLegoViewSerializer() throws LinacLegoWebAppException;
+	HtmlTextTree getPbsViewHtmlTextTree(String linacLegoXmlLink) throws LinacLegoWebAppException;
+	HtmlTextTree getXmlViewHtmlTextTree(String linacLegoXmlLink) throws LinacLegoWebAppException;
+	CsvFile getCsvFile(String csvFileLink) throws LinacLegoWebAppException;
 }

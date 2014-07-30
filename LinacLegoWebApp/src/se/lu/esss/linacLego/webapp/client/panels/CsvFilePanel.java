@@ -45,10 +45,12 @@ public class CsvFilePanel extends VerticalPanel
 	public MyTabLayoutScrollPanel getMyTabLayoutScrollPanel() {return myTabLayoutScrollPanel;}
 	public int getMaxNumDataRowsOnLoad() {return maxNumDataRowsOnLoad;}
 	public void setFileCompletelyLoaded(boolean fileCompletelyLoaded) {this.fileCompletelyLoaded = fileCompletelyLoaded;}
+	public String getSourceFileLink() {return sourceFileLink;}
 
 	public void setLastDataRowLoaded(int lastDataRowLoaded) {this.lastDataRowLoaded = lastDataRowLoaded;}
+	public void setSourceFileLink(String sourceFileLink) {this.sourceFileLink = sourceFileLink;}
 
-	public CsvFilePanel(MyTabLayoutPanel myTabLayoutPanel, String tabTitle, String csvFileType, int numHeaderRows, String sourceFileLink) 
+	public CsvFilePanel(MyTabLayoutPanel myTabLayoutPanel, String tabTitle, String csvFileType, int numHeaderRows) 
 	{
 		super();
 		myTabLayoutScrollPanel = new MyTabLayoutScrollPanel(myTabLayoutPanel);
@@ -57,7 +59,6 @@ public class CsvFilePanel extends VerticalPanel
 		
 		this.csvFileType = csvFileType;
 		this.numHeaderRows = numHeaderRows;
-		this.sourceFileLink = sourceFileLink;
 	}
 	public LinacLegoWebApp getLinacLegoWebApp()
 	{
@@ -65,6 +66,7 @@ public class CsvFilePanel extends VerticalPanel
 	}
 	public void setCsvFile(CsvFile csvFile)
 	{
+		if (getWidgetCount() > 0) clear();
 		this.csvFile = csvFile;
 		Anchor sourceFileAnchor = new Anchor("Source File");
 		sourceFileAnchor.addClickHandler(new DownLoadClickHandler(sourceFileLink));

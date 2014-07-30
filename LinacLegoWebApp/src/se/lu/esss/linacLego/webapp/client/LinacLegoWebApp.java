@@ -5,12 +5,11 @@ import se.lu.esss.linacLego.webapp.client.panels.InfoPanel;
 import se.lu.esss.linacLego.webapp.client.panels.PbsLayoutPanel;
 import se.lu.esss.linacLego.webapp.client.panels.TreeViewPanel;
 import se.lu.esss.linacLego.webapp.client.tablayout.MyTabLayoutPanel;
-import se.lu.esss.linacLego.webapp.shared.LinacLegoViewSerializer;
+import se.lu.esss.linacLego.webapp.shared.CsvFile;
+import se.lu.esss.linacLego.webapp.shared.HtmlTextTree;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -28,26 +27,20 @@ public class LinacLegoWebApp implements EntryPoint
 {
 	String version = "v1";
 	String versionDate = "July 28, 2014";
-	String downloadLink = "/linacLegoFiles/downloads/linacLegoXmlFiles.zip";
-	String helpLink = "/linacLegoFiles/downloads/LinacLegoManual.pdf";
-	String linacLegoAppLink = "/linacLegoFiles/downloads/LinacLegoApp.jar";
 
 	private int statusTextAreaHeight = 150;
 	private int myTabLayoutPanelHeightBarHeightPx = 30;
 	private int logoPanelWidth = 200;
-	private LinacLegoViewSerializer linacLegoViewSerializer;
-
-	public LinacLegoViewSerializer getLinacLegoViewSerializer() {return linacLegoViewSerializer;}
-	public String getDownloadLink() {return downloadLink;}
-	public String getHelpLink() {return helpLink;}
-	public String getLinacLegoAppLink() {return linacLegoAppLink;}
 
 	public LinacLegoServiceAsync getLinacLegoService() {return linacLegoService;}
 	public String getVersion() {return version;}
 	public String getVersionDate() {return versionDate;}
 
 	private final LinacLegoServiceAsync linacLegoService = GWT.create(LinacLegoService.class);
-	private String linacLegoWebSite = "https://cba4504235597b04fef2d0b4e6294cb45a84179e.googledrive.com/host/0B3Hieedgs_7FWlpGRHBXNVA2Rmc";
+	public final String linacLegoDefaultLink = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
+	private String linacLegoLink;
+	private String linacLegoXmlLink;
+
 	private StatusTextArea statusTextArea;
 	MyTabLayoutPanel myTabLayoutPanel;
 	InfoPanel infoPanel;
@@ -59,21 +52,15 @@ public class LinacLegoWebApp implements EntryPoint
 	CsvFilePanel blePartCountCsvFilePanel;
 	CsvFilePanel cnptPartCountCsvFilePanel;
 	PbsLayoutPanel pbsLayoutPanel;
-	int iloadPanelCount = 0;
-	int maxloadPanelCount = 7;
 	
 	public StatusTextArea getStatusTextArea() {return statusTextArea;}
 	public int getMyTabLayoutPanelHeightBarHeightPx() {return myTabLayoutPanelHeightBarHeightPx;}
+	public String getLinacLegoLink() {return linacLegoLink;}
 
-	public void setLinacLegoViewSerializer(LinacLegoViewSerializer linacLegoViewSerializer) {this.linacLegoViewSerializer = linacLegoViewSerializer;}
+	public void setLinacLegoLink(String linacLegoLink) {this.linacLegoLink = linacLegoLink;}
 
 	public void onModuleLoad() 
 	{
-		String linacLegoWebSitePartsDirectory = linacLegoWebSite + "/public/linacLegoOutput";
-		downloadLink = linacLegoWebSite + "/public/linacLego.zip";
-		helpLink = linacLegoWebSite + "/doc/LinacLegoManual.pdf";
-		linacLegoAppLink = linacLegoWebSite + "/dist/LinacLegoApp.jar";
-		
 		statusTextArea = new StatusTextArea(Window.getClientWidth() - 10, statusTextAreaHeight);
 	    statusTextArea.setMaxBufferSize(100);
 	    statusTextArea.addStatus("Welcome!");
@@ -83,11 +70,11 @@ public class LinacLegoWebApp implements EntryPoint
 		pbsViewPanel = new TreeViewPanel(myTabLayoutPanel, "PBS Tree", "PBS");
 		pbsLayoutPanel = new PbsLayoutPanel(myTabLayoutPanel, "PBS Layout", "PBS");
 		xmlViewPanel = new TreeViewPanel(myTabLayoutPanel, "XML Tree", "XML");
-		linacDataPanel = new CsvFilePanel(myTabLayoutPanel, "Linac data", "Linac data", 2, linacLegoWebSitePartsDirectory + "/linacLegoData.csv");
-		cellPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Cell Parts", "Cell Parts", 1, linacLegoWebSitePartsDirectory + "/linacLegoCellParts.csv");
-		slotPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Slot Parts", "Slot Parts", 1, linacLegoWebSitePartsDirectory + "/linacLegoSlotParts.csv");
-		blePartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Beam-line Parts", "Beam-line Parts", 1, linacLegoWebSitePartsDirectory + "/linacLegoBleParts.csv");
-		cnptPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Control Pt. Parts", "Control Pt.  Parts", 1, linacLegoWebSitePartsDirectory + "/linacLegoCnptParts.csv");
+		linacDataPanel = new CsvFilePanel(myTabLayoutPanel, "Linac data", "Linac data", 2);
+		cellPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Cell Parts", "Cell Parts", 1);
+		slotPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Slot Parts", "Slot Parts", 1);
+		blePartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Beam-line Parts", "Beam-line Parts", 1);
+		cnptPartCountCsvFilePanel = new CsvFilePanel(myTabLayoutPanel, "Control Pt. Parts", "Control Pt.  Parts", 1);
 
 		HorizontalPanel hp1 = new HorizontalPanel();
 		VerticalPanel logoPanel = new VerticalPanel();
@@ -106,29 +93,40 @@ public class LinacLegoWebApp implements EntryPoint
 		RootLayoutPanel.get().add(vp1);
 		
 		Window.addResizeHandler(new MyResizeHandler());
-		getLinacLegoService().getLinacLegoViewSerializer(new LinacLegoViewSerializerCallback(this));
-	
+		setLinks(linacLegoDefaultLink);
+		loadDataPanels();
 	}
-	public boolean loadDataPanels()
+	public void setLinks(String linacLegoLink)
 	{
-		if (iloadPanelCount > maxloadPanelCount)
-		{
-			return false;
-		}
-		if (iloadPanelCount == 0)   pbsViewPanel.addTree(getLinacLegoViewSerializer().getPbsViewHtmlTextTree());
-		if (iloadPanelCount == 1) pbsLayoutPanel.addTree(getLinacLegoViewSerializer().getPbsViewHtmlTextTree());
-		if (iloadPanelCount == 2)   xmlViewPanel.addTree(getLinacLegoViewSerializer().getXmlViewHtmlTextTree());
-		if (iloadPanelCount == 3) linacDataPanel.setCsvFile(getLinacLegoViewSerializer().getLinacLegoData());
-		if (iloadPanelCount == 4) cellPartCountCsvFilePanel.setCsvFile(getLinacLegoViewSerializer().getLinacLegoCellParts());
-		if (iloadPanelCount == 5) slotPartCountCsvFilePanel.setCsvFile(getLinacLegoViewSerializer().getLinacLegoSlotParts());
-		if (iloadPanelCount == 6) blePartCountCsvFilePanel.setCsvFile(getLinacLegoViewSerializer().getLinacLegoBleParts());
-		if (iloadPanelCount == 7) cnptPartCountCsvFilePanel.setCsvFile(getLinacLegoViewSerializer().getLinacLegoCnptParts());
-		iloadPanelCount = iloadPanelCount + 1;
-		if (iloadPanelCount > maxloadPanelCount)
-		{
-			return false;
-		}
-		return true;
+		this.linacLegoLink = linacLegoLink;
+		String helpLink = linacLegoDefaultLink + "/doc/LinacLegoManual.pdf";
+		String linacLegoAppLink = linacLegoDefaultLink + "/dist/LinacLegoApp.jar";
+
+		String linacLegoWebSitePartsDirectoryLink = linacLegoLink + "/public/linacLegoOutput";
+		String downloadXmlLink = linacLegoLink + "/public/linacLego.zip";
+
+		linacLegoXmlLink = linacLegoLink + "/public/linacLego.xml";
+		linacDataPanel.setSourceFileLink(linacLegoWebSitePartsDirectoryLink + "/linacLegoData.csv");
+		cellPartCountCsvFilePanel.setSourceFileLink(linacLegoWebSitePartsDirectoryLink + "/linacLegoCellParts.csv");
+		slotPartCountCsvFilePanel.setSourceFileLink(linacLegoWebSitePartsDirectoryLink + "/linacLegoSlotParts.csv");
+		blePartCountCsvFilePanel.setSourceFileLink(linacLegoWebSitePartsDirectoryLink + "/linacLegoBleParts.csv");
+		cnptPartCountCsvFilePanel.setSourceFileLink(linacLegoWebSitePartsDirectoryLink + "/linacLegoCnptParts.csv");
+		infoPanel.setLinks(downloadXmlLink, helpLink, linacLegoAppLink, linacLegoLink);
+	}
+	public void loadDataPanels()
+	{
+		infoPanel.getMessageImage().setUrl("/images/Scarecrow.jpg");
+		infoPanel.getMessageLabel().setText("Loading data from the server...");
+		infoPanel.getMessagePanel().setVisible(true);
+		infoPanel.getLinkButtonCaptionPanel().setVisible(false);
+		infoPanel.getLatticeVersionCaptionPanel().setVisible(false);
+		getLinacLegoService().getXmlViewHtmlTextTree(linacLegoXmlLink, new LoadXmlViewPanelsCallback(this));
+		getLinacLegoService().getPbsViewHtmlTextTree(linacLegoXmlLink, new LoadPbsViewPanelsCallback(this));	
+		getLinacLegoService().getCsvFile(linacDataPanel.getSourceFileLink(), new LoadCsvFileCallback(this, linacDataPanel));
+		getLinacLegoService().getCsvFile(cellPartCountCsvFilePanel.getSourceFileLink(), new LoadCsvFileCallback(this, cellPartCountCsvFilePanel));
+		getLinacLegoService().getCsvFile(slotPartCountCsvFilePanel.getSourceFileLink(), new LoadCsvFileCallback(this, slotPartCountCsvFilePanel));
+		getLinacLegoService().getCsvFile(blePartCountCsvFilePanel.getSourceFileLink(), new LoadCsvFileCallback(this, blePartCountCsvFilePanel));
+		getLinacLegoService().getCsvFile(cnptPartCountCsvFilePanel.getSourceFileLink(), new LoadCsvFileCallback(this, cnptPartCountCsvFilePanel));
 	}
 	public int myTabLayoutPanelWidth()
 	{
@@ -146,49 +144,79 @@ public class LinacLegoWebApp implements EntryPoint
 			statusTextArea.setSize(Window.getClientWidth() - 10 - logoPanelWidth, statusTextAreaHeight);
 			myTabLayoutPanel.setSize(myTabLayoutPanelWidth(), myTabLayoutPanelHeight());			
 		}
-		
 	}
-	public class LinacLegoViewSerializerCallback implements AsyncCallback<LinacLegoViewSerializer>
+	public static class LoadXmlViewPanelsCallback implements AsyncCallback<HtmlTextTree>
 	{
 		LinacLegoWebApp linacLegoWebApp;
-		LinacLegoViewSerializerCallback(LinacLegoWebApp linacLegoWebApp)
+		LoadXmlViewPanelsCallback(LinacLegoWebApp linacLegoWebApp)
 		{
 			this.linacLegoWebApp = linacLegoWebApp;
 		}
 		@Override
 		public void onFailure(Throwable caught) 
-		{
-			getStatusTextArea().addStatus("Server Failure: " + caught.getMessage());
-			infoPanel.getMessageImage().setUrl("/images/dagnabbit.jpg");
-			infoPanel.getMessageLabel().setText("Failed to get server data! Try reloading the page.");
+		{			
+			linacLegoWebApp.getStatusTextArea().addStatus("Server Failure: " + caught.getMessage());
+			linacLegoWebApp.infoPanel.getMessageImage().setUrl("/images/dagnabbit.jpg");
+			linacLegoWebApp.infoPanel.getMessageLabel().setText("Failed to load Xml View data from server.");
+			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(true);
+			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
 		}
 		@Override
-		public void onSuccess(LinacLegoViewSerializer result) 
+		public void onSuccess(HtmlTextTree result) 
 		{
-		    statusTextArea.addStatus("Recieved data from server.");
-		    infoPanel.getMessagePanel().setVisible(false);
-			setLinacLegoViewSerializer(result);
-			Scheduler.get().scheduleIncremental(new IncrementalPanelLoader(linacLegoWebApp));
+			linacLegoWebApp.infoPanel.getLatticeVersionInlineHTML().setHTML(result.getInlineHtmlString(false));
+			linacLegoWebApp.infoPanel.getLatticeVersionCaptionPanel().setVisible(true);
+			linacLegoWebApp.xmlViewPanel.addTree(result);
+			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(false);
+			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
 		}
-
 	}
-	public static class IncrementalPanelLoader implements RepeatingCommand
+	public static class LoadPbsViewPanelsCallback implements AsyncCallback<HtmlTextTree>
 	{
 		LinacLegoWebApp linacLegoWebApp;
-
-		public IncrementalPanelLoader(LinacLegoWebApp linacLegoWebApp) 
+		LoadPbsViewPanelsCallback(LinacLegoWebApp linacLegoWebApp)
 		{
 			this.linacLegoWebApp = linacLegoWebApp;
 		}
-
 		@Override
-		public boolean execute() 
-		{
-			boolean loadMoreDataPanels  = linacLegoWebApp.loadDataPanels();
-// Returning true causes command to be executed again			
-			return loadMoreDataPanels;
+		public void onFailure(Throwable caught) 
+		{			
+			linacLegoWebApp.getStatusTextArea().addStatus("Server Failure: " + caught.getMessage());
+			linacLegoWebApp.infoPanel.getMessageImage().setUrl("/images/dagnabbit.jpg");
+			linacLegoWebApp.infoPanel.getMessageLabel().setText("Failed to load PBS View data from server.");
+			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(true);
+			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
 		}
-
+		@Override
+		public void onSuccess(HtmlTextTree result) 
+		{
+			linacLegoWebApp.pbsViewPanel.addTree(result);
+			linacLegoWebApp.pbsLayoutPanel.addTree(result);
+		}
+	}
+	public static class LoadCsvFileCallback implements AsyncCallback<CsvFile>
+	{
+		LinacLegoWebApp linacLegoWebApp;
+		CsvFilePanel csvFilePanel;
+		LoadCsvFileCallback(LinacLegoWebApp linacLegoWebApp, CsvFilePanel csvFilePanel)
+		{
+			this.linacLegoWebApp = linacLegoWebApp;
+			this.csvFilePanel = csvFilePanel;
+		}
+		@Override
+		public void onFailure(Throwable caught) 
+		{
+			linacLegoWebApp.getStatusTextArea().addStatus("Server Failure: " + caught.getMessage());
+			linacLegoWebApp.infoPanel.getMessageImage().setUrl("/images/dagnabbit.jpg");
+			linacLegoWebApp.infoPanel.getMessageLabel().setText("Failed to load CSV data " + csvFilePanel.getCsvFileType() + " from server.");
+			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(true);
+			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
+		}
+		@Override
+		public void onSuccess(CsvFile result) 
+		{
+			csvFilePanel.setCsvFile(result);
+		}
 	}
 
 }
