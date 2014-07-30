@@ -4,8 +4,13 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
+import se.lu.esss.linaclego.structures.Linac;
+import se.lu.esss.linaclego.structures.Section;
+import se.lu.esss.linaclego.structures.cell.Cell;
 import se.lu.esss.linaclego.structures.elements.beamline.BeamLineElement;
+import se.lu.esss.linaclego.structures.slot.Slot;
 
 import com.astrofizzbizz.simpleXml.SimpleXmlException;
 import com.astrofizzbizz.simpleXml.SimpleXmlReader;
@@ -186,6 +191,11 @@ public class ControlPoint
 		return null;
 	}
 	public BeamLineElement getBeamLineElement() {return beamLineElement;}
+	public Slot getSlot() {return getBeamLineElement().getSlot();}
+	public Cell getCell() {return getSlot().getCell();}
+	public Section getSection() {return getCell().getSection();}
+	public Linac getLinac() {return getSection().getLinac();}
+	public LinacLego getLinacLego() {return getLinac().getLinacLego();}
 	public SimpleXmlReader getTag() {return tag;}
 	public int getIndex() {return index;}
 	public double[] getEndLocalPosVec() {return endLocalPosVec;}

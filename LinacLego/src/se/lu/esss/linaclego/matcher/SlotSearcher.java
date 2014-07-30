@@ -1,6 +1,7 @@
 package se.lu.esss.linaclego.matcher;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import org.w3c.dom.DocumentFragment;
@@ -278,11 +279,11 @@ public class SlotSearcher
 		try {linacLego.getSimpleXmlDoc().saveXmlDocument(filePath);} 
 		catch (SimpleXmlException e) {throw new LinacLegoException(e);}
 	}
-	public static void main(String[] args) throws LinacLegoException, SimpleXmlException 
+	public static void main(String[] args) throws LinacLegoException, SimpleXmlException, MalformedURLException 
 	{
 		String xmlFileDirPath = "C:\\EclipseWorkSpace2014\\LinacLego\\EssLinacXmlFiles";
 		String xmlFileName = "SpokeOptimus2.xml";
-		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName)), null);
+		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName).toURI().toURL()), null);
 		SlotSearcher slotSearcher = new SlotSearcher(linacLego);
 		slotSearcher.replaceSlotsWithMatches();
 		slotSearcher.saveXmlFile(xmlFileDirPath + "\\SpokeOptimus3.xml");

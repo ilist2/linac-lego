@@ -325,8 +325,8 @@ public class TraceWinReader
 			xw.closeXmlTag("section");
 			xw.closeXmlTag("linac");
 			xw.closeDocument();
-//			String xmlFilePath = new File(fileLocationPath).getPath().substring(0, new File(fileLocationPath).getPath().lastIndexOf(".")) + ".xml";
-//			xw.getSimpleXmlDoc().setXmlSourceFile(new File(xmlFilePath));
+			String xmlFilePath = new File(fileLocationPath).getPath().substring(0, new File(fileLocationPath).getPath().lastIndexOf(".")) + ".xml";
+			xw.getSimpleXmlDoc().setXmlSourceUrl(new File(xmlFilePath).toURI().toURL());
 			writeStatus("Finished reading TraceWin File.");
 		} 
 		catch (FileNotFoundException e) {throw new LinacLegoException(e);}

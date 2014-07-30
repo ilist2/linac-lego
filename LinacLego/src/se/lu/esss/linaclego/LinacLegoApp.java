@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,8 +66,8 @@ public class LinacLegoApp extends JFrame
 	ClassLoader loader;
 	
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
-	protected String version = "v2.2";
-	protected String versionDate = "June 14, 2014";
+	protected String version = "v2.3";
+	protected String versionDate = "June 29, 2014";
 	private String suggestedFileName = "linacLego.xml";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
@@ -270,7 +272,7 @@ public class LinacLegoApp extends JFrame
 	{
 		try 
 		{
-			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile);
+			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile.toURI().toURL());
 			linacLego = new LinacLego(simpleXmlDoc, statusBar);
 			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
@@ -288,6 +290,9 @@ public class LinacLegoApp extends JFrame
 		} catch (LinacLegoException e) {
 			statusBar.scrollToTop();
 			DpmSwingUtilities.messageDialog("Error: " + e.getRootCause(), this);
+		} catch (MalformedURLException e) {
+			statusBar.scrollToTop();
+			DpmSwingUtilities.messageDialog("Error: " + e.getMessage(), this);
 		}
 	}
 	private void openXmlFile()
@@ -368,6 +373,7 @@ public class LinacLegoApp extends JFrame
 				TraceWinReader twr = new TraceWinReader(traceWinFile.getPath(), ekinMeV, beamFreqMHz, statusBar);
 				twr.readTraceWinFile();
 				simpleXmlDoc = twr.getSimpleXmlDoc();
+				openedXmlFile = new File(simpleXmlDoc.getXmlSourceUrl().toURI());
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "File"), "Save XML File").setEnabled(true);
 				
 				linacLego = new LinacLego(simpleXmlDoc, statusBar);
@@ -386,6 +392,9 @@ public class LinacLegoApp extends JFrame
 			} 
 			catch (RuntimeException e)
 			{
+				statusBar.scrollToTop();
+				DpmSwingUtilities.messageDialog("Error: " + e.getMessage(), this);
+			} catch (URISyntaxException e) {
 				statusBar.scrollToTop();
 				DpmSwingUtilities.messageDialog("Error: " + e.getMessage(), this);
 			} 
@@ -513,13 +522,13 @@ public class LinacLegoApp extends JFrame
 				linacLego = new LinacLego(simpleXmlDoc, statusBar);
 				xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 				linacLego.setPrintControlPoints(printControlPoints);
+				linacLego.setReportDirectory(new File(openedXmlFile.getParent()));
 				linacLego.updateLinac();
 				linacLego.createTraceWinFile();
 //				linacLego.createDynacFile();
 				linacLego.printReportTable();
 				linacLego.printPartCounts();
 				linacLego.saveXmlDocument();
-//				buildPbsTree(linacLego);
 				buildPbsTreeNew(linacLego);
 				statusBar.scrollToTop();
 				mainPane.setSelectedIndex(1);
@@ -527,7 +536,7 @@ public class LinacLegoApp extends JFrame
 			} catch (LinacLegoException e) 
 			{
 				statusBar.scrollToTop();
-				DpmSwingUtilities.messageDialog("Error: " + e.getRootCause(), this);
+				DpmSwingUtilities.messageDialog("Error: " + e.getMessage(), this);
 			} 
 		}
 	}
@@ -538,19 +547,17 @@ public class LinacLegoApp extends JFrame
 		if (traceWinFile != null)
 		{
 			lastDirectoryPath = traceWinFile.getParent();
-			String inputDirectoryPath = lastDirectoryPath;
-			String outputDirectoryPath = lastDirectoryPath;
 			String title = traceWinFile.getName().substring(0, traceWinFile.getName().lastIndexOf("."));
-			double scaleFactor = 1.0;
 			String storeEnergyString = JOptionPane.showInputDialog("Enter Stored Energy in Joules: ");
 			double storedEnergy = -1.0;
 			if (storeEnergyString != null) storedEnergy = Double.parseDouble(storeEnergyString);
-			FieldProfileBuilder fpb = new FieldProfileBuilder(new File(inputDirectoryPath), new File(outputDirectoryPath), title, scaleFactor);
+			FieldProfileBuilder fpb = new FieldProfileBuilder();
 			try 
 			{
-				fpb.readTraceWinFieldProfile(storedEnergy);
-				fpb.createXmlFile(false);
-				statusBar.setText("Finished building field profile " + fpb.getXmlFile().getPath());
+				fpb = FieldProfileBuilder.readTraceWinFieldProfile(storedEnergy, traceWinFile);
+				File xmlFile = new File(traceWinFile.getParent() + File.separator + title + ".xml");
+				fpb.writeXmlFile(xmlFile, title);
+				statusBar.setText("Finished building field profile " + xmlFile.getPath());
 			} catch (LinacLegoException e) 
 			{
 				statusBar.scrollToTop();

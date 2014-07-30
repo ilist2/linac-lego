@@ -3,6 +3,7 @@ package se.lu.esss.linaclego.structures;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.cell.Cell;
 
@@ -149,6 +150,7 @@ public class Section
 		return matchingCell;
 	}
 	public Linac getLinac() {return linac;}
+	public LinacLego getLinacLego() {return getLinac().getLinacLego();}
 	
 	public void setLength(double length) {this.length = length;}
 	public void setRfFreqMHz(double rfFreqMHz) {this.rfFreqMHz = rfFreqMHz;}

@@ -2,6 +2,7 @@ package se.lu.esss.linaclego.structures;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -40,6 +41,8 @@ public class Linac
 	private double[][] eulerMatrix   = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
 	private double[] transVec   = {0.0, 0.0, 0.0}; 
 	private FieldProfileBuilder fieldProfileBuilder = null;
+	private URL fieldProfileBuilderUrl = new URL("http://test.com");
+
 	private ArrayList<DataElement> dataElementList = new ArrayList<DataElement>();
 
 
@@ -328,8 +331,13 @@ public class Linac
 	public DataElement[][] getTwissData() {return twissData;}
 	public DataElement getBeamCurrent() {return beamCurrent;}
 	public ArrayList<DataElement> getDataElementList() {return dataElementList;}
+	public URL getFieldProfileBuilderUrl() {return fieldProfileBuilderUrl;}
 
-	public void setFieldProfileBuilder(FieldProfileBuilder fieldProfileBuilder) {this.fieldProfileBuilder = fieldProfileBuilder;}
+	public void setFieldProfileBuilder(FieldProfileBuilder fieldProfileBuilder, URL fieldProfileBuilderUrl) 
+	{
+		this.fieldProfileBuilder = fieldProfileBuilder;
+		this.fieldProfileBuilderUrl = fieldProfileBuilderUrl;
+	}
 
 
 }

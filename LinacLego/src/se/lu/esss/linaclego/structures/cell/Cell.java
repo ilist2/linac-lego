@@ -3,7 +3,9 @@ package se.lu.esss.linaclego.structures.cell;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
+import se.lu.esss.linaclego.structures.Linac;
 import se.lu.esss.linaclego.structures.Section;
 import se.lu.esss.linaclego.structures.elements.DataElement;
 import se.lu.esss.linaclego.structures.slot.Slot;
@@ -156,6 +158,8 @@ public class Cell
 		return matchingSlot;
 	}
 	public Section getSection() {return section;}
+	public Linac getLinac() {return getSection().getLinac();}
+	public LinacLego getLinacLego() {return getLinac().getLinacLego();}
 	public String getModelId() 
 	{
 		try {return tag.attribute("model");} catch (SimpleXmlException e) {return null;}

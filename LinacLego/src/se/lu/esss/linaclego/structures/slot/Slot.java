@@ -3,7 +3,10 @@ package se.lu.esss.linaclego.structures.slot;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
+import se.lu.esss.linaclego.structures.Linac;
+import se.lu.esss.linaclego.structures.Section;
 import se.lu.esss.linaclego.structures.cell.Cell;
 import se.lu.esss.linaclego.structures.elements.DataElement;
 import se.lu.esss.linaclego.structures.elements.beamline.BeamLineElement;
@@ -195,6 +198,9 @@ public class Slot
 		catch (SimpleXmlException e) { throw new LinacLegoException("Slot: " + e.getMessage());}
 	}
 	public Cell getCell() {return cell;}
+	public Section getSection() {return getCell().getSection();}
+	public Linac getLinac() {return getSection().getLinac();}
+	public LinacLego getLinacLego() {return getLinac().getLinacLego();}
 	public int getNumBeamLineElements() {return numBeamLineElements;}
 	public int getIndex() {return index;}
 	public ArrayList<BeamLineElement> getBeamLineElementList() {return beamLineElementList;}

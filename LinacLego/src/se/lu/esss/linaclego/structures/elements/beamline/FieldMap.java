@@ -1,11 +1,14 @@
 package se.lu.esss.linaclego.structures.elements.beamline;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import se.lu.esss.linaclego.FieldProfileBuilder;
 import se.lu.esss.linaclego.LinacLegoException;
 import se.lu.esss.linaclego.structures.slot.Slot;
 
+import com.astrofizzbizz.simpleXml.SimpleXmlException;
 import com.astrofizzbizz.simpleXml.SimpleXmlReader;
 
 public class FieldMap extends BeamLineElement
@@ -79,41 +82,43 @@ public class FieldMap extends BeamLineElement
 		return command;
 	}
 	@Override
-	public void calcParameters() throws LinacLegoException 
+	public void calcParameters() throws LinacLegoException  
 	{
-		String xmlFileDirPath = getSlot().getCell().getSection().getLinac().getLinacLego().getXmlFileDirPath();
-		String reportFileDirPath = getSlot().getCell().getSection().getLinac().getLinacLego().getReportDir().getPath();
-		fieldProfileBuilder = new FieldProfileBuilder(new File(xmlFileDirPath), new File(reportFileDirPath),  fieldMapFileName, scaleFactor);
-		FieldProfileBuilder linacFieldProfileBuilder = getSlot().getCell().getSection().getLinac().getFieldProfileBuilder();
-		if (fieldProfileBuilder.fieldProfileNameMatches(linacFieldProfileBuilder))
+		try 
 		{
-			if (scaleFactor != linacFieldProfileBuilder.getScaleFactor()) throw new LinacLegoException(getEssId() + ": scaleFactor does not match field previous scaleFactor");
-			fieldProfileBuilder = getSlot().getCell().getSection().getLinac().getFieldProfileBuilder();
-			newFieldProfileEncountered = false;
-		}
-		else
-		{
-			linacFieldProfileBuilder = new FieldProfileBuilder(new File(xmlFileDirPath), new File(reportFileDirPath),  fieldMapFileName, scaleFactor);
-			getSlot().getCell().getSection().getLinac().setFieldProfileBuilder(linacFieldProfileBuilder);
-			fieldProfileBuilder.readXmlFile();
-			linacFieldProfileBuilder.readXmlFile();
-			newFieldProfileEncountered = true;
-			boolean writeFieldMapFiles = getSlot().getCell().getSection().getLinac().getLinacLego().isCreateReportDirectory();
-			if(writeFieldMapFiles)
+			URL fieldProfileBuilderUrl = new URL(getLinacLego().getSimpleXmlDoc().getXmlSourceParentUrl() + "/" + fieldMapFileName + ".xml");
+//			getLinacLego().writeStatus(fieldProfileBuilderUrl.toString());
+//			getLinacLego().writeStatus(getLinac().getFieldProfileBuilderUrl().toString());
+			if (fieldProfileBuilderUrl.toString().equals(getLinac().getFieldProfileBuilderUrl().toString()))
 			{
-				try {fieldProfileBuilder.createTraceWinFile(true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": TraceWin file exists");}
-				try {fieldProfileBuilder.createDynacFile(getRfFreqMHz(), true);} catch (LinacLegoException e) { throw new LinacLegoException(getEssId() + ": Dynac file exists");}
+				if (scaleFactor != 1.0)
+						throw new LinacLegoException(getEssId() + ": scaleFactor does not equal 1.0 ");
+				newFieldProfileEncountered = false;
 			}
-		}
-
-		if (!lengthOk()) 
-		{
-			throw new LinacLegoException(getEssId() + ": length does not match field profile Length");
-		}
-		setLength(0.001 * lengthmm);
-		for (int ii = 0; ii < betaInt; ++ii) updateEvOut();
-		updateSynchPhase();
-		setSynchronousPhaseDegrees(phisdeg);
+			else
+			{
+				getLinac().setFieldProfileBuilder(FieldProfileBuilder.readXmlFile(fieldProfileBuilderUrl), fieldProfileBuilderUrl);
+				newFieldProfileEncountered = true;
+				if(getLinacLego().isReportDirectoryExists())
+				{
+					getLinacLego().writeStatus("Writing field profile " + fieldMapFileName);
+					getLinac().getFieldProfileBuilder().writeTraceWinFile(new File(getLinacLego().getReportDirectory().getPath() + File.separator +  fieldMapFileName + ".edz"));
+					getLinac().getFieldProfileBuilder().writeDynacFile(new File(getLinacLego().getReportDirectory().getPath() + File.separator +  fieldMapFileName + ".txt"), getRfFreqMHz());
+				}
+			}
+			fieldProfileBuilder = getLinac().getFieldProfileBuilder();
+	
+			if (!lengthOk()) 
+			{
+				throw new LinacLegoException(getEssId() + ": length does not match field profile Length");
+			}
+			setLength(0.001 * lengthmm);
+			for (int ii = 0; ii < betaInt; ++ii) updateEvOut();
+			updateSynchPhase();
+			setSynchronousPhaseDegrees(phisdeg);
+		} 
+		catch (MalformedURLException e) {throw new LinacLegoException(e); } 
+		catch (SimpleXmlException e) {throw new LinacLegoException(e);}
 	}
 	@Override
 	public void calcLocation() 

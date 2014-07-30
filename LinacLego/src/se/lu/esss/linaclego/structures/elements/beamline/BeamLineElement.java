@@ -4,7 +4,11 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import se.lu.esss.linaclego.LinacLego;
 import se.lu.esss.linaclego.LinacLegoException;
+import se.lu.esss.linaclego.structures.Linac;
+import se.lu.esss.linaclego.structures.Section;
+import se.lu.esss.linaclego.structures.cell.Cell;
 import se.lu.esss.linaclego.structures.elements.ControlPoint;
 import se.lu.esss.linaclego.structures.elements.DataElement;
 import se.lu.esss.linaclego.structures.slot.Slot;
@@ -306,6 +310,11 @@ public abstract class BeamLineElement
 	public abstract double characteristicValue();
 	public abstract String characteristicValueUnit();
 	public Slot getSlot() {return slot;}
+	public Cell getCell() {return getSlot().getCell();}
+	public Section getSection() {return getCell().getSection();}
+	public Linac getLinac() {return getSection().getLinac();}
+	public LinacLego getLinacLego() {return getLinac().getLinacLego();}
+
 	public SimpleXmlReader getTag() {return tag;}
 	public double geteVout() {return eVout;}
 	public double geteVin() {return eVin;}
