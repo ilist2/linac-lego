@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class LinacLegoWebApp implements EntryPoint 
 {
-	String version = "v1";
-	String versionDate = "July 28, 2014";
+	String version = "v1.1";
+	String versionDate = "July 31, 2014";
 
 	private int statusTextAreaHeight = 150;
 	private int myTabLayoutPanelHeightBarHeightPx = 30;
@@ -37,7 +37,9 @@ public class LinacLegoWebApp implements EntryPoint
 	public String getVersionDate() {return versionDate;}
 
 	private final LinacLegoServiceAsync linacLegoService = GWT.create(LinacLegoService.class);
-	public final String linacLegoDefaultLink = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
+	public final String linacLegoMasterLink      = "https://86507de6de3a79731230d3352847d54aa02f4388.googledrive.com/host/0B3Hieedgs_7FVFVxY3lZdmd0bkU";
+	public final String linacLegoDevelopmentLink = "https://298ed9597c2db31e14ecef5e65fbb78dcae48463.googledrive.com/host/0B3Hieedgs_7FYUdpNk5kTVlNdlk";
+	public final String linacLegoPrevVersionLink = "https://2ea9579f750913284dcd2386dd1cbd606872f73f.googledrive.com/host/0B3Hieedgs_7Fam1KRE9uekFjYlE";
 	private String linacLegoLink;
 	private String linacLegoXmlLink;
 
@@ -93,14 +95,14 @@ public class LinacLegoWebApp implements EntryPoint
 		RootLayoutPanel.get().add(vp1);
 		
 		Window.addResizeHandler(new MyResizeHandler());
-		setLinks(linacLegoDefaultLink);
+		setLinks(linacLegoMasterLink);
 		loadDataPanels();
 	}
 	public void setLinks(String linacLegoLink)
 	{
 		this.linacLegoLink = linacLegoLink;
-		String helpLink = linacLegoDefaultLink + "/doc/LinacLegoManual.pdf";
-		String linacLegoAppLink = linacLegoDefaultLink + "/dist/LinacLegoApp.jar";
+		String helpLink = linacLegoMasterLink + "/doc/LinacLegoManual.pdf";
+		String linacLegoAppLink = linacLegoMasterLink + "/dist/LinacLegoApp.jar";
 
 		String linacLegoWebSitePartsDirectoryLink = linacLegoLink + "/public/linacLegoOutput";
 		String downloadXmlLink = linacLegoLink + "/public/linacLego.zip";

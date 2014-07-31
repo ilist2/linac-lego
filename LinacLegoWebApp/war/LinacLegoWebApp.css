@@ -16,9 +16,21 @@ h1 {
 	font-weight: bold;
 	text-align: center;
 }
-.linacParametersHeader {
+.csvFilePanelHeader {
   background-color: #3099D7;
   color: white;
+}
+.csvFilePanelEvenRow {
+  background-color: #FFFFFF;
+  color: black;
+}
+.csvFilePanelOddRow {
+  background-color: #EFEFEF;
+  color: black;
+}
+.csvFilePanelSelectedRow {
+  background-color: #FFFF00;
+  color: black;
 }
 .pbsTagLabel {
 	color: #0000FF;

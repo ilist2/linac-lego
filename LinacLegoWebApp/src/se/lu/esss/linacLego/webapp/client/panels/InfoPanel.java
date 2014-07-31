@@ -10,12 +10,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class InfoPanel extends MyTabLayoutScrollPanel 
@@ -24,7 +24,7 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 	private Image messageImage;
 	private Label messageLabel;
 	CaptionPanel latticeVersionCaptionPanel;
-	CaptionPanel linkButtonCaptionPanel;
+	CaptionPanel ReloadSourceCaptionPanel;
 	InlineHTML latticeVersionInlineHTML;
 	
 	DownLoadClickHandler downloadXmlClickHandler;
@@ -32,17 +32,17 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 	DownLoadClickHandler linacLegoAppClickHandler;
 	DownLoadClickHandler sourceWebFolderClickHandler;
 	
-	TextBox sourceLinkTextBox;
 	LinacLegoWebApp linacLegoWebApp;
-	boolean changeSourceLinkButtonState = true;
-	Button changeSourceLinkButton;
+	Button masterSourceSelectButton;
+	Button developmentSourceSelectButton;
+	Button prevSourceSelectButton;
 	
 	public VerticalPanel getMessagePanel() {return messagePanel;}
 	public Image getMessageImage() {return messageImage;}
 	public Label getMessageLabel() {return messageLabel;}
 	public CaptionPanel getLatticeVersionCaptionPanel() {return latticeVersionCaptionPanel;}
 	public InlineHTML getLatticeVersionInlineHTML() {return latticeVersionInlineHTML;}
-	public CaptionPanel getLinkButtonCaptionPanel() {return linkButtonCaptionPanel;}
+	public CaptionPanel getLinkButtonCaptionPanel() {return ReloadSourceCaptionPanel;}
 	
 	public InfoPanel(MyTabLayoutPanel myTabLayoutPanel)
 	{
@@ -96,19 +96,28 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		messagePanel.add(messageImage);
 		messagePanel.add(messageLabel);
 		
-		linkButtonCaptionPanel = new CaptionPanel("Source Link");
-		linkButtonCaptionPanel.setVisible(false);
-		HorizontalPanel sourceLinkHp = new HorizontalPanel();
-		changeSourceLinkButton = new Button("Change");
-		changeSourceLinkButton.addClickHandler(new ChangeButtonClickHandler(this));
-		sourceLinkHp.add(changeSourceLinkButton);
-		linkButtonCaptionPanel.add(sourceLinkHp);
-		sourceLinkTextBox = new TextBox();
-		sourceLinkTextBox.setWidth("400px");
-		sourceLinkTextBox.setText(myTabLayoutPanel.getLinacLegoWebApp().getLinacLegoLink());
-		sourceLinkHp.add(sourceLinkTextBox);
-		sourceLinkHp.setCellVerticalAlignment(sourceLinkTextBox, HasVerticalAlignment.ALIGN_MIDDLE);
-		sourceLinkHp.setCellVerticalAlignment(changeSourceLinkButton, HasVerticalAlignment.ALIGN_MIDDLE);
+		masterSourceSelectButton = new Button("Master");
+		masterSourceSelectButton.addClickHandler(new SourceButtonClickHandler(this, "Master"));
+
+		developmentSourceSelectButton = new Button("Development");
+		developmentSourceSelectButton.addClickHandler(new SourceButtonClickHandler(this, "Development"));
+
+		prevSourceSelectButton = new Button("Previous");
+		prevSourceSelectButton.addClickHandler(new SourceButtonClickHandler(this, "Previous"));
+
+		Grid reloadSourceButtonGrid = new Grid(1, 3);
+		reloadSourceButtonGrid.setWidth("100%");
+
+		reloadSourceButtonGrid.setWidget(0, 0, masterSourceSelectButton);
+		reloadSourceButtonGrid.setWidget(0, 1, developmentSourceSelectButton);
+		reloadSourceButtonGrid.setWidget(0, 2, prevSourceSelectButton);
+		reloadSourceButtonGrid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		reloadSourceButtonGrid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		reloadSourceButtonGrid.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+
+		ReloadSourceCaptionPanel = new CaptionPanel("Reload Source");
+		ReloadSourceCaptionPanel.setVisible(false);
+		ReloadSourceCaptionPanel.add(reloadSourceButtonGrid);
 		
 		VerticalPanel vp1 = new VerticalPanel();
 		vp1.add(versionCaptionPanel);
@@ -119,7 +128,7 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		VerticalPanel vp2 = new VerticalPanel();
 		vp2.add(messagePanel);
 		vp2.add(latticeVersionCaptionPanel);
-		vp2.add(linkButtonCaptionPanel);
+		vp2.add(ReloadSourceCaptionPanel);
 		hp1.add(vp1);
 		hp1.add(vp2);
 		add(hp1);
@@ -130,7 +139,6 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		downloadXmlClickHandler.setLink(downloadXmlLink);
 		helpClickHandler.setLink(helpLink);
 		linacLegoAppClickHandler.setLink(linacLegoAppLink);
-		sourceLinkTextBox.setText(linacLegoWebApp.getLinacLegoLink());
 		sourceWebFolderClickHandler.setLink(linacLegoLink);
 	}
 	static class DownLoadClickHandler implements ClickHandler
@@ -151,33 +159,36 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		}
 		
 	}
-	static class ChangeButtonClickHandler implements ClickHandler
+	static class SourceButtonClickHandler implements ClickHandler
 	{
 		InfoPanel infoPanel;
-		ChangeButtonClickHandler(InfoPanel infoPanel)
+		String sourceType;
+		SourceButtonClickHandler(InfoPanel infoPanel, String sourceType)
 		{
 			this.infoPanel = infoPanel;
+			this.sourceType = sourceType;
 		}
 		@Override
 		public void onClick(ClickEvent event) 
 		{
-			if (infoPanel.changeSourceLinkButtonState)
+			if (sourceType.equals("Master"))
 			{
-				infoPanel.sourceLinkTextBox.getText();
-				infoPanel.changeSourceLinkButton.setText("Revert");
-				infoPanel.changeSourceLinkButtonState = false;
-				infoPanel.linacLegoWebApp.setLinks(infoPanel.sourceLinkTextBox.getText());
+				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Master Source...");
+				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoMasterLink);
 				infoPanel.linacLegoWebApp.loadDataPanels();
 			}
-			else
+			if (sourceType.equals("Development"))
 			{
-				infoPanel.sourceLinkTextBox.setText(infoPanel.linacLegoWebApp.linacLegoDefaultLink);
-				infoPanel.changeSourceLinkButton.setText("Change");
-				infoPanel.changeSourceLinkButtonState = true;
-				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoDefaultLink);
+				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Development Source...");
+				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoDevelopmentLink);
 				infoPanel.linacLegoWebApp.loadDataPanels();
 			}
-			
+			if (sourceType.equals("Previous"))
+			{
+				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Previous Version Source...");
+				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoPrevVersionLink);
+				infoPanel.linacLegoWebApp.loadDataPanels();
+			}
 		}
 		
 	}

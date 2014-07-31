@@ -1,30 +1,29 @@
 package se.lu.esss.linacLego.webapp.client;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Button;
 
 public class Test extends VerticalPanel
 {
 	public Test() 
 	{
 		
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		horizontalPanel.setBorderWidth(3);
-		add(horizontalPanel);
-		horizontalPanel.setSize("335px", "170px");
+		Grid grid = new Grid(1, 3);
+		add(grid);
+		grid.setSize("410px", "127px");
 		
-		TextBox txtbxBooger = new TextBox();
-		txtbxBooger.setText("Booger");
-		horizontalPanel.add(txtbxBooger);
-		horizontalPanel.setCellVerticalAlignment(txtbxBooger, HasVerticalAlignment.ALIGN_MIDDLE);
-		txtbxBooger.setWidth("211px");
-		VerticalPanel verticalPanel = new VerticalPanel();
-		horizontalPanel.add(verticalPanel);
+		Button btnNewButton = new Button("New button");
+		grid.setWidget(0, 0, btnNewButton);
 		
+		Button btnNewButton1 = new Button("New button1");
+		grid.setWidget(0, 1, btnNewButton1);
+		
+		Button btnNewButton2 = new Button("New button2");
+		grid.setWidget(0, 2, btnNewButton2);
+//		grid.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+//		grid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+//		grid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		
 	}

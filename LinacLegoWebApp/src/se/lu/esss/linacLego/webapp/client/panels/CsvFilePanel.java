@@ -33,6 +33,7 @@ public class CsvFilePanel extends VerticalPanel
 	private int numDataRows;
 	private CsvFile csvFile;
 	private boolean fileCompletelyLoaded = false;
+	private boolean oddDataRow = false;
 
 	
 	public boolean isFileCompletelyLoaded() {return fileCompletelyLoaded;}
@@ -101,18 +102,21 @@ public class CsvFilePanel extends VerticalPanel
 			{
 				dataGrid.setText(irow, icol, csvFile.getLine(irow + numHeaderRows).getCell(icol));
 			}
+			if (oddDataRow) dataGrid.getRowFormatter().setStyleName(irow, "csvFilePanelOddRow");
+			oddDataRow = !oddDataRow;
 		}
 		lastDataRowLoaded = numDataRowsOnLoad - 1;
 		resizeMe(csvFile);
 		Window.addResizeHandler(new MyResizeHandler(csvFile));
 		for (int ih = 0; ih < numHeaderRows; ++ih)
-			headerGrid.getRowFormatter().addStyleName(ih, "linacParametersHeader");
+			headerGrid.getRowFormatter().setStyleName(ih, "csvFilePanelHeader");
 		headerGrid.setBorderWidth(0);
 		headerGrid.setCellSpacing(0);
 		headerGrid.setCellPadding(0);
 		dataGrid.setBorderWidth(0);
 		dataGrid.setCellSpacing(0);
 		dataGrid.setCellPadding(0);
+		dataGrid.addClickHandler(new DataGridClickHandler(dataGrid));
 
 		if (fileCompletelyLoaded) myTabLayoutScrollPanel.getMyTabLayoutPanel().getLinacLegoWebApp().getStatusTextArea().addStatus("Finished building " + csvFileType + " Spreadsheet.");
 		if (!fileCompletelyLoaded) myTabLayoutScrollPanel.getMyTabLayoutPanel().getLinacLegoWebApp().getStatusTextArea().addStatus("Still building " + csvFileType + " Spreadsheet.");
@@ -129,6 +133,8 @@ public class CsvFilePanel extends VerticalPanel
 			{
 				getDataGrid().setText(irow, icol, getCsvFile().getLine(irow + getNumHeaderRows()).getCell(icol));
 			}
+			if (oddDataRow) dataGrid.getRowFormatter().setStyleName(irow, "csvFilePanelOddRow");
+			oddDataRow = !oddDataRow;
 		}
 		setLastDataRowLoaded(stopRow);
 		if (stopRow == (getNumDataRows() - 1))  fileCompletelyLoaded = true;
@@ -176,6 +182,38 @@ public class CsvFilePanel extends VerticalPanel
 			
 //			Window.open(link, "_blank", "enabled");
 			Window.open(link, "_blank", "");
+		}
+		
+	}
+	static class DataGridClickHandler implements ClickHandler
+	{
+		Grid dataGrid;
+		DataGridClickHandler(Grid dataGrid)
+		{
+			this.dataGrid = dataGrid;
+		}
+
+		@Override
+		public void onClick(ClickEvent event) 
+		{
+			int irow = dataGrid.getCellForEvent(event).getRowIndex();
+			String styleName = dataGrid.getRowFormatter().getStyleName(irow);
+			if (styleName.equals("csvFilePanelSelectedRow"))
+			{
+				if (irow == 2 * (irow / 2) ) 
+				{
+					dataGrid.getRowFormatter().setStyleName(irow, "csvFilePanelEvenRow");
+				}
+				else
+				{
+					dataGrid.getRowFormatter().setStyleName(irow, "csvFilePanelOddRow");
+				}
+			}
+			else
+			{
+				dataGrid.getRowFormatter().setStyleName(irow, "csvFilePanelSelectedRow");
+			}
+			
 		}
 		
 	}
