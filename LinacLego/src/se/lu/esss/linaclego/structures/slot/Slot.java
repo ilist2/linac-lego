@@ -13,6 +13,8 @@ import se.lu.esss.linaclego.structures.elements.beamline.BeamLineElement;
 import se.lu.esss.linaclego.structures.elements.beamline.Bend;
 import se.lu.esss.linaclego.structures.elements.beamline.Drift;
 import se.lu.esss.linaclego.structures.elements.beamline.DtlCell;
+import se.lu.esss.linaclego.structures.elements.beamline.DtlDriftTube;
+import se.lu.esss.linaclego.structures.elements.beamline.DtlRfGap;
 import se.lu.esss.linaclego.structures.elements.beamline.Edge;
 import se.lu.esss.linaclego.structures.elements.beamline.FieldMap;
 import se.lu.esss.linaclego.structures.elements.beamline.Ncells;
@@ -129,6 +131,8 @@ public class Slot
 		if (elementType.equals("thinSteering")) newElement = new ThinSteering(elementTag, this, beamLineElementIndex);
 		if (elementType.equals("dtlCell")) newElement = new DtlCell(elementTag, this, beamLineElementIndex);
 		if (elementType.equals("rfGap")) newElement = new RfGap(elementTag, this, beamLineElementIndex);
+		if (elementType.equals("dtlDriftTube")) newElement = new DtlDriftTube(elementTag, this, beamLineElementIndex);
+		if (elementType.equals("dtlRfGap")) newElement = new DtlRfGap(elementTag, this, beamLineElementIndex);
 		if (newElement != null)
 		{
 			newElement.updateLatticeCommand();

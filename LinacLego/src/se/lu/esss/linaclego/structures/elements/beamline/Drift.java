@@ -64,9 +64,9 @@ public class Drift extends BeamLineElement
 	{
 		String command = "";
 		command = "DRIFT";
-		command = command + space + twoPlaces.format(lengthMM);
-		command = command + space + twoPlaces.format(rMM);
-		command = command + space + twoPlaces.format(ryMM);
+		command = command + space + fourPlaces.format(lengthMM);
+		command = command + space + fourPlaces.format(rMM);
+		command = command + space + fourPlaces.format(ryMM);
 		return command;
 	}
 	@Override

@@ -48,6 +48,7 @@ import se.lu.esss.linaclego.structures.cell.Cell;
 import se.lu.esss.linaclego.structures.elements.ControlPoint;
 import se.lu.esss.linaclego.structures.elements.beamline.BeamLineElement;
 import se.lu.esss.linaclego.structures.slot.Slot;
+import se.lu.esss.linaclego.tracewinreader.TraceWinReader;
 
 import com.astrofizzbizz.simpleXml.SimpleXmlDoc;
 import com.astrofizzbizz.simpleXml.SimpleXmlException;

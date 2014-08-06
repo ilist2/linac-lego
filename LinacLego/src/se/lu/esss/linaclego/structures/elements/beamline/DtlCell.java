@@ -43,7 +43,7 @@ public class DtlCell  extends BeamLineElement
 		addDataElement("phaseAdd", null, "double","deg");
 		addDataElement("radApermm", null, "double", "mm");
 		addDataElement("phaseFlag", null, "int","unit");
-		addDataElement("betaS", null, "double","m");
+		addDataElement("betaS", null, "double","unit");
 		addDataElement("tts", null, "double","unit");
 		addDataElement("ktts", null, "double","unit");
 		addDataElement("k2tts", null, "double","unit");

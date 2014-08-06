@@ -60,9 +60,9 @@ public class FieldMap extends BeamLineElement
 	{
 		String command = "";
 		command = "FIELD_MAP 100";
-		command = command + space + twoPlaces.format(lengthmm);
-		command = command + space + twoPlaces.format(rfpdeg);
-		command = command + space + twoPlaces.format(radiusmm);
+		command = command + space + fourPlaces.format(lengthmm);
+		command = command + space + fourPlaces.format(rfpdeg);
+		command = command + space + fourPlaces.format(radiusmm);
 		command = command + space + "0";
 		command = command + space + Double.toString(xelmax);
 		command = command + space + "0 0";

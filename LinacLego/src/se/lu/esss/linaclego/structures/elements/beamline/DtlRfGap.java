@@ -5,8 +5,9 @@ import se.lu.esss.linaclego.structures.slot.Slot;
 
 import com.astrofizzbizz.simpleXml.SimpleXmlReader;
 
-public class RfGap extends BeamLineElement
+public class DtlRfGap extends BeamLineElement
 {
+	double length = 0.0;
 	double voltsT = 0.0;
 	double rfPhaseDeg = 0.0;
 	double radApermm = 0.0;
@@ -18,13 +19,14 @@ public class RfGap extends BeamLineElement
 	double ks = 0.0;
 	double k2s = 0.0;
 
-	public RfGap(SimpleXmlReader elementTag, Slot slot, int index) throws LinacLegoException 
+	public DtlRfGap(SimpleXmlReader elementTag, Slot slot, int index) throws LinacLegoException 
 	{
 		super(elementTag, slot, index);
 	}
 	@Override
 	public void addDataElements() 
 	{
+		addDataElement("length", null, "double", "mm");
 		addDataElement("voltsT", null, "double", "Volt");
 		addDataElement("rfPhaseDeg", null, "double", "deg");
 		addDataElement("radApermm", null, "double", "mm");
@@ -33,12 +35,11 @@ public class RfGap extends BeamLineElement
 		addDataElement("tts", null, "double", "unit");
 		addDataElement("ktts", null, "double", "unit");
 		addDataElement("k2tts", null, "double", "unit");
-		addDataElement("ks", null, "double", "unit");
-		addDataElement("k2s", null, "double", "unit");
 	}
 	@Override
 	public void readDataElements() throws NumberFormatException, LinacLegoException 
 	{
+		length = Double.parseDouble(getDataElement("length").getValue());
 		voltsT = Double.parseDouble(getDataElement("voltsT").getValue());
 		rfPhaseDeg = Double.parseDouble(getDataElement("rfPhaseDeg").getValue());
 		radApermm = Double.parseDouble(getDataElement("radApermm").getValue());
@@ -47,14 +48,17 @@ public class RfGap extends BeamLineElement
 		tts = Double.parseDouble(getDataElement("tts").getValue());
 		ktts = Double.parseDouble(getDataElement("ktts").getValue());
 		k2tts = Double.parseDouble(getDataElement("k2tts").getValue());
-		ks = Double.parseDouble(getDataElement("ks").getValue());
-		k2s = Double.parseDouble(getDataElement("k2s").getValue());
 	}
 	@Override
 	public String makeTraceWinCommand() 
 	{
 		String command = "";
-		command = "GAP";
+		command = command + "DRIFT";
+		command = command + space + fourPlaces.format(length / 2.0);
+		command = command + space + fourPlaces.format(radApermm);
+		command = command + space + "0.0";
+		command = command + "\n";
+		command = command + "GAP";
 		command = command + space + Double.toString(voltsT);
 		command = command + space + Double.toString(rfPhaseDeg);
 		command = command + space + Double.toString(radApermm);
@@ -63,25 +67,36 @@ public class RfGap extends BeamLineElement
 		command = command + space + Double.toString(tts);
 		command = command + space + Double.toString(ktts);
 		command = command + space + Double.toString(k2tts);
-		command = command + space + Double.toString(ks);
-		command = command + space + Double.toString(k2s);
+		command = command + space + Double.toString(0.0);
+		command = command + space + Double.toString(0.0);
+		command = command + "\n";
+		command = command + "DRIFT";
+		command = command + space + fourPlaces.format(length / 2.0);
+		command = command + space + fourPlaces.format(radApermm);
+		command = command + space + "0.0";
 		return command;
 	}
 	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
-		command = "BUNCHER\n";
+		command = command + "DRIFT\n";
+		command = command + space + fourPlaces.format((length / 2.0) / 10.0);
+		command = command + "\n";
+		command = command + "BUNCHER\n";
 		command = command + space + Double.toString(voltsT / 1.0e6);
 		command = command + space + Double.toString(rfPhaseDeg);
 		command = command + space + Integer.toString(getSlot().getCell().getSection().getRfHarmonic());
 		command = command + space + Double.toString(radApermm / 10.0);
+		command = command + "\n";
+		command = command + "DRIFT\n";
+		command = command + space + fourPlaces.format((length / 2.0) / 10.0);
 		return command;
 	}
 	@Override
 	public void calcParameters() throws LinacLegoException 
 	{
-		setLength(0.00);
+		setLength(length * 0.001);
 		seteVout(geteVin() + voltsT * Math.cos(rfPhaseDeg * degToRad));
 	}
 	@Override
