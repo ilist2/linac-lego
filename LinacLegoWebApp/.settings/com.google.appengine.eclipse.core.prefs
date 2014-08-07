@@ -3,6 +3,7 @@ filesCopiedToWebInfLib=appengine-api-1.0-sdk-1.9.7.jar|appengine-api-labs.jar|ap
 gaeDatanucleusVersion=v2
 gaeDeployDialogSettings=
 gaeHrdEnabled=true
+gaeLaunchAppInBrowser=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
 validationExclusions=src/se/lu/esss/linacLego/webapp/server/LinacLegoWebAppSerializer.java|src/se/lu/esss/linacLego/webapp/server/LinacLegoServiceImplStaticMethods.java
