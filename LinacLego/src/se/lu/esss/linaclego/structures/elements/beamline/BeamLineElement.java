@@ -100,8 +100,6 @@ public abstract class BeamLineElement
 	}
 	public String getLinacLegoNumber()
 	{
-		String rev = Integer.toString(slot.getCell().getSection().getLinac().getLinacLego().getLinacLegoRevNo());
-		while (rev.length() < 3) rev = "0" + rev;
 		String sec = Integer.toString(slot.getCell().getSection().getIndex() + 1);
 		while (sec.length() < 2) sec = "0" + sec;
 		String cellNo = Integer.toString(slot.getCell().getIndex() + 1);
@@ -110,7 +108,7 @@ public abstract class BeamLineElement
 		while (slotNo.length() < 2) slotNo = "0" + slotNo;
 		String elemNo = Integer.toString(getIndex() + 1);
 		while (elemNo.length() < 3) elemNo = "0" + elemNo;
-		return "n" + rev + "-" + sec + "-" + cellNo + "-" + slotNo + "-" + elemNo;
+		return "n" + sec + "-" + cellNo + "-" + slotNo + "-" + elemNo;
 	}
 	private void readDataElementsFromXml() throws LinacLegoException
 	{

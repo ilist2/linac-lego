@@ -194,7 +194,7 @@ public class PbsLevelPanel extends VerticalPanel
 		 
 		for (int ia = 0; ia < textTree.numAttributes(); ++ia)
 		{
-			attributePanel.setWidget(ia, 0, new InlineHTML(textTree.getAttribute(ia).getInlineHtmlString(false)));
+			attributePanel.setWidget(ia, 0, new InlineHTML(textTree.getAttribute(ia).getInlineHtmlString(false, false)));
 		}
 		wrapperPanel.add(attributePanel);
 		if (textTree.hasDataFolder())
@@ -205,7 +205,7 @@ public class PbsLevelPanel extends VerticalPanel
 			dataPanel = new Grid(textTree.getDataFolder().numChildren(), 1);
 			for (int ia = 0; ia < textTree.getDataFolder().numChildren(); ++ia)
 			{
-				String html = textTree.getDataFolder().getTextTreeArrayList().get(ia).getInlineHtmlString(false);
+				String html = textTree.getDataFolder().getTextTreeArrayList().get(ia).getInlineHtmlString(false, false);
 				dataPanel.setWidget(ia, 0, new InlineHTML(html));
 			}
 			wrapperPanel.add(dataPanel);

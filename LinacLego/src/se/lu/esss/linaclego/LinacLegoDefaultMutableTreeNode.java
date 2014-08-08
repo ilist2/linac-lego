@@ -28,6 +28,7 @@ public class LinacLegoDefaultMutableTreeNode extends DefaultMutableTreeNode
 		html = html + "<font color=\"0000FF\">" + "linacLego" + "</font>";
 		html =  html + "<font color=\"FF0000\"> title</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + linacLego.getLinacLegoTitle() + "\"</font>";
 		html =  html + "<font color=\"FF0000\">" + " " + "revNo" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + linacLego.getLinacLegoRevNo() + "\"</font>";
+		html =  html + "<font color=\"FF0000\">" + " " + "rev Comment" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + linacLego.getLinacLegoRevComment() + "\"</font>";
 		html = html + "</html>";
 		setUserObject(html); 
 	}

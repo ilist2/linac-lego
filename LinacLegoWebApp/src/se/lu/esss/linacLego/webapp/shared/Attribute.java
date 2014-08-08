@@ -42,18 +42,20 @@ public class Attribute implements Serializable
 		setAttValueStyle(attributeStyle.attValueStyle);
 		setAttWhiteSpaceStyle(attributeStyle.attWhiteSpaceStyle);
 	}
-	public String getHtml(boolean addPadding)
+	public String getHtml(boolean addPadding, boolean addParagraph)
 	{
 		String html = "";
+		if (addParagraph) html = html + "<br>";
 		html = html + textSpan(" " + attributeName + "=", attLabelStyle);
 		html = html + textSpan(attributeValue, attValueStyle);
 		if (addPadding) html = html + padSpaceEnd(attributeValue, valueWidth);
+//		if (addParagraph) html = html + "</p>";
 		return html;
 	}
-	public String getInlineHtmlString(boolean addPadding)
+	public String getInlineHtmlString(boolean addPadding, boolean addParagraph)
 	{
 		String html = "<html>";
-		html = html + getHtml(addPadding);
+		html = html + getHtml(addPadding, addParagraph);
 		html = html + "</html>";
 		return html;
 	}

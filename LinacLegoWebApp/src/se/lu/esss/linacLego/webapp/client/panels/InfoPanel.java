@@ -23,6 +23,9 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 	private VerticalPanel messagePanel;
 	private Image messageImage;
 	private Label messageLabel;
+	private String currentSource = "Master";
+	private String previousSource = "Master";
+	private Label sourceViewLabel = new Label("Loading Master Source...");
 	CaptionPanel latticeVersionCaptionPanel;
 	CaptionPanel ReloadSourceCaptionPanel;
 	InlineHTML latticeVersionInlineHTML;
@@ -43,7 +46,12 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 	public CaptionPanel getLatticeVersionCaptionPanel() {return latticeVersionCaptionPanel;}
 	public InlineHTML getLatticeVersionInlineHTML() {return latticeVersionInlineHTML;}
 	public CaptionPanel getLinkButtonCaptionPanel() {return ReloadSourceCaptionPanel;}
+	public String getCurrentSource() {return currentSource;}
+	public String getPreviousSource() {return previousSource;}
+	public Label getSourceViewLabel() {return sourceViewLabel;}
 	
+	public void setCurrentSource(String currentSource) {this.currentSource = currentSource;}
+
 	public InfoPanel(MyTabLayoutPanel myTabLayoutPanel)
 	{
 		super(myTabLayoutPanel);
@@ -118,6 +126,9 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		ReloadSourceCaptionPanel = new CaptionPanel("Reload Source");
 		ReloadSourceCaptionPanel.setVisible(false);
 		ReloadSourceCaptionPanel.add(reloadSourceButtonGrid);
+
+		CaptionPanel sourceTypeCaptionPanel = new CaptionPanel("Current Source");
+		sourceTypeCaptionPanel.add(sourceViewLabel);
 		
 		VerticalPanel vp1 = new VerticalPanel();
 		vp1.add(versionCaptionPanel);
@@ -129,6 +140,7 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		vp2.add(messagePanel);
 		vp2.add(latticeVersionCaptionPanel);
 		vp2.add(ReloadSourceCaptionPanel);
+		vp2.add(sourceTypeCaptionPanel);
 		hp1.add(vp1);
 		hp1.add(vp2);
 		add(hp1);
@@ -171,6 +183,9 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 		@Override
 		public void onClick(ClickEvent event) 
 		{
+			infoPanel.previousSource = infoPanel.currentSource;
+			infoPanel.currentSource = sourceType;
+			infoPanel.getSourceViewLabel().setText("Loading " + sourceType + " source...");
 			if (sourceType.equals("Master"))
 			{
 				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Master Source...");
@@ -179,12 +194,14 @@ public class InfoPanel extends MyTabLayoutScrollPanel
 			}
 			if (sourceType.equals("Development"))
 			{
+				infoPanel.previousSource = infoPanel.currentSource;
 				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Development Source...");
 				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoDevelopmentLink);
 				infoPanel.linacLegoWebApp.loadDataPanels();
 			}
 			if (sourceType.equals("Previous"))
 			{
+				infoPanel.previousSource = infoPanel.currentSource;
 				infoPanel.linacLegoWebApp.getStatusTextArea().addStatus("Reloading Previous Version Source...");
 				infoPanel.linacLegoWebApp.setLinks(infoPanel.linacLegoWebApp.linacLegoPrevVersionLink);
 				infoPanel.linacLegoWebApp.loadDataPanels();

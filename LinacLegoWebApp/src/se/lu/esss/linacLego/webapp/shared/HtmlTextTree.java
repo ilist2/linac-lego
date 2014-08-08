@@ -89,25 +89,25 @@ public class HtmlTextTree implements Serializable
 		return html;
 		
 	}
-	public String getInlineHtmlString(int iconWidthPx, int iconHeightPx, boolean addPadding)
+	public String getInlineHtmlString(int iconWidthPx, int iconHeightPx, boolean addPadding, boolean addParagraph)
 	{
 		String html = "<html>";
 		if (iconImageLocation != null) html = html + getIconImageHtml(iconWidthPx, iconWidthPx);
 		html = html + getTag();
 		if (hasAttributes())
 		{
-			for (int ic = 0; ic < numAttributes(); ++ic) html = html + attributeList.get(ic).getHtml(addPadding);
+			for (int ic = 0; ic < numAttributes(); ++ic) html = html + attributeList.get(ic).getHtml(addPadding, addParagraph);
 		}
 		html = html + "</html>";
 		return html;
 	}
-	public String getInlineHtmlString(boolean addPadding)
+	public String getInlineHtmlString(boolean addPadding, boolean addParagraph)
 	{
 		String html = "<html>";
 		html = html + getTag();
 		if (hasAttributes())
 		{
-			for (int ic = 0; ic < numAttributes(); ++ic) html = html + attributeList.get(ic).getHtml(addPadding);
+			for (int ic = 0; ic < numAttributes(); ++ic) html = html + attributeList.get(ic).getHtml(addPadding, addParagraph);
 		}
 		html = html + "</html>";
 		return html;

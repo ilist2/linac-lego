@@ -62,7 +62,7 @@ public class TreeViewPanel extends VerticalPanel
 		
 		MyTreeItem(HtmlTextTree textTree, int iconWidthPx, int iconHeightPx)
 		{
-			this(new InlineHTML(textTree.getInlineHtmlString(iconWidthPx, iconHeightPx, true)));
+			this(new InlineHTML(textTree.getInlineHtmlString(iconWidthPx, iconHeightPx, true, false)));
 			this.textTree = textTree;
 			this.iconWidthPx = iconWidthPx;
 			this.iconHeightPx = iconHeightPx;
@@ -98,7 +98,7 @@ public class TreeViewPanel extends VerticalPanel
 					addItem(myTreeItem);
 				}
 			}
-			inlineHTML.setHTML("<font style=\"font-weight:bold;\" size=\"3px\" color=\"FFFFFF\">* </font>" + textTree.getInlineHtmlString(iconWidthPx, iconHeightPx, true));
+			inlineHTML.setHTML("<font style=\"font-weight:bold;\" size=\"3px\" color=\"FFFFFF\">* </font>" + textTree.getInlineHtmlString(iconWidthPx, iconHeightPx, true, false));
 			beenExpanded = true;
 			setState(true);
 		}

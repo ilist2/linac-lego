@@ -42,7 +42,8 @@ public class LinacLegoPbsHtmlTextTree
 		htmlTextTree.setIconImageLocation("images/lego.jpg");
 		htmlTextTree.setTag("linacLego");
 		htmlTextTree.addAttribute("title", linacLego.getLinacLegoTitle(), 1);
-		htmlTextTree.addAttribute("revNo", Integer.toString(linacLego.getLinacLegoRevNo()), 1);
+		htmlTextTree.addAttribute("revNo", linacLego.getLinacLegoRevNo(), 1);
+//		htmlTextTree.addAttribute("rev Comment", linacLego.getLinacLegoRevComment(), 1);
 		
 	}
 	public void inheritStyles(LinacLegoPbsHtmlTextTree parentLinacLegoPbsHtmlTextTree)

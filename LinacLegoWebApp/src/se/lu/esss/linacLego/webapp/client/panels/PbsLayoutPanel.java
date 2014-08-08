@@ -41,7 +41,7 @@ public class PbsLayoutPanel extends VerticalPanel
 		if (getWidgetCount() > 0) clear();
 	      myTabLayoutScrollPanel.getMyTabLayoutPanel().getLinacLegoWebApp().getStatusTextArea().addStatus("Finished building " + treeType + " layout view.");
 	      PbsLevelPanel pbsLevelPanel = new PbsLevelPanel(0, textTree.getTextTreeArrayList().get(0), true, null, myTabLayoutScrollPanel);
-	      add(new InlineHTML(textTree.getInlineHtmlString(false)));
+	      add(new InlineHTML(textTree.getInlineHtmlString(false, false)));
 	      add(pbsLevelPanel);
 	      pbsLevelPanel.focusPanel.setFocus(true);
 	}

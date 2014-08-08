@@ -25,8 +25,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class LinacLegoWebApp implements EntryPoint 
 {
-	String version = "v1.1";
-	String versionDate = "July 31, 2014";
+	String version = "v1.2";
+	String versionDate = "August 8, 2014";
 
 	private int statusTextAreaHeight = 150;
 	private int myTabLayoutPanelHeightBarHeightPx = 30;
@@ -162,15 +162,18 @@ public class LinacLegoWebApp implements EntryPoint
 			linacLegoWebApp.infoPanel.getMessageLabel().setText("Failed to load Xml View data from server.");
 			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(true);
 			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
+			linacLegoWebApp.infoPanel.setCurrentSource(linacLegoWebApp.infoPanel.getPreviousSource());
+			linacLegoWebApp.infoPanel.getSourceViewLabel().setText("Currently viewing " + linacLegoWebApp.infoPanel.getCurrentSource() + " Source");
 		}
 		@Override
 		public void onSuccess(HtmlTextTree result) 
 		{
-			linacLegoWebApp.infoPanel.getLatticeVersionInlineHTML().setHTML(result.getInlineHtmlString(false));
+			linacLegoWebApp.infoPanel.getLatticeVersionInlineHTML().setHTML(result.getInlineHtmlString(false, true));
 			linacLegoWebApp.infoPanel.getLatticeVersionCaptionPanel().setVisible(true);
 			linacLegoWebApp.xmlViewPanel.addTree(result);
 			linacLegoWebApp.infoPanel.getMessagePanel().setVisible(false);
 			linacLegoWebApp.infoPanel.getLinkButtonCaptionPanel().setVisible(true);
+			linacLegoWebApp.infoPanel.getSourceViewLabel().setText("Currently viewing " + linacLegoWebApp.infoPanel.getCurrentSource() + " Source");
 		}
 	}
 	public static class LoadPbsViewPanelsCallback implements AsyncCallback<HtmlTextTree>

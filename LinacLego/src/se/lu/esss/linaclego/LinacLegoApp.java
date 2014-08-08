@@ -67,8 +67,8 @@ public class LinacLegoApp extends JFrame
 	ClassLoader loader;
 	
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
-	protected String version = "v2.3";
-	protected String versionDate = "June 29, 2014";
+	protected String version = "v2.4";
+	protected String versionDate = "August 8, 2014";
 	private String suggestedFileName = "linacLego.xml";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
@@ -643,7 +643,15 @@ public class LinacLegoApp extends JFrame
 				{
 					if (!attributes.get(ii)[0].equals("id"))
 					{
-						html =  html + "<font color=\"FF0000\">" + " " + attributes.get(ii)[0] + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + attributes.get(ii)[1] + "\"</font>";
+						if (!attributes.get(ii)[0].equals("xmlns:xi"))
+						{
+							if (!attributes.get(ii)[0].equals("xml:base"))
+							{
+									html =  html + "<font color=\"FF0000\">" + " " + attributes.get(ii)[0] 
+											+ "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" 
+											+ attributes.get(ii)[1] + "\"</font>";
+							}
+						}
 					}
 				}
 			}
@@ -654,27 +662,6 @@ public class LinacLegoApp extends JFrame
 			}
 			html = html + "</html>";
 			return html;
-			
-		}
-		String getAttributes()
-		{
-			ArrayList<String[]> attributes = sxr.getAttributes();
-			if (attributes == null) return "";
-			String atts = "";
-			for (int ii = 0; ii < attributes.size(); ++ii)
-			{
-				if (!attributes.get(ii)[0].equals("id"))
-				{
-					atts = atts + " " + attributes.get(ii)[0] + "=\"" + attributes.get(ii)[1] + "\"";
-				}
-			}
-			return atts;
-		}
-		String getCData()
-		{
-			String cdata = sxr.getCharacterData();
-			if (cdata == null) cdata = "";
-			return cdata;
 		}
 	}
 }

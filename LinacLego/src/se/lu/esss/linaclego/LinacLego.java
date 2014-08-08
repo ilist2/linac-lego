@@ -34,7 +34,8 @@ public class LinacLego
 	private boolean printControlPoints = true;
 	private boolean printIdInTraceWin = true;
 	private StatusPanel statusPanel = null;
-	private int linacLegoRevNo = -1;
+	private String linacLegoRevNo = "-1";
+	private String linacLegoRevComment = "";
 	private File reportDirectory = null;
 	private boolean reportDirectoryExists = false;
 	
@@ -48,8 +49,10 @@ public class LinacLego
 		try 
 		{
 			linacLegoTag = new SimpleXmlReader(simpleXmlDoc);
-			try {linacLegoRevNo = Integer.parseInt(linacLegoTag.attribute("revNo"));} 
-			catch (SimpleXmlException e) {if (e.getMessage().equals("Attribute does not exist")) linacLegoRevNo = 0;}
+			try {linacLegoRevNo = linacLegoTag.attribute("revNo");} 
+			catch (SimpleXmlException e) {if (e.getMessage().equals("Attribute does not exist")) linacLegoRevNo = "0";}
+			try {linacLegoRevComment = linacLegoTag.attribute("comment");} 
+			catch (SimpleXmlException e) {if (e.getMessage().equals("Attribute does not exist")) linacLegoRevComment = "";}
 			cellModelList = new ArrayList<CellModel>();
 			SimpleXmlReader cellModelsListTag = linacLegoTag.tagsByName("header").tag(0).tagsByName("cellModels");
 			if (cellModelsListTag.numChildTags() > 0)
@@ -212,7 +215,8 @@ public class LinacLego
 	public String getLinacLegoTitle() {return linacLegoTitle;}
 	public boolean isPrintControlPoints() {return printControlPoints;}
 	public boolean isPrintIdInTraceWin() {return printIdInTraceWin;}
-	public int getLinacLegoRevNo() {return linacLegoRevNo;}
+	public String getLinacLegoRevNo() {return linacLegoRevNo;}
+	public String getLinacLegoRevComment() {return linacLegoRevComment;}
 	public Linac getLinac() {return linac;}
 	
 	public void setPrintControlPoints(boolean printControlPoints) {this.printControlPoints = printControlPoints;}
