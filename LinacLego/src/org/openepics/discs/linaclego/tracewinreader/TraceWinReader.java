@@ -329,10 +329,11 @@ public class TraceWinReader
 	public SimpleXmlDoc getSimpleXmlDoc() {return xw.getSimpleXmlDoc();}
 	public static void main(String[] args) throws LinacLegoException 
 	{
-		String path = "C:\\Users\\davidmcginnis\\Google Drive\\ESS\\gitRepositories\\lattice-repository-development\\aig\\TraceWinInputFiles\\dtl.dat";
+//		String path = "C:\\Users\\davidmcginnis\\Google Drive\\ESS\\gitRepositories\\lattice-repository-development\\aig\\TraceWinInputFiles\\dtl.dat";
+		String path = "C:\\Users\\davidmcginnis\\Google Drive\\ESS\\gitRepositories\\lattice-repository-development\\aig\\linacLegoOutput\\linacLego.dat";
 		TraceWinReader twr = new TraceWinReader(path, 3.6, 352.21, null);
 		twr.readTraceWinFile();
-		twr.saveXmlFile("test\\dtlTest.xml");
+		twr.saveXmlFile("test\\test.xml");
 	}
 
 }

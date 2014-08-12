@@ -1,5 +1,7 @@
 package org.openepics.discs.linaclego.tracewinreader;
 
+import java.util.Scanner;
+
 import org.openepics.discs.linaclego.tracewinreader.tracewinbledata.TraceWinBendData;
 import org.openepics.discs.linaclego.tracewinreader.tracewinbledata.TraceWinBleData;
 import org.openepics.discs.linaclego.tracewinreader.tracewinbledata.TraceWinDriftData;
@@ -30,8 +32,23 @@ public class TraceWinCommandReader
 	TraceWinCommandReader(String inputString, TraceWinReader traceWinReader)
 	{
 		this.traceWinReader = traceWinReader;
+// Get rid of leading spaces and delimators
+		Scanner inputScanner = new Scanner(inputString);
+		inputScanner.useDelimiter("[, \t]");
+		inputString = inputString.substring(inputString.indexOf(inputScanner.next()));
+		inputScanner.close();
+// Get rid of leader description
+		if (inputString.indexOf(":") >= 0)
+		{
+			inputScanner = new Scanner(inputString.substring(inputString.indexOf(":") + 1));
+			inputScanner.useDelimiter("[, \t]");
+			inputString = inputString.substring(inputString.indexOf(inputScanner.next()));
+			inputScanner.close();
+		}
+
 		String delims = "[ ,\t]+";
 		String[] splitResponse = null;
+		
 		splitResponse = inputString.split(delims);
 		if (splitResponse.length > 0)
 		{

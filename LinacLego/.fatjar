@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Mon Jul 14 17:23:45 CEST 2014
+#Tue Aug 12 23:09:38 CEST 2014
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
 jarname=LinacLegoApp.jar
 manifest.mergeall=true
-manifest.mainclass=se.lu.esss.linaclego.LinacLegoApp
+manifest.mainclass=org.openepics.discs.linaclego.LinacLegoApp
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
