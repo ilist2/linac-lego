@@ -35,7 +35,12 @@ public class TraceWinCommandReader
 // Get rid of leading spaces and delimators
 		Scanner inputScanner = new Scanner(inputString);
 		inputScanner.useDelimiter("[, \t]");
-		inputString = inputString.substring(inputString.indexOf(inputScanner.next()));
+		try{inputString = inputString.substring(inputString.indexOf(inputScanner.next()));}
+		catch (java.util.NoSuchElementException e) 
+		{
+			inputScanner.close();
+			return;
+		}
 		inputScanner.close();
 // Get rid of leader description
 		if (inputString.indexOf(":") >= 0)

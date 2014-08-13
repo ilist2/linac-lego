@@ -53,7 +53,8 @@ public class TraceWinDtlCellData extends TraceWinBleData
 		double quadLen = getDoubleValue("q1Lenmm");
 		if (prevTraceWinBleData != null ) quadLen = quadLen + prevTraceWinBleData.getDoubleValue("q2Lenmm");
 		double totalGapLen = getDoubleValue("cellLenmm") - getDoubleValue("q1Lenmm") - getDoubleValue("q2Lenmm");
-		double driftLen1 = 0.5 * getDoubleValue("cellLenmm") - getDoubleValue("q1Lenmm") - getDoubleValue("cellCentermm");
+//		double driftLen1 = 0.5 * getDoubleValue("cellLenmm") - getDoubleValue("q1Lenmm") - getDoubleValue("cellCentermm");
+		double driftLen1 = 0.5 * totalGapLen + getDoubleValue("cellCentermm");
 		double driftLen2 = totalGapLen - driftLen1;
 		double gapLen = 2.0 * getDoubleValue("radApermm");
 		double noseConeDnLen = driftLen1 - gapLen / 2.0;
@@ -69,8 +70,9 @@ public class TraceWinDtlCellData extends TraceWinBleData
 		{
 			prevTotalGapLen = prevTraceWinBleData.getDoubleValue("cellLenmm") 
 					- prevTraceWinBleData.getDoubleValue("q1Lenmm") - prevTraceWinBleData.getDoubleValue("q2Lenmm");
-			prevDriftLen1 = 0.5 * prevTraceWinBleData.getDoubleValue("cellLenmm") 
-					- prevTraceWinBleData.getDoubleValue("q1Lenmm") - prevTraceWinBleData.getDoubleValue("cellCentermm");
+//			prevDriftLen1 = 0.5 * prevTraceWinBleData.getDoubleValue("cellLenmm") 
+//					- prevTraceWinBleData.getDoubleValue("q1Lenmm") - prevTraceWinBleData.getDoubleValue("cellCentermm");
+			prevDriftLen1 = 0.5 * prevTotalGapLen + prevTraceWinBleData.getDoubleValue("cellCentermm");
 			prevDriftLen2 = prevTotalGapLen - prevDriftLen1;
 			prevGapLen = 2.0 * prevTraceWinBleData.getDoubleValue("radApermm");
 			noseConeUpLen = prevDriftLen2 - prevGapLen / 2.0;
