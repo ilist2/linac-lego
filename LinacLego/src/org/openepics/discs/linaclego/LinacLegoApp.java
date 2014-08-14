@@ -80,7 +80,7 @@ public class LinacLegoApp extends JFrame
 	
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
 	protected String version = "v2.5";
-	protected String versionDate = "August 12, 2014";
+	protected String versionDate = "August 14, 2014";
 	private String suggestedFileName = "linacLego.xml";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
