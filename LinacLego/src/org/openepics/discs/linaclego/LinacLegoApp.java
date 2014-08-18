@@ -286,7 +286,8 @@ public class LinacLegoApp extends JFrame
 		try 
 		{
 			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile.toURI().toURL());
-			linacLego = new LinacLego(simpleXmlDoc, statusBar);
+			linacLego = new LinacLego(simpleXmlDoc);
+			linacLego.setStatusPanel(statusBar);
 			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "File"), "Save XML File").setEnabled(true);
@@ -389,7 +390,8 @@ public class LinacLegoApp extends JFrame
 				openedXmlFile = new File(simpleXmlDoc.getXmlSourceUrl().toURI());
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "File"), "Save XML File").setEnabled(true);
 				
-				linacLego = new LinacLego(simpleXmlDoc, statusBar);
+				linacLego = new LinacLego(simpleXmlDoc);
+				linacLego.setStatusPanel(statusBar);
 				xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Slot Models").setEnabled(true);
@@ -532,7 +534,8 @@ public class LinacLegoApp extends JFrame
 		{
 			try 
 			{
-				linacLego = new LinacLego(simpleXmlDoc, statusBar);
+				linacLego = new LinacLego(simpleXmlDoc);
+				linacLego.setStatusPanel(statusBar);
 				xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 				linacLego.setPrintControlPoints(printControlPoints);
 				linacLego.setReportDirectory(new File(openedXmlFile.getParent()));

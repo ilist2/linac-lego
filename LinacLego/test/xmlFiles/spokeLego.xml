@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE linacLego SYSTEM "../dtdFiles/LinacLego.dtd">
+<linacLego title="EssSpokeLinac" revNo="2" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <header>
+        <slotModels id="SpokeSlotModels">
+            <slotModel id="spokeLEDP">
+                <var id="g1" type="double"/>
+                <var id="g2" type="double"/>
+                <ble id="DR0005" type="drift">
+                    <d id="l" type="double" unit="mm">240</d>
+                    <d id="r" type="double" unit="mm">20</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="DR0010" type="drift">
+                    <d id="l" type="double" unit="mm">160</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="QD0020" model="Quad310" type="quad">
+                    <d id="l" type="double" unit="mm">310</d>
+                    <d id="g" type="double" unit="T/m">g1</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                </ble>
+                <ble id="DR0030" type="drift">
+                    <d id="l" type="double" unit="mm">460</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="QD0040" model="Quad310" type="quad">
+                    <d id="l" type="double" unit="mm">310</d>
+                    <d id="g" type="double" unit="T/m">g2</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                </ble>
+                <ble id="DR0050" type="drift">
+                    <d id="l" type="double" unit="mm">400</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+            </slotModel>
+            <slotModel id="spokeLwu">
+                <var id="g1" type="double"/>
+                <var id="g2" type="double"/>
+                <ble id="DR0010" type="drift">
+                    <d id="l" type="double" unit="mm">160</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="QD0020" model="Quad310" type="quad">
+                    <d id="l" type="double" unit="mm">310</d>
+                    <d id="g" type="double" unit="T/m">g1</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                </ble>
+                <ble id="DR0030" type="drift">
+                    <d id="l" type="double" unit="mm">460</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="QD0040" model="Quad310" type="quad">
+                    <d id="l" type="double" unit="mm">310</d>
+                    <d id="g" type="double" unit="T/m">g2</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                </ble>
+                <ble id="DR0050" type="drift">
+                    <d id="l" type="double" unit="mm">160</d>
+                    <d id="r" type="double" unit="mm">30</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+            </slotModel>
+            <slotModel id="spokeCryomodule">
+                <var id="xelmax1" type="double"/>
+                <var id="xelmax2" type="double"/>
+                <var id="rfpdeg1" type="double"/>
+                <var id="rfpdeg2" type="double"/>
+                <ble id="DR0010" type="drift">
+                    <d id="l" type="double" unit="mm">368.5</d>
+                    <d id="r" type="double" unit="mm">28</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="FM0020" model="spokeCavity" type="fieldMap">
+                    <d id="rfpdeg" type="double" unit="deg">rfpdeg1</d>
+                    <d id="xelmax" type="double" unit="unit">xelmax1</d>
+                    <d id="radiusmm" type="double" unit="mm">28</d>
+                    <d id="lengthmm" type="double" unit="mm">994</d>
+                    <d id="file" type="string" unit="unit">spokeFieldMap</d>
+                    <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                </ble>
+                <ble id="DR0030" type="drift">
+                    <d id="l" type="double" unit="mm">135</d>
+                    <d id="r" type="double" unit="mm">28</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+                <ble id="FM0040" model="spokeCavity" type="fieldMap">
+                    <d id="rfpdeg" type="double" unit="deg">rfpdeg2</d>
+                    <d id="xelmax" type="double" unit="unit">xelmax2</d>
+                    <d id="radiusmm" type="double" unit="mm">28</d>
+                    <d id="lengthmm" type="double" unit="mm">994</d>
+                    <d id="file" type="string" unit="unit">spokeFieldMap</d>
+                    <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                </ble>
+                <ble id="DR0050" type="drift">
+                    <d id="l" type="double" unit="mm">368.5</d>
+                    <d id="r" type="double" unit="mm">28</d>
+                    <d id="ry" type="double" unit="mm">0</d>
+                </ble>
+            </slotModel>
+        </slotModels>
+        <cellModels id="SpokeCellModels">
+            <cellModel id="spokeLEDPCell">
+                <var id="g1" type="double"/>
+                <var id="g2" type="double"/>
+                <var id="xelmax1" type="double"/>
+                <var id="xelmax2" type="double"/>
+                <var id="rfpdeg1" type="double"/>
+                <var id="rfpdeg2" type="double"/>
+                <slot id="slot010" model="spokeLEDP">
+                    <d id="g1" type="double">g1</d>
+                    <d id="g2" type="double">g2</d>
+                </slot>
+                <slot id="slot020" model="spokeCryomodule">
+                    <d id="xelmax1" type="double">xelmax1</d>
+                    <d id="xelmax2" type="double">xelmax2</d>
+                    <d id="rfpdeg1" type="double">rfpdeg1</d>
+                    <d id="rfpdeg2" type="double">rfpdeg2</d>
+                </slot>
+            </cellModel>
+            <cellModel id="spokeCell">
+                <var id="g1" type="double"/>
+                <var id="g2" type="double"/>
+                <var id="xelmax1" type="double"/>
+                <var id="xelmax2" type="double"/>
+                <var id="rfpdeg1" type="double"/>
+                <var id="rfpdeg2" type="double"/>
+                <slot id="slot010" model="spokeLwu">
+                    <d id="g1" type="double">g1</d>
+                    <d id="g2" type="double">g2</d>
+                </slot>
+                <slot id="slot020" model="spokeCryomodule">
+                    <d id="xelmax1" type="double">xelmax1</d>
+                    <d id="xelmax2" type="double">xelmax2</d>
+                    <d id="rfpdeg1" type="double">rfpdeg1</d>
+                    <d id="rfpdeg2" type="double">rfpdeg2</d>
+                </slot>
+            </cellModel>
+        </cellModels>
+		<setPoints id="SpokeSetPoints">
+			<setPoint devName="SWU02-BMD:QH-010"> 
+				<d id="setting" type="double" unit="Amps">4.85226</d>
+				<cnpt section="SPOK" cell="cell020" slot="spokeLwu" ble="QD0020" id="g" >
+					<tf id="0">0</tf>
+					<tf id="1">1</tf>
+				</cnpt>
+			</setPoint>
+			<setPoint devName="SWU02-BMD:QV-020"> 
+				<d id="setting" type="double" unit="Amps">4.77927</d>
+				<cnpt section="SPOK" cell="cell020" id="g2" >
+					<tf id="0">0</tf>
+					<tf id="1">-1</tf>
+				</cnpt>
+			</setPoint>
+		</setPoints>
+    </header>
+    <linac>
+        <linacData>
+            <d id="ekin" type="double" unit="MeV">89.0</d>
+            <d id="beamFrequency" type="double" unit="MHz">352.21</d>
+            <d id="xSurvey" type="double" unit="m">0.0</d>
+            <d id="ySurvey" type="double" unit="m">0.0</d>
+            <d id="zSurvey" type="double" unit="m">0.0</d>
+            <d id="pitchSurvey" type="double" unit="deg">0.0</d>
+            <d id="rollSurvey" type="double" unit="deg">0.0</d>
+            <d id="yawSurvey" type="double" unit="deg">0.0</d>
+            <d id="alphaX" type="double" unit="unit">0.0</d>
+            <d id="alphaY" type="double" unit="unit">0.0</d>
+            <d id="alphaZ" type="double" unit="unit">0.0</d>
+            <d id="betaX" type="double" unit="mm/mrad">0.0</d>
+            <d id="betaY" type="double" unit="mm/mrad">0.0</d>
+            <d id="betaZ" type="double" unit="deg/keV">0.0</d>
+            <d id="emitX" type="double" unit="mm-mrad">0.0</d>
+            <d id="emitY" type="double" unit="mm-mrad">0.0</d>
+            <d id="emitZ" type="double" unit="deg-keV">0.0</d>
+            <d id="beamCurrent" type="double" unit="mA">0.0</d>
+        </linacData>
+        <section id="SPOK" rfHarmonic="1">
+            <cell id="cell010" model="spokeLEDPCell">
+                <d id="g1" type="double">5.23025</d>
+                <d id="g2" type="double">-4.68975</d>
+                <d id="xelmax1" type="double">0.868945</d>
+                <d id="xelmax2" type="double">0.865525</d>
+                <d id="rfpdeg1" type="double">-6.65943</d>
+                <d id="rfpdeg2" type="double">4.03247</d>
+            </cell>
+            <cell id="cell020" model="spokeCell">
+                <d id="g1" type="double">4.85226</d>
+                <d id="g2" type="double">-4.77927</d>
+                <d id="xelmax1" type="double">0.890626</d>
+                <d id="xelmax2" type="double">0.891124</d>
+                <d id="rfpdeg1" type="double">22.0298</d>
+                <d id="rfpdeg2" type="double">31.6618</d>
+            </cell>
+            <cell id="cell030" model="spokeCell">
+                <d id="g1" type="double">4.46164</d>
+                <d id="g2" type="double">-4.45154</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">37.712</d>
+                <d id="rfpdeg2" type="double">47.397</d>
+            </cell>
+            <cell id="cell040" model="spokeCell">
+                <d id="g1" type="double">4.46152</d>
+                <d id="g2" type="double">-4.4414</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">56.63</d>
+                <d id="rfpdeg2" type="double">65.413</d>
+            </cell>
+            <cell id="cell050" model="spokeCell">
+                <d id="g1" type="double">4.46848</d>
+                <d id="g2" type="double">-4.44541</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">73.371</d>
+                <d id="rfpdeg2" type="double">80.784</d>
+            </cell>
+            <cell id="cell060" model="spokeCell">
+                <d id="g1" type="double">4.46634</d>
+                <d id="g2" type="double">-4.43481</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">87.771</d>
+                <d id="rfpdeg2" type="double">94.355</d>
+            </cell>
+            <cell id="cell070" model="spokeCell">
+                <d id="g1" type="double">4.46711</d>
+                <d id="g2" type="double">-4.43252</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">100.561</d>
+                <d id="rfpdeg2" type="double">105.859</d>
+            </cell>
+            <cell id="cell080" model="spokeCell">
+                <d id="g1" type="double">4.43614</d>
+                <d id="g2" type="double">-4.40253</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">110.806</d>
+                <d id="rfpdeg2" type="double">115.428</d>
+            </cell>
+            <cell id="cell090" model="spokeCell">
+                <d id="g1" type="double">4.425</d>
+                <d id="g2" type="double">-4.39227</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">119.749</d>
+                <d id="rfpdeg2" type="double">123.791</d>
+            </cell>
+            <cell id="cell100" model="spokeCell">
+                <d id="g1" type="double">4.40645</d>
+                <d id="g2" type="double">-4.37373</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">127.574</d>
+                <d id="rfpdeg2" type="double">130.722</d>
+            </cell>
+            <cell id="cell110" model="spokeCell">
+                <d id="g1" type="double">4.41489</d>
+                <d id="g2" type="double">-4.38144</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">133.636</d>
+                <d id="rfpdeg2" type="double">136.333</d>
+            </cell>
+            <cell id="cell120" model="spokeCell">
+                <d id="g1" type="double">4.38656</d>
+                <d id="g2" type="double">-4.3545</d>
+                <d id="xelmax1" type="double">1</d>
+                <d id="xelmax2" type="double">1</d>
+                <d id="rfpdeg1" type="double">138.828</d>
+                <d id="rfpdeg2" type="double">141.137</d>
+            </cell>
+            <cell id="cell130" model="spokeCell">
+                <d id="g1" type="double">3.82865</d>
+                <d id="g2" type="double">-3.75635</d>
+                <d id="xelmax1" type="double">0.964919</d>
+                <d id="xelmax2" type="double">0.963578</d>
+                <d id="rfpdeg1" type="double">146.83</d>
+                <d id="rfpdeg2" type="double">148.804</d>
+            </cell>
+        </section>
+    </linac>
+</linacLego>
+

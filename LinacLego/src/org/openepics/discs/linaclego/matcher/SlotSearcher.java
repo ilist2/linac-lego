@@ -294,7 +294,7 @@ public class SlotSearcher
 	{
 		String xmlFileDirPath = "C:\\EclipseWorkSpace2014\\LinacLego\\EssLinacXmlFiles";
 		String xmlFileName = "SpokeOptimus2.xml";
-		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName).toURI().toURL()), null);
+		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName).toURI().toURL()));
 		SlotSearcher slotSearcher = new SlotSearcher(linacLego);
 		slotSearcher.replaceSlotsWithMatches();
 		slotSearcher.saveXmlFile(xmlFileDirPath + "\\SpokeOptimus3.xml");

@@ -26,8 +26,8 @@ import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlReader;
 import org.openepics.discs.linaclego.structures.Linac;
 import org.openepics.discs.linaclego.structures.cell.CellModel;
+import org.openepics.discs.linaclego.structures.elements.SetPoint;
 import org.openepics.discs.linaclego.structures.slot.SlotModel;
-
 import org.openepics.discs.linaclego.utilities.StatusPanel;
 
 public class LinacLego 
@@ -41,6 +41,7 @@ public class LinacLego
 	private SimpleXmlReader linacLegoTag;
 	private ArrayList<CellModel> cellModelList;
 	private ArrayList<SlotModel> slotModelList;
+	private ArrayList<SetPoint> setPointList;
 	private SimpleXmlReader linacTag;
 	private String linacLegoTitle;
 	private double eVout = -1.0;
@@ -54,10 +55,9 @@ public class LinacLego
 	
 	private Linac linac = null;
 	
-	public LinacLego(SimpleXmlDoc simpleXmlDoc, StatusPanel statusPanel) throws LinacLegoException   
+	public LinacLego(SimpleXmlDoc simpleXmlDoc) throws LinacLegoException   
 	{
 		this.simpleXmlDoc = simpleXmlDoc;
-		this.statusPanel = statusPanel;
 		reportDirectoryExists = false;
 		try 
 		{
@@ -98,6 +98,22 @@ public class LinacLego
 					}
 				}
 			}
+			setPointList = new ArrayList<SetPoint>();
+			SimpleXmlReader setPointsListTag = linacLegoTag.tagsByName("header").tag(0).tagsByName("setPoints");
+			if (setPointsListTag.numChildTags() > 0)
+			{
+				for (int icol = 0; icol < setPointsListTag.numChildTags(); ++icol)
+				{
+					SimpleXmlReader setPointListTag = setPointsListTag.tag(icol).tagsByName("setPoint");
+					if (setPointListTag.numChildTags() > 0)
+					{
+						for (int itag = 0; itag < setPointListTag.numChildTags(); ++itag)
+						{
+							setPointList.add(new SetPoint(setPointListTag.tag(itag), this));
+						}
+					}
+				}
+			}
 			linacTag =  linacLegoTag.tagsByName("linac").tag(0);
 			linacLegoTitle = linacLegoTag.attribute("title");
 		} catch (Exception e) 
@@ -106,7 +122,6 @@ public class LinacLego
 			writeStatus(lle.getRootCause());
 			throw lle;
 		}
-
 	}
 	public void setReportDirectory(File parentDirectory)
 	{
@@ -257,21 +272,22 @@ public class LinacLego
 	}
 	public static void main(String[] args) throws LinacLegoException, SimpleXmlException, MalformedURLException, URISyntaxException  
 	{
-		String linacLegoWebSite = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
-		URL inputFileUrl = new URL(linacLegoWebSite + "/public/linacLego.xml");
-//		inputFileUrl = new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\gitRepositories\\EssLinacLatticeRepository\\public\\linacLego.xml").toURI().toURL();
+//		String linacLegoWebSite = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
+//		URL inputFileUrl = new URL(linacLegoWebSite + "/public/linacLego.xml");
+		URL inputFileUrl = new File("C:\\Users\\davidmcginnis\\gitRepositories\\linac-lego\\LinacLego\\test\\xmlFiles\\spokeLego.xml").toURI().toURL();
 		
 		SimpleXmlDoc sxd = new SimpleXmlDoc(inputFileUrl);
-		LinacLego linacLego = new LinacLego(sxd, null);
+		LinacLego linacLego = new LinacLego(sxd);
+		linacLego.setStatusPanel(null);
 		linacLego.setPrintControlPoints(true);
 		linacLego.setPrintIdInTraceWin(true);
-//		linacLego.setReportDirectory(new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\gitRepositories\\EssLinacLatticeRepository\\public\\test"));
+		linacLego.setReportDirectory(new File("C:\\Users\\davidmcginnis\\gitRepositories\\linac-lego\\LinacLego\\test\\xmlFiles"));
 		linacLego.updateLinac();
-/*		linacLego.createTraceWinFile();
+		linacLego.createTraceWinFile();
 		linacLego.createDynacFile();
 		linacLego.printReportTable();
 		linacLego.printPartCounts();
 		linacLego.saveXmlDocument();
-*/	}
+	}
 
 }

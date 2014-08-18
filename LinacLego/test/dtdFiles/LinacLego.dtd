@@ -1,0 +1,77 @@
+<!ELEMENT linacLego (header,linac)>
+<!ATTLIST linacLego
+    xmlns:xi   CDATA       #FIXED    "http://www.w3.org/2001/XInclude"
+	revNo       CDATA       #IMPLIED
+	comment       CDATA       #IMPLIED
+	title CDATA #REQUIRED>
+<!ELEMENT header (xi:include|slotModels|cellModels|setPoints)* >
+<!ELEMENT xi:include (#PCDATA)>
+<!ATTLIST xi:include
+    href       CDATA       #IMPLIED
+    parse      (xml|text)  "xml"
+   xpointer   CDATA       #IMPLIED>
+<!ELEMENT slotModels (slotModel*) >
+<!ATTLIST slotModels
+	xml:base CDATA #IMPLIED
+	xmlns:xi CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT slotModel (var*,ble+)>
+<!ATTLIST slotModel
+	id CDATA #REQUIRED>
+<!ELEMENT var (#PCDATA) >
+<!ATTLIST var
+	type CDATA #REQUIRED
+	id CDATA #REQUIRED>
+<!ELEMENT ble (d+) >
+<!ATTLIST ble
+	type CDATA #REQUIRED
+	model CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT d (#PCDATA) >
+<!ATTLIST d
+	unit CDATA #IMPLIED
+	type CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT tf (#PCDATA) >
+<!ATTLIST tf
+	id CDATA #REQUIRED>
+<!ELEMENT cnpt (tf*) >
+<!ATTLIST cnpt
+	section CDATA #REQUIRED 
+	cell CDATA #REQUIRED 
+	slot CDATA #IMPLIED    
+	ble CDATA #IMPLIED 
+	id CDATA #REQUIRED>
+<!ELEMENT cellModels (cellModel*) >
+<!ATTLIST cellModels
+	xml:base CDATA #IMPLIED
+	xmlns:xi CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT cellModel (var*,slot+) >
+<!ATTLIST cellModel
+	id CDATA #REQUIRED>
+<!ELEMENT slot (d|ble)* >
+<!ATTLIST slot
+	model CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT setPoint (d,cnpt*) >
+<!ATTLIST setPoint
+	devName CDATA #REQUIRED>
+<!ELEMENT setPoints (setPoint*) >
+<!ATTLIST setPoints
+	xmlns:xi CDATA #IMPLIED
+	xml:base CDATA #IMPLIED
+	id CDATA #REQUIRED>
+<!ELEMENT linac (linacData,(xi:include|section)*) >
+<!ELEMENT linacData (d*) >
+<!ELEMENT section (cell+) >
+<!ATTLIST section
+	xml:base CDATA #IMPLIED
+	xmlns:xi CDATA #IMPLIED
+	rfHarmonic CDATA #REQUIRED
+	id CDATA #REQUIRED
+	type CDATA #IMPLIED>
+<!ELEMENT cell (slot|d)* >
+<!ATTLIST cell
+	id CDATA #REQUIRED
+	model CDATA #IMPLIED>
