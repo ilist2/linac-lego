@@ -89,9 +89,12 @@ public class SimpleXmlReader
 				Node testNode = nodeList.item(ii);
 				if (testNode.getNodeType() == Node.ELEMENT_NODE)
 				{
-					if (testNode.getAttributes().getNamedItem(attributeName).getNodeValue().equals(attributeValue))
+					if (testNode.hasAttributes())
 					{
-						return new SimpleXmlReader(nodeList.item(ii));
+						if (testNode.getAttributes().getNamedItem(attributeName).getNodeValue().equals(attributeValue))
+						{
+							return new SimpleXmlReader(nodeList.item(ii));
+						}
 					}
 				}
 			}
@@ -111,9 +114,12 @@ public class SimpleXmlReader
 				{
 					if (testNode.getNodeName().equals(tagName))
 					{
-						if (testNode.getAttributes().getNamedItem(attributeName).getNodeValue().equals(attributeValue))
+						if (testNode.hasAttributes())
 						{
-								return new SimpleXmlReader(nodeList.item(ii));
+							if (testNode.getAttributes().getNamedItem(attributeName).getNodeValue().equals(attributeValue))
+							{
+									return new SimpleXmlReader(nodeList.item(ii));
+							}
 						}
 					}
 				}

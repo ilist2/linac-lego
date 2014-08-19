@@ -79,8 +79,8 @@ public class LinacLegoApp extends JFrame
 	ClassLoader loader;
 	
 	static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
-	protected String version = "v2.5";
-	protected String versionDate = "August 14, 2014";
+	protected String version = "v3.0";
+	protected String versionDate = "August 19, 2014";
 	private String suggestedFileName = "linacLego.xml";
 	private String lastDirectoryPath = "./";
 	LinacLego linacLego;
@@ -288,6 +288,7 @@ public class LinacLegoApp extends JFrame
 			simpleXmlDoc = new SimpleXmlDoc(openedXmlFile.toURI().toURL());
 			linacLego = new LinacLego(simpleXmlDoc);
 			linacLego.setStatusPanel(statusBar);
+			linacLego.readHeader();
 			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
 			DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "File"), "Save XML File").setEnabled(true);
@@ -392,6 +393,7 @@ public class LinacLegoApp extends JFrame
 				
 				linacLego = new LinacLego(simpleXmlDoc);
 				linacLego.setStatusPanel(statusBar);
+				linacLego.readHeader();
 				xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Parse XML File").setEnabled(true);
 				DpmSwingUtilities.findMenuItem(DpmSwingUtilities.findMenu(mainMenuBar, "Actions"), "Match Slot Models").setEnabled(true);
@@ -536,6 +538,7 @@ public class LinacLegoApp extends JFrame
 			{
 				linacLego = new LinacLego(simpleXmlDoc);
 				linacLego.setStatusPanel(statusBar);
+				linacLego.readHeader();
 				xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) linacLego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 				linacLego.setPrintControlPoints(printControlPoints);
 				linacLego.setReportDirectory(new File(openedXmlFile.getParent()));

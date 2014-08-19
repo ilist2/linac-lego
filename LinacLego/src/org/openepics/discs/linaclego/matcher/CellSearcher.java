@@ -329,6 +329,7 @@ public class CellSearcher
 		String xmlFileDirPath = "C:\\EclipseWorkSpace2014\\LinacLego\\EssLinacXmlFiles";
 		String xmlFileName = "SpokeOptimus6.xml";
 		LinacLego linacLego = new LinacLego(new SimpleXmlDoc(new File(xmlFileDirPath + "\\" + xmlFileName).toURI().toURL()));
+		linacLego.readHeader();
 		CellSearcher cellSearcher = new CellSearcher(linacLego);
 		cellSearcher.replaceCellsWithMatches();
 		cellSearcher.saveXmlFile(xmlFileDirPath + "\\SpokeOptimus7.xml");
