@@ -4,7 +4,7 @@
 	revNo       CDATA       #IMPLIED
 	comment       CDATA       #IMPLIED
 	title CDATA #REQUIRED>
-<!ELEMENT header (xi:include|slotModels|cellModels|setPoints)* >
+<!ELEMENT header (xi:include|slotModels|cellModels|controlSettings)* >
 <!ELEMENT xi:include (#PCDATA)>
 <!ATTLIST xi:include
     href       CDATA       #IMPLIED
@@ -35,13 +35,13 @@
 <!ELEMENT tf (#PCDATA) >
 <!ATTLIST tf
 	id CDATA #REQUIRED>
-<!ELEMENT cnpt (tf*) >
-<!ATTLIST cnpt
+<!ELEMENT setPnt (tf*) >
+<!ATTLIST setPnt
 	section CDATA #REQUIRED 
 	cell CDATA #REQUIRED 
 	slot CDATA #IMPLIED    
 	ble CDATA #IMPLIED 
-	id CDATA #REQUIRED>
+	dataId CDATA #REQUIRED>
 <!ELEMENT cellModels (cellModel*) >
 <!ATTLIST cellModels
 	xml:base CDATA #IMPLIED
@@ -54,11 +54,11 @@
 <!ATTLIST slot
 	model CDATA #IMPLIED
 	id CDATA #REQUIRED>
-<!ELEMENT setPoint (d,cnpt*) >
-<!ATTLIST setPoint
+<!ELEMENT cntrlSet (d,setPnt*) >
+<!ATTLIST cntrlSet
 	devName CDATA #REQUIRED>
-<!ELEMENT setPoints (setPoint*) >
-<!ATTLIST setPoints
+<!ELEMENT controlSettings (cntrlSet*) >
+<!ATTLIST controlSettings
 	xmlns:xi CDATA #IMPLIED
 	xml:base CDATA #IMPLIED
 	id CDATA #REQUIRED>

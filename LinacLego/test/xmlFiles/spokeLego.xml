@@ -142,22 +142,22 @@
                 </slot>
             </cellModel>
         </cellModels>
-		<setPoints id="SpokeSetPoints">
-			<setPoint devName="SWU02-BMD:QH-010"> 
+		<controlSettings id="SpokeControlSettings">
+			<cntrlSet devName="SWU02-BMD:QH-010"> 
 				<d id="setting" type="double" unit="Amps">4.85226</d>
-				<cnpt section="SPOK" cell="cell020" slot="spokeLwu" ble="QD0020" id="g" >
+				<setPnt section="SPOK" cell="cell020" slot="spokeLwu" ble="QD0020" dataId="g" >
 					<tf id="0">0</tf>
 					<tf id="1">1</tf>
-				</cnpt>
-			</setPoint>
-			<setPoint devName="SWU02-BMD:QV-020"> 
+				</setPnt>
+			</cntrlSet>
+			<cntrlSet devName="SWU02-BMD:QV-020"> 
 				<d id="setting" type="double" unit="Amps">4.77927</d>
-				<cnpt section="SPOK" cell="cell020" id="g2" >
+				<setPnt section="SPOK" cell="cell020" dataId="g2" >
 					<tf id="0">0</tf>
 					<tf id="1">-1</tf>
-				</cnpt>
-			</setPoint>
-		</setPoints>
+				</setPnt>
+			</cntrlSet>
+		</controlSettings>
     </header>
     <linac>
         <linacData>
