@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<controlSettings title="SpokeSettings">
+	<d id="SWU02-BMD:QH-010" type="double" unit="Amps">4.85226</d>
+	<d id="SWU02-BMD:QV-020" type="double" unit="Amps">4.77927</d>
+</controlSettings>
