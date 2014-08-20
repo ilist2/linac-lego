@@ -6,6 +6,7 @@ import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlReader;
+import org.openepics.discs.linaclego.structures.elements.DataElement;
 
 public class ControlSettingMap 
 {
@@ -46,9 +47,30 @@ public class ControlSettingMap
 		}
 		
 	}
+	private String getControlSetting() throws LinacLegoException
+	{
+		int icount = 0;
+		DataElement controlSetting;
+		while (icount < linacLego.getControlSettingList().size())
+		{
+			controlSetting = linacLego.getControlSettingList().get(icount);
+			if (devName.equals(controlSetting.getId()))
+			{
+				if (unit.equals(controlSetting.getUnit()))
+				{
+					return linacLego.getControlSettingList().get(icount).getValue();
+				}
+				else
+				{
+					throw new LinacLegoException("Unit of " + devName + " does not match setting unit");
+				}
+			}
+		}
+		return null;
+	}
 	public void replaceWithControlSetting() throws LinacLegoException
 	{
-		for (int ii =0; ii < setPointList.size(); ++ii) setPointList.get(ii).replaceWithControlSetting();
+		for (int ii = 0; ii < setPointList.size(); ++ii) setPointList.get(ii).replaceWithControlSetting();
 	}
 
 }

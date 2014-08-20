@@ -280,6 +280,8 @@ public class LinacLego
 	public SimpleXmlReader getLinacLegoTag() {return linacLegoTag;}
 	public ArrayList<CellModel> getCellModelList() {return cellModelList;}
 	public ArrayList<SlotModel> getSlotModelList() {return slotModelList;}
+	public ArrayList<ControlSettingMap> getControlSettingMapList() {return controlSettingMapList;}
+	public ArrayList<DataElement> getControlSettingList() {return controlSettingList;}
 	public SimpleXmlReader getLinacTag() {return linacTag;}
 	public double geteVout() {return eVout;}
 	public String getLinacLegoTitle() {return linacLegoTitle;}
@@ -316,8 +318,8 @@ public class LinacLego
 	{
 //		String linacLegoWebSite = "https://1dd61ea372616aae15dcd04cd29d320453f0cb60.googledrive.com/host/0B3Hieedgs_7FNXg3OEJIREFuUUE";
 //		URL inputFileUrl = new URL(linacLegoWebSite + "/public/linacLego.xml");
-		String xmlFileDir = "C:\\Users\\davidmcginnis\\gitRepositories\\linac-lego\\LinacLego\\test\\xmlFiles";
-//		String xmlFileDir = "/Users/davidmcginnis/Documents/gitRepositories/linac-lego/LinacLego/test/xmlFiles";
+//		String xmlFileDir = "C:\\Users\\davidmcginnis\\gitRepositories\\linac-lego\\LinacLego\\test\\xmlFiles";
+		String xmlFileDir = "/Users/davidmcginnis/Documents/gitRepositories/linac-lego/LinacLego/test/xmlFiles";
 //		URL inputFileUrl = new File("C:\\Users\\davidmcginnis\\gitRepositories\\linac-lego\\LinacLego\\test\\xmlFiles\\spokeLego.xml").toURI().toURL();
 		URL inputFileUrl = new File(xmlFileDir + File.separator + "spokeLego.xml").toURI().toURL();
 		
