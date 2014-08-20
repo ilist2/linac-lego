@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -354,4 +355,10 @@ public abstract class BeamLineElement
 	public void setElementTag(SimpleXmlReader elementTag) {this.tag = elementTag;}
 	public void seteVout(double eVout) {this.eVout = eVout;}
 	public void setLength(double length) {this.length = length;}
+	
+	/**
+	 * This method should call specific beam line element's visitor visit method for specific beam line element
+	 * @param bleVisitor beam line element visitor
+	 */
+	public abstract void accept(BLEVisitor bleVisitor);
 }

@@ -538,7 +538,7 @@ public class LinacLegoApp extends JFrame
 				linacLego.setReportDirectory(new File(openedXmlFile.getParent()));
 				linacLego.updateLinac();
 				linacLego.createTraceWinFile();
-//				linacLego.createDynacFile();
+				linacLego.createDynacFile();
 				linacLego.printReportTable();
 				linacLego.printPartCounts();
 				linacLego.saveXmlDocument();

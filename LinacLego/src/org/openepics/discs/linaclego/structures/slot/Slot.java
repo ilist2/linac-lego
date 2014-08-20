@@ -16,6 +16,7 @@ package org.openepics.discs.linaclego.structures.slot;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -222,4 +223,15 @@ public class Slot
 	public ArrayList<BeamLineElement> getBeamLineElementList() {return beamLineElementList;}
 	public SimpleXmlReader getModelTag() {return modelTag;}
 	public SimpleXmlReader getTag() {return tag;}
+	
+	/**
+	 * Calls visit method on all beam line elements
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor) {
+		for (int ielem = 0; ielem < beamLineElementList.size(); ++ielem)
+		{
+			beamLineElementList.get(ielem).accept(bleVisitor);
+		}
+	}
 }

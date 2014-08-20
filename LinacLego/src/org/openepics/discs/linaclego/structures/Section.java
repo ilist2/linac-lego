@@ -16,6 +16,7 @@ package org.openepics.discs.linaclego.structures;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -166,4 +167,15 @@ public class Section
 	
 	public void setLength(double length) {this.length = length;}
 	public void setRfFreqMHz(double rfFreqMHz) {this.rfFreqMHz = rfFreqMHz;}
+
+	/**
+	 * Calls visit method on all beam line elements
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor) {
+		for (int icell = 0; icell < cellList.size(); ++icell)
+		{
+			cellList.get(icell).accept(bleVisitor);
+		}
+	}
 }

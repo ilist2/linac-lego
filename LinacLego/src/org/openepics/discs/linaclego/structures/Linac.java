@@ -19,6 +19,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.FieldProfileBuilder;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
@@ -350,6 +351,17 @@ public class Linac
 		this.fieldProfileBuilder = fieldProfileBuilder;
 		this.fieldProfileBuilderUrl = fieldProfileBuilderUrl;
 	}
-
+	
+	/**
+	 * Calls visit method on all beam line elements
+	 * 
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor) {
+		for (int isec = 0; isec < sectionList.size(); ++isec)
+		{
+			sectionList.get(isec).accept(bleVisitor);
+		}
+	}
 
 }

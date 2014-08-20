@@ -17,6 +17,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.FieldProfileBuilder;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -207,4 +208,13 @@ public class FieldMap extends BeamLineElement
 	public double characteristicValue() {return Math.abs(getVoltage());}
 	@Override
 	public String characteristicValueUnit() {return "MV";}
+	
+	/**
+	 * Calls visit method on beam line element visitor
+	 * @param bleVisitor beam line element visitor
+	 */
+	@Override
+	public void accept(BLEVisitor bleVisitor) {
+		bleVisitor.visit(this);
+	}
 }

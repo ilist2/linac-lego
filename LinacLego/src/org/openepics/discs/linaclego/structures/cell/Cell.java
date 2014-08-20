@@ -16,6 +16,7 @@ package org.openepics.discs.linaclego.structures.cell;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -189,5 +190,16 @@ public class Cell
 	public int getNumOfSlots() {return slotList.size();}
 	public SimpleXmlReader getModelTag() {return modelTag;}
 	public SimpleXmlReader getTag() {return tag;}
+
+	/**
+	 * Calls visit method on all beam line elements
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor) {
+		for (int islots = 0; islots < slotList.size(); ++islots)
+		{
+			slotList.get(islots).accept(bleVisitor);
+		}
+	}
 
 }

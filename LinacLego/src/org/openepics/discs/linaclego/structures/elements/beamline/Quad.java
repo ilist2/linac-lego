@@ -13,6 +13,7 @@ If not, see https://www.gnu.org/licenses/gpl-2.0.txt
 */
 package org.openepics.discs.linaclego.structures.elements.beamline;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlReader;
 import org.openepics.discs.linaclego.structures.slot.Slot;
@@ -99,4 +100,13 @@ public class Quad extends BeamLineElement
 	public double characteristicValue() {return Math.abs(gradTpM);}
 	@Override
 	public String characteristicValueUnit() {return "Tesla/m";}
+	
+	/**
+	 * Calls visit method on beam line element visitor
+	 * @param bleVisitor beam line element visitor
+	 */
+	@Override
+	public void accept(BLEVisitor bleVisitor) {
+		bleVisitor.visit(this);
+	}
 }
