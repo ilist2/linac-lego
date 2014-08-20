@@ -61,18 +61,6 @@ public class Bend  extends BeamLineElement
 		k2out = Double.parseDouble(getDataElement("K2out").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "BEND";
-		command = command + space + Double.toString(twBendAngleDeg);
-		command = command + space + Double.toString(radOfCurvmm);
-		command = command + space + Integer.toString(fieldIndex);
-		command = command + space + Double.toString(aperRadmm);
-		command = command + space + Integer.toString(HVflag);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		// TODO Need to fix edge fields
@@ -164,7 +152,22 @@ public class Bend  extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
+	}
+	public double getTWBendAngleDeg() {
+		return twBendAngleDeg;
+	}
+	public double getRadOfCurvmm() {
+		return radOfCurvmm;
+	}
+	public int getFieldIndex() {
+		return fieldIndex;
+	}
+	public double getAperRadmm() {
+		return aperRadmm;
+	}
+	public int getHVflag() {
+		return HVflag;
 	}
 }

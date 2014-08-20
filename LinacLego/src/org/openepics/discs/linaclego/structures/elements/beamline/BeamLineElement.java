@@ -50,7 +50,6 @@ public abstract class BeamLineElement
 	private ArrayList<DataElement> dataElementList = new ArrayList<DataElement>();
 	private SimpleXmlReader tag;
 	private Slot slot = null;
-	private String traceWinCommand = "";
 	private String dynacCommand = "";
 	private double eVout = -0.0;
 	private double eVin = -0.0;
@@ -246,7 +245,6 @@ public abstract class BeamLineElement
 		}
 		localCenterZ = localBeginZ + length / 2.0;
 		localEndZ = localBeginZ + length;
-		traceWinCommand = makeTraceWinCommand();
 		dynacCommand = makeDynacCommand();
 	}
 	public String getEssId() 
@@ -260,20 +258,6 @@ public abstract class BeamLineElement
 		} 
 		catch (LinacLegoException e) {id = "";} 
 		return id;
-	}
-	public void printTraceWin(PrintWriter pw) throws SimpleXmlException 
-	{
-		String commmand = traceWinCommand;
-		if (getSlot().getCell().getSection().getLinac().getLinacLego().isPrintIdInTraceWin()) commmand = getEssId() + ":" + space + commmand;
-		pw.println(commmand);
-		int numControlPoints = controlPointList.size();
-		if (numControlPoints > 0)
-		{
-			for (int icpt = 0; icpt < numControlPoints; ++icpt)
-			{
-				controlPointList.get(icpt).printTraceWin(pw);
-			}
-		}
 	}
 	public void printDynac(PrintWriter pw)  
 	{
@@ -312,7 +296,6 @@ public abstract class BeamLineElement
 		}
 	}
 
-	public abstract String makeTraceWinCommand();
 	public abstract String makeDynacCommand() throws LinacLegoException;
 	public abstract void calcParameters() throws LinacLegoException;
 	public abstract void calcLocation() ;
@@ -357,8 +340,25 @@ public abstract class BeamLineElement
 	public void setLength(double length) {this.length = length;}
 	
 	/**
+	 * This method first visits itself and then visits all control points
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor)
+	{
+		acceptBLE(bleVisitor);
+		int numControlPoints = controlPointList.size();
+		if (numControlPoints > 0)
+		{
+			for (int icpt = 0; icpt < numControlPoints; ++icpt)
+			{
+				controlPointList.get(icpt).accept(bleVisitor);
+			}
+		}
+	}
+	
+	/**
 	 * This method should call specific beam line element's visitor visit method for specific beam line element
 	 * @param bleVisitor beam line element visitor
 	 */
-	public abstract void accept(BLEVisitor bleVisitor);
+	public abstract void acceptBLE(BLEVisitor bleVisitor);
 }

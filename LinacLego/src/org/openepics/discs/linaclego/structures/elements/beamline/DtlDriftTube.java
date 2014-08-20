@@ -86,26 +86,6 @@ public class DtlDriftTube extends BeamLineElement
 		}
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = command + "DRIFT";
-		command = command + space + fourPlaces.format(noseConeUpLen);
-		command = command + space + fourPlaces.format(radius);
-		command = command + space + "0.0";
-		command = command + "\n";
-		command = command + "QUAD";
-		command = command + space + Double.toString(quadLen);
-		command = command + space + Double.toString(quadGrad);
-		command = command + space + Double.toString(radius);
-		command = command + "\n";
-		command = command + "DRIFT";
-		command = command + space + fourPlaces.format(noseConeDnLen);
-		command = command + space + fourPlaces.format(radius);
-		command = command + space + "0.0";
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -131,7 +111,7 @@ public class DtlDriftTube extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
 	}
 }

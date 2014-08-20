@@ -45,17 +45,6 @@ public class ThinSteering  extends BeamLineElement
 		kickType = Integer.parseInt(getDataElement("kickType").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "THIN_STEERING";
-		command = command + space + Double.toString(xkick);
-		command = command + space + Double.toString(ykick);
-		command = command + space + Double.toString(rmm);
-		command = command + space + Integer.toString(kickType);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 //TODO implement thing steering in DYNAC
@@ -106,7 +95,7 @@ public class ThinSteering  extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
 	}
 }

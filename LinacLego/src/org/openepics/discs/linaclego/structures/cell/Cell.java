@@ -108,13 +108,6 @@ public class Cell
 		}
 		return null;
 	}
-	public void printTraceWin(PrintWriter pw) throws SimpleXmlException 
-	{
-		for (int islots = 0; islots < slotList.size(); ++islots)
-		{
-			slotList.get(islots).printTraceWin(pw);
-		}
-	}
 	public void printDynac(PrintWriter pw)  
 	{
 		for (int islots = 0; islots < slotList.size(); ++islots)

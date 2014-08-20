@@ -137,17 +137,6 @@ public class Linac
 			}
 		}
 	}
-	public void printTraceWin(String fileName) throws FileNotFoundException, SimpleXmlException
-	{
-		PrintWriter pw = new PrintWriter(fileName);
-		pw.println(";" + linacLego.getLinacLegoTitle());
-		for (int isec = 0; isec < sectionList.size(); ++isec)
-		{
-			sectionList.get(isec).printTraceWin(pw);
-		}
-		pw.println("END");
-		pw.close();
-	}
 	public void printDynac(String fileName) throws FileNotFoundException, SimpleXmlException, LinacLegoException
 	{
 		PrintWriter pw = new PrintWriter(fileName);

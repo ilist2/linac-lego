@@ -55,20 +55,6 @@ public class Edge extends BeamLineElement
 		HVflag = Integer.parseInt(getDataElement("HVflag").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "EDGE";
-		command = command + space + Double.toString(poleFaceAngleDeg);
-		command = command + space + Double.toString(radOfCurvmm);
-		command = command + space + Double.toString(gapmm);
-		command = command + space + Double.toString(K1);
-		command = command + space + Double.toString(K2);
-		command = command + space + Double.toString(aperRadmm);
-		command = command + space + Integer.toString(HVflag);
-		return command;
-	}
-	@Override
 	public void calcParameters() throws LinacLegoException 
 	{
 		setLength(0.0);
@@ -113,7 +99,28 @@ public class Edge extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
-		bleVisitor.visit(bleVisitor);	
+	public void acceptBLE(BLEVisitor bleVisitor) {
+		bleVisitor.visit(this);	
+	}
+	public double getPoleFaceAngleDeg() {
+		return poleFaceAngleDeg;
+	}
+	public double getRadOfCurvmm() {
+		return radOfCurvmm;
+	}
+	public double getGapmm() {
+		return gapmm;
+	}
+	public double getK1() {
+		return K1;
+	}
+	public double getK2() {
+		return K2;
+	}
+	public double getAperRadmm() {
+		return aperRadmm;
+	}
+	public int getHVflag() {
+		return HVflag;
 	}
 }

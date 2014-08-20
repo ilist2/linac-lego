@@ -64,23 +64,6 @@ public class RfGap extends BeamLineElement
 		k2s = Double.parseDouble(getDataElement("k2s").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "GAP";
-		command = command + space + Double.toString(voltsT);
-		command = command + space + Double.toString(rfPhaseDeg);
-		command = command + space + Double.toString(radApermm);
-		command = command + space + Integer.toString(phaseFlag);
-		command = command + space + Double.toString(betaS);
-		command = command + space + Double.toString(tts);
-		command = command + space + Double.toString(ktts);
-		command = command + space + Double.toString(k2tts);
-		command = command + space + Double.toString(ks);
-		command = command + space + Double.toString(k2s);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -132,7 +115,37 @@ public class RfGap extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);	
+	}
+	public double getVoltsT() {
+		return voltsT;
+	}
+	public double getRfPhaseDeg() {
+		return rfPhaseDeg;
+	}
+	public double getRadApermm() {
+		return radApermm;
+	}
+	public int getPhaseFlag() {
+		return phaseFlag;
+	}
+	public double getBetaS() {
+		return betaS;
+	}
+	public double getTts() {
+		return tts;
+	}
+	public double getKtts() {
+		return ktts;
+	}
+	public double getK2tts() {
+		return k2tts;
+	}
+	public double getKs() {
+		return ks;
+	}
+	public double getK2s() {
+		return k2s;
 	}
 }

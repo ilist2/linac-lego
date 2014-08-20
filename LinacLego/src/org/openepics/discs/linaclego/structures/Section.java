@@ -89,37 +89,6 @@ public class Section
 	{
 		return cellList.get(cellList.size() - 1).getLocalEndZ();
 	}
-	public String traceWinCommand() 
-	{
-		String command = "";
-		if (!periodicLatticeSection)
-		{
-			if (index > 0)
-			{
-				if (linac.getSectionList().get(index - 1).isPeriodicLatticeSection())
-				{
-					command = "LATTICE_END" + newline;
-				}
-			}
-		}
-		command = command + "FREQ";
-		command = command + space + Double.toString(getRfFreqMHz());
-		if (periodicLatticeSection)
-		{
-			command = command + newline + "LATTICE";
-			command = command + space + Integer.toString(cellList.get(0).getNumBeamLineElements()) + space + "0";
-		}
-		command = command + newline;
-		return command;
-	}
-	public void printTraceWin(PrintWriter pw) throws SimpleXmlException 
-	{
-		pw.print(traceWinCommand());
-		for (int icell = 0; icell < cellList.size(); ++icell)
-		{
-			cellList.get(icell).printTraceWin(pw);
-		}
-	}
 	public void printDynac(PrintWriter pw)  
 	{
 		for (int icell = 0; icell < cellList.size(); ++icell)
@@ -173,6 +142,7 @@ public class Section
 	 * @param bleVisitor beam line element visitor
 	 */
 	public void accept(BLEVisitor bleVisitor) {
+		bleVisitor.visit(this);
 		for (int icell = 0; icell < cellList.size(); ++icell)
 		{
 			cellList.get(icell).accept(bleVisitor);

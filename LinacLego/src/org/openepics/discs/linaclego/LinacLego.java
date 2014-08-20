@@ -21,13 +21,13 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.openepics.discs.exporters.TraceWinExporter;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlDoc;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlReader;
 import org.openepics.discs.linaclego.structures.Linac;
 import org.openepics.discs.linaclego.structures.cell.CellModel;
 import org.openepics.discs.linaclego.structures.slot.SlotModel;
-
 import org.openepics.discs.linaclego.utilities.StatusPanel;
 
 public class LinacLego 
@@ -147,14 +147,9 @@ public class LinacLego
 		if (linac == null) throw new LinacLegoException("no linac data");
 		try 
 		{
-			linac.printTraceWin(getReportDirectory().getPath() + delim +  getTraceWinFileName());
-			
+			TraceWinExporter twExporter = new TraceWinExporter(getReportDirectory().getPath() + delim +  getTraceWinFileName());
+			twExporter.export(this);		
 		} catch (FileNotFoundException e) 
-		{
-			LinacLegoException lle = new LinacLegoException(e);
-			writeStatus(lle.getStackTraceString());
-			throw lle;
-		} catch (SimpleXmlException e) 
 		{
 			LinacLegoException lle = new LinacLegoException(e);
 			writeStatus(lle.getStackTraceString());

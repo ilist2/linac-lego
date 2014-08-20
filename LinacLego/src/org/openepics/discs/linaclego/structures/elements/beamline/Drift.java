@@ -73,16 +73,6 @@ public class Drift extends BeamLineElement
 		}
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "DRIFT";
-		command = command + space + fourPlaces.format(lengthMM);
-		command = command + space + fourPlaces.format(rMM);
-		command = command + space + fourPlaces.format(ryMM);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -103,7 +93,7 @@ public class Drift extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
 	}
 }

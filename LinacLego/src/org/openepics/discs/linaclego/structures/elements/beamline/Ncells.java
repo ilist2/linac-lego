@@ -178,36 +178,6 @@ public class Ncells extends BeamLineElement
 		return;
 	}
 	@Override
-	public String makeTraceWinCommand()
-	{
-		String command = "NCELLS";
-		command = command + space + Integer.toString(mode);
-		command = command + space + Integer.toString(ncells);
-		command = command + space + fourPlaces.format(betag);
-		command = command + space + zeroPlaces.format(e0tRef);
-		command = command + space + twoPlaces.format(phiTWdeg);
-		command = command + space + twoPlaces.format(radius);
-		command = command + space + Integer.toString(phaseFlag);
-		command = command + space + fourPlaces.format(ke0t[0]);
-		command = command + space + fourPlaces.format(ke0t[2]);
-		command = command + space + fourPlaces.format( dz[0] * 1000.0);
-		command = command + space + fourPlaces.format( dz[2] * 1000.0);
-		if (ttInfo)
-		{
-			command = command + space + fourPlaces.format(betaRef);
-			command = command + space + fourPlaces.format(ttRef[1]);
-			command = command + space + fourPlaces.format(-kttRef[1]);
-			command = command + space + fourPlaces.format(-k2ttRef[1]);
-			command = command + space + fourPlaces.format(ttRef[0]);
-			command = command + space + fourPlaces.format(-kttRef[0]);
-			command = command + space + fourPlaces.format(-k2ttRef[0]);
-			command = command + space + fourPlaces.format(ttRef[2]);
-			command = command + space + fourPlaces.format(-kttRef[2]);
-			command = command + space + fourPlaces.format(-k2ttRef[2]);
-		}
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException 
 	{
 		throw new LinacLegoException("Ncells not implemented in DYNAC");
@@ -487,8 +457,26 @@ public class Ncells extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);	
+	}
+	public double getE0tRef() {
+		return e0tRef;
+	}
+	public double[] getKe0t() {
+		return ke0t;
+	}
+	public double[] getDz() {
+		return dz;
+	}
+	public double[] getTtRef() {
+		return ttRef;
+	}
+	public double[] getKttRef() {
+		return kttRef;
+	}
+	public double[] getK2ttRef() {
+		return k2ttRef;
 	}
 
 }

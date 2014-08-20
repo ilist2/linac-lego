@@ -167,13 +167,6 @@ public class Slot
 		}
 		return null;
 	}
-	public void printTraceWin(PrintWriter pw) throws SimpleXmlException 
-	{
-		for (int ielem = 0; ielem < beamLineElementList.size(); ++ielem)
-		{
-			beamLineElementList.get(ielem).printTraceWin(pw);
-		}
-	}
 	public void printDynac(PrintWriter pw) 
 	{
 		for (int ielem = 0; ielem < beamLineElementList.size(); ++ielem)

@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
 import org.openepics.discs.linaclego.LinacLegoException;
 import org.openepics.discs.linaclego.simplexml.SimpleXmlException;
@@ -42,6 +43,7 @@ public class ControlPoint
 	private String type = null;
 	private String id = null;
 	private String model = "none";
+	private String name = null;
 	
 	public ControlPoint(SimpleXmlReader tag, BeamLineElement beamLineElement, int index) throws LinacLegoException
 	{
@@ -83,15 +85,6 @@ public class ControlPoint
 		if (getDataElement("dxmm").getValue() != null) endLocalPosVec[0] = Double.parseDouble(getDataElement("dxmm").getValue()) * 0.001;
 		if (getDataElement("dymm").getValue() != null) endLocalPosVec[1] = Double.parseDouble(getDataElement("dymm").getValue()) * 0.001;
 		if (getDataElement("dzmm").getValue() != null) endLocalPosVec[2] = Double.parseDouble(getDataElement("dzmm").getValue()) * 0.001;
-	}
-	public void printTraceWin(PrintWriter pw) throws SimpleXmlException 
-	{
-		if (!beamLineElement.getSlot().getCell().getSection().getLinac().getLinacLego().isPrintControlPoints()) return;
-		String command = ";" + getName().replace(":", "-")
-				+ space + "dxmm=" + Double.toString(endLocalPosVec[0] * 1000.0)
-				+ space + "dymm=" + Double.toString(endLocalPosVec[1] * 1000.0)
-				+ space + "dzmm=" + Double.toString(endLocalPosVec[2] * 1000.0);
-		pw.println(command);
 	}
 	public void printXmlPbs(SimpleXmlWriter xw) throws LinacLegoException   
 	{
@@ -161,6 +154,7 @@ public class ControlPoint
 		{
 			type = tag.attribute("type");
 			id = tag.attribute("id");
+			name = tag.attribute("devName");
 			try {model = tag.attribute("model");} catch (SimpleXmlException e) { model = "none";}
 			SimpleXmlReader dataElements = tag.tagsByName("d");
 			int numDataTags = dataElements.numChildTags();
@@ -214,10 +208,18 @@ public class ControlPoint
 	public String getId() {return id;}
 	public String getType()  {return type;}
 	public String getModel() {return model;}
-	public String getName() throws SimpleXmlException {return tag.attribute("devName");}
+	public String getName() {return name;}
 	public double[] getEndPosVec() {return endPosVec;}
 	public ArrayList<DataElement> getDataElementList() {return dataElementList;}
 
 	public void setTag(SimpleXmlReader tag) {this.tag = tag;}
+	
+	/**
+	 * Calls visit method on beam line element visitor
+	 * @param bleVisitor beam line element visitor
+	 */
+	public void accept(BLEVisitor bleVisitor) {
+		bleVisitor.visit(this);
+	}
 
 }

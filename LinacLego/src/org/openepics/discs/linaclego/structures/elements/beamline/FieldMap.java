@@ -67,21 +67,6 @@ public class FieldMap extends BeamLineElement
 		if (fieldProfileBuilder.getZmax() == lengthmm ) return true;
 		return false;
 	}
-
-	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "FIELD_MAP 100";
-		command = command + space + fourPlaces.format(lengthmm);
-		command = command + space + fourPlaces.format(rfpdeg);
-		command = command + space + fourPlaces.format(radiusmm);
-		command = command + space + "0";
-		command = command + space + Double.toString(xelmax);
-		command = command + space + "0 0";
-		command = command + space + fieldMapFileName.split("\\.")[0];
-		return command;
-	}
 	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
@@ -214,7 +199,22 @@ public class FieldMap extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
+	}
+	public double getLengthmm() {
+		return lengthmm;
+	}
+	public double getXelmax() {
+		return xelmax;
+	}
+	public double getRadiusmm() {
+		return radiusmm;
+	}
+	public String getFieldMapFileName() {
+		return fieldMapFileName;
+	}
+	public double getRfpdeg() {
+		return rfpdeg;
 	}
 }

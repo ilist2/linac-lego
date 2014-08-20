@@ -74,16 +74,6 @@ public class Quad extends BeamLineElement
 		}
 	}
 	@Override
-	public String makeTraceWinCommand()  
-	{
-		String command = "";
-		command = "QUAD";
-		command = command + space + Double.toString(lengthMM);
-		command = command + space + Double.toString(gradTpM);
-		command = command + space + Double.toString(radius);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -106,7 +96,7 @@ public class Quad extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
 	}
 }

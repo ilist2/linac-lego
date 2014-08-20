@@ -63,33 +63,6 @@ public class DtlRfGap extends BeamLineElement
 		k2tts = Double.parseDouble(getDataElement("k2tts").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = command + "DRIFT";
-		command = command + space + fourPlaces.format(length / 2.0);
-		command = command + space + fourPlaces.format(radApermm);
-		command = command + space + "0.0";
-		command = command + "\n";
-		command = command + "GAP";
-		command = command + space + Double.toString(voltsT);
-		command = command + space + Double.toString(rfPhaseDeg);
-		command = command + space + Double.toString(radApermm);
-		command = command + space + Integer.toString(phaseFlag);
-		command = command + space + Double.toString(betaS);
-		command = command + space + Double.toString(tts);
-		command = command + space + Double.toString(ktts);
-		command = command + space + Double.toString(k2tts);
-		command = command + space + Double.toString(0.0);
-		command = command + space + Double.toString(0.0);
-		command = command + "\n";
-		command = command + "DRIFT";
-		command = command + space + fourPlaces.format(length / 2.0);
-		command = command + space + fourPlaces.format(radApermm);
-		command = command + space + "0.0";
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -146,7 +119,31 @@ public class DtlRfGap extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
+	}
+	public double getRadApermm() {
+		return radApermm;
+	}
+	public int getPhaseFlag() {
+		return phaseFlag;
+	}
+	public double getBetaS() {
+		return betaS;
+	}
+	public double getTts() {
+		return tts;
+	}
+	public double getKtts() {
+		return ktts;
+	}
+	public double getK2tts() {
+		return k2tts;
+	}
+	public double getVoltsT() {
+		return voltsT;
+	}
+	public double getRfPhaseDeg() {
+		return rfPhaseDeg;
 	}
 }

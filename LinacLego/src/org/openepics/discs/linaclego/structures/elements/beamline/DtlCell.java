@@ -82,27 +82,6 @@ public class DtlCell  extends BeamLineElement
 		k2tts = Double.parseDouble(getDataElement("k2tts").getValue());
 	}
 	@Override
-	public String makeTraceWinCommand() 
-	{
-		String command = "";
-		command = "DTL_CEL";
-		command = command + space + Double.toString(cellLenmm);
-		command = command + space + Double.toString(q1Lenmm);
-		command = command + space + Double.toString(q2Lenmm);
-		command = command + space + Double.toString(cellCentermm);
-		command = command + space + Double.toString(grad1Tpm);
-		command = command + space + Double.toString(grad2Tpm);
-		command = command + space + Double.toString(voltsT * voltMult);
-		command = command + space + Double.toString(rfPhaseDeg + phaseAdd);
-		command = command + space + Double.toString(radApermm);
-		command = command + space + Integer.toString(phaseFlag);
-		command = command + space + Double.toString(betaS);
-		command = command + space + Double.toString(tts);
-		command = command + space + Double.toString(ktts);
-		command = command + space + Double.toString(k2tts);
-		return command;
-	}
-	@Override
 	public String makeDynacCommand() throws LinacLegoException
 	{
 		String command = "";
@@ -256,7 +235,55 @@ public class DtlCell  extends BeamLineElement
 	 * @param bleVisitor beam line element visitor
 	 */
 	@Override
-	public void accept(BLEVisitor bleVisitor) {
+	public void acceptBLE(BLEVisitor bleVisitor) {
 		bleVisitor.visit(this);
+	}
+	public double getCellLenmm() {
+		return cellLenmm;
+	}
+	public double getQ1Lenmm() {
+		return q1Lenmm;
+	}
+	public double getQ2Lenmm() {
+		return q2Lenmm;
+	}
+	public double getCellCentermm() {
+		return cellCentermm;
+	}
+	public double getGrad1Tpm() {
+		return grad1Tpm;
+	}
+	public double getGrad2Tpm() {
+		return grad2Tpm;
+	}
+	public double getVoltsT() {
+		return voltsT;
+	}
+	public double getVoltMult() {
+		return voltMult;
+	}
+	public double getRfPhaseDeg() {
+		return rfPhaseDeg;
+	}
+	public double getPhaseAdd() {
+		return phaseAdd;
+	}
+	public double getRadApermm() {
+		return radApermm;
+	}
+	public int getPhaseFlag() {
+		return phaseFlag;
+	}
+	public double getBetaS() {
+		return betaS;
+	}
+	public double getTts() {
+		return tts;
+	}
+	public double getKtts() {
+		return ktts;
+	}
+	public double getK2tts() {
+		return k2tts;
 	}
 }
