@@ -25,6 +25,7 @@ public class TraceWinExporter implements BLEVisitor {
 	private PrintWriter pw;
 	private boolean printIdInTraceWin;
 	private boolean printControlPoints;
+	private boolean insidePeriodicLattice;
 	
 	public static final String space = "\t";
 	public static final String newline = System.getProperty("line.separator");
@@ -41,6 +42,7 @@ public class TraceWinExporter implements BLEVisitor {
 		pw.println(";" + linacLego.getLinacLegoTitle());
 		printIdInTraceWin = linacLego.isPrintIdInTraceWin();
 		printControlPoints = linacLego.isPrintControlPoints();
+		insidePeriodicLattice = false;
 		linacLego.getLinac().accept(this);
 		pw.println("END");
 		pw.close();
@@ -49,22 +51,16 @@ public class TraceWinExporter implements BLEVisitor {
 	
 	@Override
 	public void visit(Section section) {
-		if (!section.isPeriodicLatticeSection())
+		if (!section.isPeriodicLatticeSection() && insidePeriodicLattice)
 		{
-			int index = section.getIndex();
-			if (index > 0)
-			{
-				if (section.getLinac().getSectionList().get(index - 1).isPeriodicLatticeSection())
-				{
-					println(null, "LATTICE_END");
-				}
-			}
+			println(null, "LATTICE_END");
 		}
 		println(null, "FREQ", section.getRfFreqMHz());
 		if (section.isPeriodicLatticeSection())
 		{
 			println(null, "LATTICE", section.getCellList().get(0).getNumBeamLineElements(), 0);
 		}
+		insidePeriodicLattice = section.isPeriodicLatticeSection();
 	}
 	
 	public void println(String id, String command, Object... params) 
