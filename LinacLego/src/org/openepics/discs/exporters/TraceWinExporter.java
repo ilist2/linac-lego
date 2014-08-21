@@ -3,6 +3,8 @@ package org.openepics.discs.exporters;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.openepics.discs.linaclego.BLEVisitor;
 import org.openepics.discs.linaclego.LinacLego;
@@ -29,9 +31,9 @@ public class TraceWinExporter implements BLEVisitor {
 	
 	public static final String space = "\t";
 	public static final String newline = System.getProperty("line.separator");
-	public static final DecimalFormat zeroPlaces = new DecimalFormat("###");
-	public static final DecimalFormat twoPlaces = new DecimalFormat("###.##");
-	public static final DecimalFormat fourPlaces = new DecimalFormat("###.####");
+	public static final DecimalFormat zeroPlaces = new DecimalFormat("###", DecimalFormatSymbols.getInstance(Locale.ROOT));
+	public static final DecimalFormat twoPlaces = new DecimalFormat("###.##", DecimalFormatSymbols.getInstance(Locale.ROOT));
+	public static final DecimalFormat fourPlaces = new DecimalFormat("###.####", DecimalFormatSymbols.getInstance(Locale.ROOT));
 	
 	public TraceWinExporter(String fileName) {
 		this.fileName = fileName;
